@@ -2,10 +2,11 @@ from machine import Pin
 from time import sleep
 
 led = Pin("LED", Pin.OUT)
+led.toggle()
 
 while True:
+    recv_msg = input()
+    print (recv_msg + " -ack")
+    print("Hello from pico!")
     led.toggle()
-    receive_data = input()
-    return_data = receive_data;
-    print(return_data+' acknowledged')
-    print(b"This is a message from pico W")
+    
