@@ -7,6 +7,7 @@ from time import sleep
 terminator = "\r\n"
 
 comm = serial.Serial('COM3', 112500, timeout=0.01)
+comm.flush()
 last_send = ''
 
 
@@ -32,31 +33,34 @@ class player:
 
 # print(Giganto.HP)
 
-def all_equal(iterator):
-	iterator = iter(iterator)
-	try:
-		first = next(iterator)
-	except StopIteration:
-		return True
-	return all(first == x for x in iterator)
-
+#def all_equal(iterator):
+#	iterator = iter(iterator)
+#	try:
+#		first = next(iterator)
+#	except StopIteration:
+#		return True
+#	return all(first == x for x in iterator)
 
 def sendMessage(msg):
-	b_msg = bytes(msg+terminator, 'UTF-8')
+	b_msg = bytes(msg + terminator, 'UTF-8')
 	global last_send
 	last_send = b_msg
 	comm.write(b_msg)
 
 
-def readMessage(decoding=False, encoding='UTF-8'):
+def readMessage(decoding = False, encoding = 'UTF-8'):
 	data = comm.readlines()
 	if (last_send == data[0]):
-		better_data = data[1:]
+		better_data = data[not_include:len(data)]
 	else:
-		better_data = data;
+		better_data = data
 	if decoding:
+		counter = 0
+
 		for line in better_data:
-			line = line.decode(encoding)
+			better_data[counter] = (line.decode(encoding)).strip()
+			counter += 1
+
 		return better_data
 	else:
 		return data
@@ -64,8 +68,6 @@ def readMessage(decoding=False, encoding='UTF-8'):
 
 while True:
 	message = input()
-	print(last_send)
-	input()
 	sendMessage(message)
-	print(readMessage(1))
+	print(readMessage(True))
 	
