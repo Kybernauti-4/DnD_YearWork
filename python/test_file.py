@@ -70,4 +70,3 @@ while True:
 	message = input()
 	sendMessage(message)
 	print(readMessage(True))
-	
