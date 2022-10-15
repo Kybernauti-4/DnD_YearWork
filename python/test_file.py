@@ -51,7 +51,7 @@ def sendMessage(msg):
 def readMessage(decoding = False, encoding = 'UTF-8'):
 	data = comm.readlines()
 	if (last_send == data[0]):
-		better_data = data[not_include:len(data)]
+		better_data = data[1:len(data)]
 	else:
 		better_data = data
 	if decoding:
