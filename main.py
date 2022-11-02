@@ -1,12 +1,25 @@
 from machine import Pin
 from time import sleep
+import json
+import os
+import rp2
 
 led = Pin("LED", Pin.OUT)
 led.toggle()
 
+os.mount(rp2.Flash(),'/')
+
 while True:
 	recv_msg = input()
-	print (recv_msg + " -ack")
-	print("Hello from pico!")
-	led.toggle()
+	if recv_msg == "ID":
+		f = open('player.json')
+		data = json.load(f)
+		ID = data["ID"]
+		f.close()
+
+		print(ID)
+		led.toggle()
+	else:
+		print (recv_msg + " -ack")
+		led.toggle()
 	
