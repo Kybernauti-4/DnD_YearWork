@@ -9,44 +9,43 @@ last_send = ''
 
 def findDevices():
 	ports = serial.tools.list_ports.comports()
-	print(type(ports[0].name))
 	print(ports[0].name)
-	print (len(ports))
 	counter = 0
 	while counter<len(ports):
 		try:
 			temp_comm = serial.Serial(ports[counter].name, 112500, timeout=1)
-			sendMessage("ID")
-			sleep(0.1)
-			try:
-				if (readMessage(1) == 'Giganto'):
-					comm.append(temp_comm)
-					print("Succsesfully added port: " + ports[counter].name)
-			except:
-				print("Wrong device on port: " + ports[counter].name)			
+			comm.append(temp_comm)
+			sendMessage(counter,"ID")
+			if (readMessage(counter,1)=='Giganto'):
+				print("Succsesfully added port: " + ports[counter].name)
+			else:
+				print("Wrong device on port: " + ports[counter].name)
+				comm.pop()
 			counter += 1
-		except:
+		except Exception as e:
 			print("Can't open the port: " + ports[counter].name)
+			print(len(comm))
+			print(e)
 			counter += 1
 
-def sendMessage(msg):
+def sendMessage(index,msg):
 	b_msg = bytes(msg + terminator, 'UTF-8')
 	global last_send
 	last_send = b_msg
-	comm.write(b_msg)
+	comm[index].write(b_msg)
 	
-def readMessage(decoding = False, encoding = 'UTF-8'):
-	data = comm.readlines()
+def readMessage(index, decoding = False, encoding = 'UTF-8'):
+	data = comm[index].readlines()
 	iterator = iter(data)
 	index = 0
 	while(next(iterator) == last_send):
 		index += 1
 	
 	better_data = data[index:]
-	return better_data[0].decode('UTF-8') if decoding else better_data[0]
+	return (better_data[0].decode('UTF-8')).strip() if decoding else better_data[0]
 
-def readMessageBlock(decoding = False, encoding = 'UTF-8'):
-	data = comm.readlines()
+def readMessageBlock(index,decoding = False, encoding = 'UTF-8'):
+	data = comm[index].readlines()
 	iterator = iter(data)
 	index = 0
 	while(next(iterator) == last_send):
