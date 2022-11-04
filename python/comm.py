@@ -77,10 +77,8 @@ def textConverter(to_convert):
 
 		
 
-
-#while True:
-	#message = input()
-	#sendMessage(message)
-	#print(readMessage(True))
-
 findDevices()
+while True:
+	message = input()
+	sendMessage(0,message)
+	print(readMessage(0,True))
