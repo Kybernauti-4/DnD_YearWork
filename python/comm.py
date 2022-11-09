@@ -8,6 +8,15 @@ terminator = "\r\n"
 comm = {};
 last_send = ''
 
+def playerID(comport):
+	sendMessage(comport,"ID")
+	id_rcvd = readMessage(comport, True)
+	print(id_rcvd)
+	ind_string = ''
+	if((index_start := id_rcvd.index("[")) > 0 and (index_end := id_rcvd.index("]")) > 0):
+		ind_string = str(id_rcvd[index_start+1:index_end])
+	return ind_string
+
 def findDevices():
 	ports = serial.tools.list_ports.comports()
 	print(ports[0].name)
@@ -16,7 +25,8 @@ def findDevices():
 		try:
 			temp_comm = serial.Serial(ports[counter].name, 112500, timeout=1)
 			comm.update({counter:temp_comm})
-			if(playerID == 'player'):
+			player_ID = playerID(counter)
+			if(player_ID == 'player'):
 				print("Succsesfully added port: " + ports[counter].name)
 				comm.update({playerID:counter})
 			else:
@@ -29,11 +39,13 @@ def findDevices():
 			counter += 1
 
 	fix_count = 0
-	key = list(comm.keys)
-	val = list(comm.values)
-	while fix_count < key.len - 1:
-		if(val[fix_count+1] is ):
-
+	key = list(comm.keys())
+	val = list(comm.values())
+	while fix_count < (len(key) - 1):
+		if(key[fix_count] is val[fix_count+1]):
+			comm[key[fix_count+1]] = comm[key[fix_count]]
+			del comm[key[fix_count]]
+	print(comm)
 
 def sendMessage(index,msg):
 	b_msg = bytes(msg + terminator, 'UTF-8')
@@ -67,11 +79,7 @@ def readMessageBlock(index,decoding = False, encoding = 'UTF-8'):
 	
 	return better_data
 
-def playerID(comport):
-	sendMessage(comport,"ID")
-	id_rcvd = readMessage(comport, True)
-	if((index_start := id_rcvd.index("[")) > 0 and (index_end := id_rcvd.index("]")) > 0):
-		ind_string = str(id_rcvd[index_start+1:index_end])
+
 
 
 findDevices()
