@@ -1,9 +1,12 @@
-{"player info":[
+{
+	"ID":"player[Giganta]",
+	"player info":[
     {
         "HP":280,
         "MP":40,
         "Name":"Giganta",
         "Age":145,
         "Gender":"Female"
-    }
-]}
+    }],
+	"COM":-1
+}

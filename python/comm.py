@@ -1,10 +1,11 @@
 import serial
 import serial.tools.list_ports
+import json
 from time import sleep
 
 #global variables
 terminator = "\r\n"
-comm = [];
+comm = {};
 last_send = ''
 
 def findDevices():
@@ -14,17 +15,20 @@ def findDevices():
 	while counter<len(ports):
 		try:
 			temp_comm = serial.Serial(ports[counter].name, 112500, timeout=1)
-			comm.append(temp_comm)
+			comm.update({counter:temp_comm})
 			sendMessage(counter,"ID")
-			if (readMessage(counter,1)=='Giganto'):
-				print("Succsesfully added port: " + ports[counter].name)
-			else:
-				print("Wrong device on port: " + ports[counter].name)
-				comm.pop()
+			id_rcvd = readMessage(counter, True)
+			if((index_start := id_rcvd.index("[")) > 0 and (index_end := id_rcvd.index("]")) > 0):
+				if(id_rcvd[:index_start] == 'player'):
+					print("Succsesfully added port: " + ports[counter].name)
+					index_string = str(id_rcvd[index_start+1:index_end])
+					comm.update({index_string:counter})
+				else:
+					print("Wrong device on port: " + ports[counter].name)
+					comm.popitem()
 			counter += 1
 		except Exception as e:
 			print("Can't open the port: " + ports[counter].name)
-			print(len(comm))
 			print(e)
 			counter += 1
 
