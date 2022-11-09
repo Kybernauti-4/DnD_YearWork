@@ -60,25 +60,9 @@ def readMessageBlock(index,decoding = False, encoding = 'UTF-8'):
 	
 	return better_data
 
-def textConverter(to_convert):
-	if(type(to_convert) == 'str'):
-		i = len(to_convert)
-		#finding out the max int len, not yet converting
-		max_len = max((ord(symbol)>max_len) for symbol in to_convert)
-		''.join()
-		
-			
-			
-
-	if(type(to_convert) == 'int'):
-		str_int = str(int)
-		for i in str_int:
-			print()
-
-		
 
 findDevices()
-while True:
-	message = input()
-	sendMessage(0,message)
-	print(readMessage(0,True))
+#while True:
+#	message = input()
+#	sendMessage(0,message)
+#	print(readMessage(0,True))
