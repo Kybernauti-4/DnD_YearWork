@@ -32,7 +32,8 @@ def findDevices():
 	key = list(comm.keys)
 	val = list(comm.values)
 	while fix_count < key.len - 1:
-		if()
+		if(val[fix_count+1] is ):
+
 
 def sendMessage(index,msg):
 	b_msg = bytes(msg + terminator, 'UTF-8')
