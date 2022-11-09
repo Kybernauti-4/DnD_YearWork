@@ -16,21 +16,23 @@ def findDevices():
 		try:
 			temp_comm = serial.Serial(ports[counter].name, 112500, timeout=1)
 			comm.update({counter:temp_comm})
-			sendMessage(counter,"ID")
-			id_rcvd = readMessage(counter, True)
-			if((index_start := id_rcvd.index("[")) > 0 and (index_end := id_rcvd.index("]")) > 0):
-				if(id_rcvd[:index_start] == 'player'):
-					print("Succsesfully added port: " + ports[counter].name)
-					index_string = str(id_rcvd[index_start+1:index_end])
-					comm.update({index_string:counter})
-				else:
-					print("Wrong device on port: " + ports[counter].name)
-					comm.popitem()
+			if(playerID == 'player'):
+				print("Succsesfully added port: " + ports[counter].name)
+				comm.update({playerID:counter})
+			else:
+				print("Wrong device on port: " + ports[counter].name)
+				comm.popitem()
 			counter += 1
 		except Exception as e:
 			print("Can't open the port: " + ports[counter].name)
 			print(e)
 			counter += 1
+
+	fix_count = 0
+	key = list(comm.keys)
+	val = list(comm.values)
+	while fix_count < key.len - 1:
+		if()
 
 def sendMessage(index,msg):
 	b_msg = bytes(msg + terminator, 'UTF-8')
@@ -63,6 +65,12 @@ def readMessageBlock(index,decoding = False, encoding = 'UTF-8'):
 			counter += 1
 	
 	return better_data
+
+def playerID(comport):
+	sendMessage(comport,"ID")
+	id_rcvd = readMessage(comport, True)
+	if((index_start := id_rcvd.index("[")) > 0 and (index_end := id_rcvd.index("]")) > 0):
+		ind_string = str(id_rcvd[index_start+1:index_end])
 
 
 findDevices()
