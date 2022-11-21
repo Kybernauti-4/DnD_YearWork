@@ -1,3 +1,4 @@
 need a system of good ids
 Create a bit more proper program body
 Holy fuck create a lot of comments, this shitfest is illegible
+fix the fixing function of comm
