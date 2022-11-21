@@ -4,7 +4,7 @@ import json
 import os
 import rp2
 
-led = Pin("LED", Pin.OUT)
+led = Pin(25, Pin.OUT)
 led.toggle()
 
 os.mount(rp2.Flash(),'/')

@@ -38,6 +38,7 @@ def findDevices():
 			# open a serial line so I can communicate with the device, if fails, falls to except
 			comm.update({counter:temp_comm}) # update the dict with a numerical key
 			player_chck = chck_player(counter) # send a message to get the player ID
+			print("Got the id!")
 			if(player_chck == 'player'):
 				# check if the the ID is really id of player
 				print("Succsesfully added port: " + ports[counter].name)
@@ -59,10 +60,18 @@ def findDevices():
 	fix_count = 0
 	key = list(comm.keys())
 	val = list(comm.values())
+	print(key)
+	print(val)
 	while fix_count < (len(key) - 1):
-		if(key[fix_count] is val[fix_count+1]):
+		if(key[fix_count] is val[fix_count+1] and fix_count in key):
+			print(comm[key[fix_count+1]])
+			print(comm[str(key[fix_count])])
+			print(key[fix_count+1])
+			print(key[fix_count])
 			comm[key[fix_count+1]] = comm[key[fix_count]]
-			del comm[key[fix_count]]
+			print(comm)
+			comm.pop(key[fix_count])
+			
 	# I wrote it last week and I have no idea what the fuck is going on here anymore
 	print(comm) # control print
 
