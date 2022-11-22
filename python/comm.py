@@ -1,7 +1,8 @@
-import serial
-import serial.tools.list_ports
 import json
 from time import sleep
+
+import serial
+import serial.tools.list_ports
 
 #global variables
 terminator = "\r\n"
@@ -60,17 +61,18 @@ def findDevices():
 	fix_count = 0
 	key = list(comm.keys())
 	val = list(comm.values())
-	print(key)
-	print(val)
+
 	while fix_count < (len(key) - 1):
-		if(key[fix_count] is val[fix_count+1] and fix_count in key):
-			print(comm[key[fix_count+1]])
-			print(comm[str(key[fix_count])])
-			print(key[fix_count+1])
-			print(key[fix_count])
-			comm[key[fix_count+1]] = comm[key[fix_count]]
-			print(comm)
-			comm.pop(key[fix_count])
+		if(key[fix_count] == str(val[fix_count+1])):
+			# if values in criss cross is equal
+			comm[str(key[fix_count+1])] = comm[str(key[fix_count])] # replace the values in criss cross
+			comm.pop(str(key[fix_count])) # delete the the useless line
+			#update all the variables for next loop
+			key = list(comm.keys())
+			val = list(comm.values())
+			fix_count+=1
+		else:
+			fix_count+=1
 			
 	# I wrote it last week and I have no idea what the fuck is going on here anymore
 	print(comm) # control print
