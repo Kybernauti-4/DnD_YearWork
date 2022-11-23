@@ -12,7 +12,6 @@ last_send = ''
 def playerID(comport):
 	sendMessage(comport,"ID")
 	id_rcvd = readMessage(comport, True) # send for answer with the id and listen for it
-	print(id_rcvd) # just a simple check output
 	ind_string = '' # empty string to handle the next block
 	if((index_start := id_rcvd.index("[")) > 0 and (index_end := id_rcvd.index("]")) > 0):
 		# "simple" check if both of the brackets are present in ID, otherwise the slice function would fail
@@ -22,12 +21,17 @@ def playerID(comport):
 def chck_player(comport):
 	sendMessage(comport,"ID")
 	id_rcvd = readMessage(comport, True) # send for answer with the id and listen for it
-	print(id_rcvd) # just a simple check output
 	ind_string = '' # empty string to handle the next block
-	if((index_start := id_rcvd.index("[")) > 0 and (index_end := id_rcvd.index("]")) > 0):
+	if((index_start := id_rcvd.index("[")) > 0 and (id_rcvd.index("]")) > 0):
 		# "simple" check if both of the brackets are present in ID, otherwise the slice function would fail
 		ind_string = str(id_rcvd[:index_start]) # slicing the part before the ID itself
 	return ind_string
+
+def id_chck(comport):
+	msg_txt = "IDError"
+	while playerID(comport-1) == playerID(comport): 
+		sendMessage(comport, msg_txt)
+	
 
 def findDevices():
 	ports = serial.tools.list_ports.comports() # list of all the ports present on the machine
@@ -39,11 +43,12 @@ def findDevices():
 			# open a serial line so I can communicate with the device, if fails, falls to except
 			comm.update({counter:temp_comm}) # update the dict with a numerical key
 			player_chck = chck_player(counter) # send a message to get the player ID
-			print("Got the id!")
 			if(player_chck == 'player'):
 				# check if the the ID is really id of player
 				print("Succsesfully added port: " + ports[counter].name)
+				id_chck(counter)
 				comm.update({playerID(counter):counter})
+				print(comm)
 				# if nothing errored out, good and add the player id and which numerical index of port it has
 			else:
 				print("Wrong device on port: " + ports[counter].name)
@@ -63,7 +68,10 @@ def findDevices():
 	val = list(comm.values())
 
 	while fix_count < (len(key) - 1):
+		print(key[fix_count])
+		print(str(val[fix_count+1]))
 		if(key[fix_count] == str(val[fix_count+1])):
+			print("Fixing the dictionary!")
 			# if values in criss cross is equal
 			comm[str(key[fix_count+1])] = comm[str(key[fix_count])] # replace the values in criss cross
 			comm.pop(str(key[fix_count])) # delete the the useless line
@@ -75,7 +83,7 @@ def findDevices():
 			fix_count+=1
 			
 	# I wrote it last week and I have no idea what the fuck is going on here anymore
-	print(comm) # control print
+	#print(comm) # control print
 
 def sendMessage(index,msg):
 	# message has to be formated, thus function to format and send
