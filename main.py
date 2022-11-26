@@ -4,6 +4,8 @@ import json
 import os
 import rp2
 
+import fileHandler
+
 led = Pin(25, Pin.OUT)
 led.toggle()
 #protection sleep boot time
@@ -13,46 +15,40 @@ led.toggle()
 
 repair_count = 0
 
+filename = 'player.json'
+
+def strBetween(string, startStr, endStr):
+	try:
+		return string[string.index(startStr)+1:string.index[endStr]]
+	except:
+		return 'Substring not found'
+
 while True:
 	recv_msg = input()
 	if recv_msg == "ID":
-		f = open('player.json','r')
-		data = json.load(f)
+		data = fileHandler.read(filename)
 		ID = data["ID"]
-		f.close()
-
 		print(ID)
 		led.toggle()
+
 	elif recv_msg == "IDError":
-		readf = open('player.json','r')
-		data = json.load(readf)
+		data = fileHandler.read(filename)
 		ID = data["ID"]
-		startIndex = ID.index("[")
-		endIndex = ID.index("]")
-		playerID = ID[startIndex+1:endIndex]
-		newID =("player[" + playerID.replace(str(repair_count-1),'') + str(repair_count)+"]")
-		data["ID"] = newID
-		readf.close()
-		writef = open('player.json','w')
-		json.dump(data, writef)
-		writef.close()
+		playerID = strBetween(ID,'[',']')
+		newID = data['ID'].replace(playerID,playerID+str(repair_count))
+		fileHandler.rewriteJSON(filename, 'ID', data['ID'], newID)
 		led.toggle()
 		repair_count+=1
+
 	elif recv_msg == "RepairID":
-		readf = open('player.json','r')
-		data = json.load(readf)
+		data = fileHandler.read(filename)
 		ID = data["ID"]
-		startIndex = ID.index("[")
-		endIndex = ID.index("]")
-		playerID = ID[startIndex+1:endIndex]
-		newID =("player[" + playerID.replace(str(repair_count),'') + str(repair_count)+"]")
-		data["ID"] = newID
-		readf.close()
-		writef = open('player.json','w')
-		json.dump(data, writef)
-		writef.close()
+		playerID = strBetween(ID,'[',']')
+		newID = newID = data['ID'].replace(playerID,playerID+str(repair_count))
+		fileHandler.rewriteJSON(filename, 'ID', data['ID'], newID)
 		led.toggle()
 		repair_count = 0
+		
 	else:
 		print (recv_msg + " -ack")
 		led.toggle()

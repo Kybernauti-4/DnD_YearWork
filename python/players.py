@@ -19,13 +19,13 @@ Giganto = Player(player_data["player info"][0])
 f.close()
 print(Giganto.HP)
 
-def all_equal(interator):
-	iterator = iter(iterator)
-	try:
-		first = next(interator)
-	except StopIteration:
-		return True
-	return all(first == x for x in iterator)
+#def all_equal(interator):
+#	iterator = iter(iterator)
+#	try:
+#		first = next(interator)
+#	except StopIteration:
+#		return True
+#	return all(first == x for x in iterator)
 
 #def assignID():
 #	with open('playerlist.json') as list:
