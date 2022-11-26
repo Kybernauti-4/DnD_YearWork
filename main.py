@@ -17,11 +17,11 @@ repair_count = 0
 
 filename = 'player.json'
 
-def strBetween(string, startStr, endStr):
+def strBetween(string:str, startStr, endStr):
 	try:
-		return string[string.index(startStr)+1:string.index[endStr]]
+		return string[string.index(startStr)+1:string.index(endStr)]
 	except:
-		return 'Substring not found'
+		raise Exception('Substring not found')
 
 while True:
 	recv_msg = input()
@@ -34,8 +34,12 @@ while True:
 	elif recv_msg == "IDError":
 		data = fileHandler.read(filename)
 		ID = data["ID"]
-		playerID = strBetween(ID,'[',']')
-		newID = data['ID'].replace(playerID,playerID+str(repair_count))
+		try:
+			playerID = strBetween(ID,'[',']')
+			newID = data['ID'].replace(playerID,playerID+str(repair_count))
+		except Exception as e:
+			print(e)
+			newID = ID
 		fileHandler.rewriteJSON(filename, 'ID', data['ID'], newID)
 		led.toggle()
 		repair_count+=1
@@ -43,8 +47,13 @@ while True:
 	elif recv_msg == "RepairID":
 		data = fileHandler.read(filename)
 		ID = data["ID"]
-		playerID = strBetween(ID,'[',']')
-		newID = newID = data['ID'].replace(playerID,playerID+str(repair_count))
+		try:
+			playerID = strBetween(ID,'[',']')
+			newID = newID = ID.replace(playerID,playerID.replace(str(repair_count),''))
+		except Exception as e:
+			print(e)
+			newID = ID
+		
 		fileHandler.rewriteJSON(filename, 'ID', data['ID'], newID)
 		led.toggle()
 		repair_count = 0
