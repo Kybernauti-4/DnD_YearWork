@@ -32,4 +32,4 @@ def rewriteJSON(filename, field, strToReplace, newStr):
 		write(filename, edit_str)
 		return 'done'
 	else:
-		return 'error'
+		raise Exception('Wrong file type')
