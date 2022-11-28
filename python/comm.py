@@ -45,11 +45,10 @@ def findDevices():
 			player_chck = chck_player(counter) # send a message to get the player ID
 			if(player_chck == 'player'):
 				# check if the the ID is really id of player
-				print("Succsesfully added port: " + ports[counter].name)
-				id_chck(counter)
+				if counter > 0 :
+					id_chck(counter)
 				comm.update({playerID(counter):counter})
-				print(comm)
-				# if nothing errored out, good and add the player id and which numerical index of port it has
+				print("Succsesfully added port: " + ports[counter].name)			# if nothing errored out, good and add the player id and which numerical index of port it has
 			else:
 				print("Wrong device on port: " + ports[counter].name)
 				comm.popitem()
@@ -66,22 +65,20 @@ def findDevices():
 	fix_count = 0
 	key = list(comm.keys())
 	val = list(comm.values())
-
+	
 	while fix_count < (len(key) - 1):
-		print(key[fix_count])
-		print(str(val[fix_count+1]))
-		if(key[fix_count] == str(val[fix_count+1])):
+		if(str(key[fix_count]) == str(val[fix_count+1])):
 			print("Fixing the dictionary!")
 			# if values in criss cross is equal
-			comm[str(key[fix_count+1])] = comm[str(key[fix_count])] # replace the values in criss cross
-			comm.pop(str(key[fix_count])) # delete the the useless line
+			comm[key[fix_count+1]] = comm[key[fix_count]] # replace the values in criss cross
+			comm.pop(key[fix_count]) # delete the the useless line
 			#update all the variables for next loop
 			key = list(comm.keys())
 			val = list(comm.values())
 			fix_count+=1
 		else:
 			fix_count+=1
-			
+	print(comm)
 	# I wrote it last week and I have no idea what the fuck is going on here anymore
 	#print(comm) # control print
 
