@@ -11,7 +11,9 @@ last_send = ''
 
 def playerID(comport):
 	sendMessage(comport,"ID")
+	print('Sent for ID!')
 	id_rcvd = readMessage(comport, True) # send for answer with the id and listen for it
+	print(id_rcvd)
 	ind_string = '' # empty string to handle the next block
 	if((index_start := id_rcvd.index("[")) > 0 and (index_end := id_rcvd.index("]")) > 0):
 		# "simple" check if both of the brackets are present in ID, otherwise the slice function would fail
@@ -28,6 +30,7 @@ def chck_player(comport):
 	return ind_string
 
 def id_chck(comport):
+	print('IDError')
 	msg_txt = "IDError"
 	while playerID(comport-1) == playerID(comport): 
 		sendMessage(comport, msg_txt)
@@ -35,19 +38,25 @@ def id_chck(comport):
 
 def findDevices():
 	ports = serial.tools.list_ports.comports() # list of all the ports present on the machine
-	print(ports[0].name) # just a control line to see in console if reading comports rigt
 	counter = 0 # counter for while function and a tool for assigning the ports to a dict
 	while counter<len(ports):
 		try:
 			temp_comm = serial.Serial(ports[counter].name, 112500, timeout=1)
 			# open a serial line so I can communicate with the device, if fails, falls to except
 			comm.update({counter:temp_comm}) # update the dict with a numerical key
+			print('Opened the port: ' + ports[counter].name) # just a control line to see in console if reading comports rigt
 			player_chck = chck_player(counter) # send a message to get the player ID
 			if(player_chck == 'player'):
 				# check if the the ID is really id of player
+				sendMessage(counter, 'IDRepair')
+				print('Sent for repairs!') 
 				if counter > 0 :
+					print('Not here yet!')
 					id_chck(counter)
+				print('Here!')
+				print(playerID(counter))
 				comm.update({playerID(counter):counter})
+				print('What?')
 				print("Succsesfully added port: " + ports[counter].name)			# if nothing errored out, good and add the player id and which numerical index of port it has
 			else:
 				print("Wrong device on port: " + ports[counter].name)

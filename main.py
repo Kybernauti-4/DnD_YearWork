@@ -44,9 +44,7 @@ while True:
 		ID = data["ID"]
 		try:
 			playerID = strBetween(ID,'[',']')
-			print(playerID)
 			newID = data['ID'].replace(playerID,playerID.replace(str(repair_count-1),'')+str(repair_count))
-			print(newID)
 		except Exception as e:
 			print(e)
 			newID = ID
@@ -60,7 +58,7 @@ while True:
 		ID = data["ID"]
 		try:
 			playerID = strBetween(ID,'[',']')
-			newID = newID = ID.replace(playerID,playerID.replace(str(repair_count-1),''))
+			newID = ID.replace(playerID,playerID.replace(str(repair_count-1),''))
 		except Exception as e:
 			print(e)
 			newID = ID
