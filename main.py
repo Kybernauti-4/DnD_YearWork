@@ -1,8 +1,8 @@
 from machine import Pin
 from time import sleep
+
 import json
 import os
-import rp2
 
 import fileHandler
 
@@ -31,6 +31,10 @@ def compareCaseIns(*string:str):
 		return True
 	return all(first.lower() == x.lower() for x in iterator)
 
+def clear():
+    print("\x1B\x5B2J", end="")
+    print("\x1B\x5BH", end="")
+
 while True:
 	recv_msg = input()
 	if compareCaseIns(recv_msg, 'ID'):
@@ -52,6 +56,7 @@ while True:
 		fileHandler.rewriteJSON(filename, 'RPC', str(repair_count),str(repair_count+1))
 		led.toggle()
 		repair_count+=1
+		print('ID Moved Up')
 
 	elif compareCaseIns(recv_msg, 'IDRepair'):
 		data = fileHandler.read(filename)
@@ -66,7 +71,11 @@ while True:
 		fileHandler.rewriteJSON(filename, 'ID', data['ID'], newID)
 		led.toggle()
 		repair_count = 0
-		
+		print('ID Repaired Up')
+	
+	elif compareCaseIns(recv_msg, 'clear'):
+		clear()
+
 	else:
 		print (recv_msg + " -ack")
 		led.toggle()

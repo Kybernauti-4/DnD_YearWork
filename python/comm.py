@@ -11,9 +11,7 @@ last_send = ''
 
 def playerID(comport):
 	sendMessage(comport,"ID")
-	print('Sent for ID!')
 	id_rcvd = readMessage(comport, True) # send for answer with the id and listen for it
-	print(id_rcvd)
 	ind_string = '' # empty string to handle the next block
 	if((index_start := id_rcvd.index("[")) > 0 and (index_end := id_rcvd.index("]")) > 0):
 		# "simple" check if both of the brackets are present in ID, otherwise the slice function would fail
@@ -30,7 +28,6 @@ def chck_player(comport):
 	return ind_string
 
 def id_chck(comport):
-	print('IDError')
 	msg_txt = "IDError"
 	while playerID(comport-1) == playerID(comport): 
 		sendMessage(comport, msg_txt)
@@ -48,15 +45,9 @@ def findDevices():
 			player_chck = chck_player(counter) # send a message to get the player ID
 			if(player_chck == 'player'):
 				# check if the the ID is really id of player
-				sendMessage(counter, 'IDRepair')
-				print('Sent for repairs!') 
 				if counter > 0 :
-					print('Not here yet!')
 					id_chck(counter)
-				print('Here!')
-				print(playerID(counter))
 				comm.update({playerID(counter):counter})
-				print('What?')
 				print("Succsesfully added port: " + ports[counter].name)			# if nothing errored out, good and add the player id and which numerical index of port it has
 			else:
 				print("Wrong device on port: " + ports[counter].name)
@@ -102,17 +93,20 @@ def readMessage(index, decoding = False, encoding = 'UTF-8'):
 	# message has to be read and decoded, if you want
 	# !!!!!!!!!!!!!!!!! THIS FUNCTION WILL READ ONE LINE AFTER THE THE FEEDBACK MESSAGE !!!!!!!!!!!!!!!!!
 	data = comm[index].readlines()
+	print(data)
 	iterator = iter(data)
 	index = 0
 	while(next(iterator) == last_send):
 		index += 1
 	# used to get the message out of it and not the feedback
 	better_data = data[index:]
+	print((better_data[0].decode('UTF-8')).strip() if decoding else better_data[0])
 	return (better_data[0].decode('UTF-8')).strip() if decoding else better_data[0] # return decoded or encoded, doesn't matter
 
 def readMessageBlock(index,decoding = False, encoding = 'UTF-8'):
 	# The same as readMessage but used to get the entire block of data coming through
 	data = comm[index].readlines()
+	print(last_send)
 	iterator = iter(data)
 	index = 0
 	while(next(iterator) == last_send):
