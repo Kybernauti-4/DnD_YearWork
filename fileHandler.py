@@ -9,9 +9,23 @@ def read(filename):
 	
 	if '.json' in filename:
 		file_dict : dict = json.load(file)
+		file.close()
 		return file_dict
 	else:
-		return file
+		data = file.read()
+		file.close()
+		return data
+
+def readJSON(filename,field):
+	if '.json' in filename:
+		try:
+			file = open(filename, 'r')
+		except Exception as e:
+			print(e)
+			return 'NoFileError'
+		data = json.load(file)
+		file.close()
+		return data[field]
 
 def write(filename, strToWrite):
 	with open(filename, 'w') as file:

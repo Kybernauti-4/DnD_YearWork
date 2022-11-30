@@ -13,9 +13,9 @@ sleep(2)
 
 led.toggle()
 
-repair_count = 0
-
 filename = 'player.json'
+
+repair_count = int(fileHandler.readJSON(filename, 'RPC')) if (fileHandler.readJSON(filename, 'RPC') != 'NoFileError') else 0
 
 def strBetween(string:str, startStr, endStr):
 	try:
@@ -23,33 +23,44 @@ def strBetween(string:str, startStr, endStr):
 	except:
 		raise Exception('Substring not found')
 
+def compareCaseIns(*string:str):
+	iterator = iter(string)
+	try:
+		first = next(iterator)
+	except StopIteration:
+		return True
+	return all(first.lower() == x.lower() for x in iterator)
+
 while True:
 	recv_msg = input()
-	if recv_msg == "ID":
+	if compareCaseIns(recv_msg, 'ID'):
 		data = fileHandler.read(filename)
 		ID = data["ID"]
 		print(ID)
 		led.toggle()
 
-	elif recv_msg == "IDError":
+	elif compareCaseIns(recv_msg, 'IDError'):
 		data = fileHandler.read(filename)
 		ID = data["ID"]
 		try:
 			playerID = strBetween(ID,'[',']')
-			newID = data['ID'].replace(playerID,playerID+str(repair_count))
+			print(playerID)
+			newID = data['ID'].replace(playerID,playerID.replace(str(repair_count-1),'')+str(repair_count))
+			print(newID)
 		except Exception as e:
 			print(e)
 			newID = ID
 		fileHandler.rewriteJSON(filename, 'ID', data['ID'], newID)
+		fileHandler.rewriteJSON(filename, 'RPC', str(repair_count),str(repair_count+1))
 		led.toggle()
 		repair_count+=1
 
-	elif recv_msg == "RepairID":
+	elif compareCaseIns(recv_msg, 'IDRepair'):
 		data = fileHandler.read(filename)
 		ID = data["ID"]
 		try:
 			playerID = strBetween(ID,'[',']')
-			newID = newID = ID.replace(playerID,playerID.replace(str(repair_count),''))
+			newID = newID = ID.replace(playerID,playerID.replace(str(repair_count-1),''))
 		except Exception as e:
 			print(e)
 			newID = ID
