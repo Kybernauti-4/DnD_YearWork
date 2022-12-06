@@ -35,21 +35,20 @@ def id_chck(comport):
 
 def findDevices():
 	ports = serial.tools.list_ports.comports() # list of all the ports present on the machine
-	print(ports[0].name) # just a control line to see in console if reading comports rigt
 	counter = 0 # counter for while function and a tool for assigning the ports to a dict
 	while counter<len(ports):
 		try:
 			temp_comm = serial.Serial(ports[counter].name, 112500, timeout=1)
 			# open a serial line so I can communicate with the device, if fails, falls to except
 			comm.update({counter:temp_comm}) # update the dict with a numerical key
+			print('Opened the port: ' + ports[counter].name) # just a control line to see in console if reading comports rigt
 			player_chck = chck_player(counter) # send a message to get the player ID
 			if(player_chck == 'player'):
 				# check if the the ID is really id of player
-				print("Succsesfully added port: " + ports[counter].name)
-				id_chck(counter)
+				if counter > 0 :
+					id_chck(counter)
 				comm.update({playerID(counter):counter})
-				print(comm)
-				# if nothing errored out, good and add the player id and which numerical index of port it has
+				print("Succsesfully added port: " + ports[counter].name)			# if nothing errored out, good and add the player id and which numerical index of port it has
 			else:
 				print("Wrong device on port: " + ports[counter].name)
 				comm.popitem()
@@ -66,22 +65,20 @@ def findDevices():
 	fix_count = 0
 	key = list(comm.keys())
 	val = list(comm.values())
-
+	
 	while fix_count < (len(key) - 1):
-		print(key[fix_count])
-		print(str(val[fix_count+1]))
-		if(key[fix_count] == str(val[fix_count+1])):
+		if(str(key[fix_count]) == str(val[fix_count+1])):
 			print("Fixing the dictionary!")
 			# if values in criss cross is equal
-			comm[str(key[fix_count+1])] = comm[str(key[fix_count])] # replace the values in criss cross
-			comm.pop(str(key[fix_count])) # delete the the useless line
+			comm[key[fix_count+1]] = comm[key[fix_count]] # replace the values in criss cross
+			comm.pop(key[fix_count]) # delete the the useless line
 			#update all the variables for next loop
 			key = list(comm.keys())
 			val = list(comm.values())
 			fix_count+=1
 		else:
 			fix_count+=1
-			
+	print(comm)
 	# I wrote it last week and I have no idea what the fuck is going on here anymore
 	#print(comm) # control print
 
@@ -96,17 +93,20 @@ def readMessage(index, decoding = False, encoding = 'UTF-8'):
 	# message has to be read and decoded, if you want
 	# !!!!!!!!!!!!!!!!! THIS FUNCTION WILL READ ONE LINE AFTER THE THE FEEDBACK MESSAGE !!!!!!!!!!!!!!!!!
 	data = comm[index].readlines()
+	print(data)
 	iterator = iter(data)
 	index = 0
 	while(next(iterator) == last_send):
 		index += 1
 	# used to get the message out of it and not the feedback
 	better_data = data[index:]
+	print((better_data[0].decode('UTF-8')).strip() if decoding else better_data[0])
 	return (better_data[0].decode('UTF-8')).strip() if decoding else better_data[0] # return decoded or encoded, doesn't matter
 
 def readMessageBlock(index,decoding = False, encoding = 'UTF-8'):
 	# The same as readMessage but used to get the entire block of data coming through
 	data = comm[index].readlines()
+	print(last_send)
 	iterator = iter(data)
 	index = 0
 	while(next(iterator) == last_send):
