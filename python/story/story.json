@@ -1,0 +1,9 @@
+{
+    "storyStructures":{
+        "chapter":0,
+        "encounter":1,
+        "scene":2
+    },
+
+    "folderName":"sory"
+}
