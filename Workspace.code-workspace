@@ -1,13 +1,16 @@
 {
 	"folders": [
 		{
-			"path": "picowgo"
+			"name": "DnD_YearWork",
+			"path": "."
 		},
 		{
+			"name": "python",
 			"path": "python"
 		},
 		{
-			"path": "."
+			"name": "picowgo",
+			"path": "picowgo"
 		}
 	],
 	"settings": {
