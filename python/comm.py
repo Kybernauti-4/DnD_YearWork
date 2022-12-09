@@ -92,6 +92,8 @@ def sendMessage(index,msg):
 def readMessage(index, decoding = False, encoding = 'UTF-8'):
 	# message has to be read and decoded, if you want
 	# !!!!!!!!!!!!!!!!! THIS FUNCTION WILL READ ONE LINE AFTER THE THE FEEDBACK MESSAGE !!!!!!!!!!!!!!!!!
+	# FIX
+	# *The function reads doesn't work when IDRepair and IDError come through
 	data = comm[index].readlines()
 	print(data)
 	iterator = iter(data)
