@@ -8,6 +8,8 @@ def createStructure(folder):
     depth = depthFinder(path)
     
     #TODO build the multi dimensional dict and story.json
+    # *DO not do anything too extreme, string builder as the walk function searches the files and then send to json and back for an object
+    
 
             
 def depthFinder(startpath):
