@@ -16,6 +16,6 @@
 	"settings": {
 		"python.languageServer": "Pylance",
 		"picowgo.syncFolder": "",
-		"picowgo.openOnStart": true
+		"picowgo.openOnStart": false
 	}
 }
