@@ -28,9 +28,6 @@ def list_files(startpath):
 		for f in files:
 			print('{}{}'.format(subindent, f))
 
-def rindex(lst, value):
-	return len(lst) - lst[::-1].index(value) - 1
-
 def createArray(startpath, depth):
 	json_array = '{'
 	last_indent = -1
@@ -42,7 +39,7 @@ def createArray(startpath, depth):
 
 		#actual array part
 		if level < last_indent:
-			dash_index = rindex(json_array,',')
+			dash_index = json_array.rfind(',')
 			json_array = json_array[:dash_index]
 			json_array += '}'*(max_indent-level-1)+','+level_str+':{'
 			last_indent = level
@@ -53,7 +50,7 @@ def createArray(startpath, depth):
 				for f in files:
 					json_array += '"'+f+'"' + ','
 				
-				dash_index = rindex(json_array,',')
+				dash_index = json_array.rfind(',')
 				json_array = json_array[:dash_index]
 
 			json_array += '],'
@@ -65,7 +62,7 @@ def createArray(startpath, depth):
 				for f in files:
 					json_array += '"'+f+'"' + ','
 				
-				dash_index = rindex(json_array,',')
+				dash_index = json_array.rfind(',')
 				json_array = json_array[:dash_index]
 
 			json_array += '],'
@@ -75,7 +72,7 @@ def createArray(startpath, depth):
 			json_array+= level_str+':{'
 			last_indent = level
 
-	dash_index = rindex(json_array,',')
+	dash_index = json_array.rfind(',')
 	json_array = json_array[:dash_index]
 	json_array += '}'*(depth)
 	#print(json_array)
