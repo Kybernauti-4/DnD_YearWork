@@ -98,8 +98,10 @@ def readMessage(index, decoding = False, encoding = 'UTF-8'):
 	print(data)
 	iterator = iter(data)
 	index = 0
-	while(next(iterator) == last_send):
+	while(True):
 		index += 1
+		if next(iterator) == last_send:
+			break
 	# used to get the message out of it and not the feedback
 	better_data = data[index:]
 	print((better_data[0].decode('UTF-8')).strip() if decoding else better_data[0])
