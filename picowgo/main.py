@@ -35,7 +35,6 @@ def clear():
     print("\x1B\x5B2J", end="")
     print("\x1B\x5BH", end="")
 
-# ! FIX The messages aren't being properly read, unless it is id 
 while True:
 	recv_msg = input()
 	if compareCaseIns(recv_msg, 'ID'):
@@ -76,6 +75,10 @@ while True:
 	
 	elif compareCaseIns(recv_msg, 'clear'):
 		clear()
+		
+	elif compareCaseIns(recv_msg, 'sendpdata'):
+		data = fileHandler.read(filename)
+		print(data)
 
 	else:
 		print (recv_msg + " -ack")
