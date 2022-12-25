@@ -1,14 +1,11 @@
 {
 	"ID":"player[Giganta]",
 	"RPC":"0",
-	"player_info":[
-		{
+	"player_info":{
 			"HP":250,
 			"MP":50,
 			"Name":"Giganta",
 			"Age":147,
 			"Gender":"Female"
 		}
-	]
-
 }
