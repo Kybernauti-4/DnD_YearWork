@@ -1,0 +1,14 @@
+{
+	"ID":"player[Giganto]",
+	"RPC":"0",
+	"player_info":[
+		{
+			"HP":300,
+			"MP":25,
+			"Name":"Giganto",
+			"Age":149,
+			"Gender":"Male"
+		}
+	]
+
+}
