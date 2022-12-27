@@ -1,7 +1,7 @@
 import os
 import json
 
-def get_storypart_files(folder):
+def get_storyparts(folder):
     # Initialize an empty list to store the file paths
     file_paths = []
 
