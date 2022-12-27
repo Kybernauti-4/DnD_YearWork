@@ -11,37 +11,35 @@ class Player:
 		self.Age = PlayerData['Age']
 		self.Gender = PlayerData['Gender']
 
-	def getVariable(variable):
-		global HP, MP, Name, Age, Gender
+	def getVariable(self, variable):
 		match variable:
 			case 'HP':
-				return HP
+				return self.HP
 			case 'MP':
-				return MP
+				return self.MP
 			case 'Name':
-				return Name
+				return self.Name
 			case 'Age':
-				return Age
+				return self.Age
 			case 'Gender':
-				return Gender
+				return self.Gender
 				
-	def setVariable(variable, new_value):
-		global HP, MP, Name, Age, Gender
+	def setVariable(self, variable, new_value):
 		match variable:
 			case 'HP':
-				HP = new_value
+				self.HP = new_value
 				return 1
 			case 'MP':
-				MP = new_value
+				self.MP = new_value
 				return 1
 			case 'Name':
-				Name = new_value
+				self.Name = new_value
 				return 1
 			case 'Age':
-				Age = new_value
+				self.Age = new_value
 				return 1
 			case 'Gender':
-				Gender = new_value
+				self.Gender = new_value
 				return 1
 		
 	def attack(player, dmg_amount):
