@@ -6,9 +6,6 @@ class Window:
 	def __init__(self, width, height):
 		self.width = width
 		self.height = height
-		self.time_0 = time.perf_counter_ns()
-		self.time_1 = time.perf_counter_ns()
-		self.show_bool = False
 		self.screen = []
 		self.line_num = 0
 	
@@ -16,24 +13,42 @@ class Window:
 		print("\x1B\x5B2J", end="")
 		print("\x1B\x5BH", end="")
 
-	def draw(self, str_to_draw):
-		chunks = [str_to_draw[i:i+self.width] for i in range(0, len(str_to_draw), self.width)]
-		self.screen.append(chunks)
-		if (self.line_num + len(chunks)) < self.height:
-			for line in chunks:
-				print(line.replace('hook',''))
-				self.line_num += 1
+	def send_txt(self, str_to_draw:str):
+		chunks = []
+		if str_to_draw.__contains__('\n'):
+			temp_chunks = str_to_draw.split('\n')
+			for chunk in temp_chunks:
+				lines = [chunk.replace('\n','')[i:i+self.width] for i in range(0, len(chunk), self.width)]
+				for line in lines:
+					chunks.append(line)
 		else:
-			os.system('cls')
+			chunks = [str_to_draw[i:i+self.width] for i in range(0, len(str_to_draw), self.width)]
+		
+		if len(chunks) > self.height:
+			print_chunks = [chunks[i:i+self.height] for i in range(0, len(str_to_draw), self.height)]
+			for chunks in print_chunks:
+				if len(chunks) != 0:
+					self.draw(chunks)
+
+		self.draw(chunks)
+
+	def draw(self, chunks):
+		input()
+		for chunk in chunks:
+			self.screen.append(chunk)
+
+		if len(self.screen) > self.height:
 			for i in range(len(self.screen)):
 				index = -(i + 1 - len(self.screen))
 				if self.screen[index].__contains__('hook'):
+					self.screen[index] = self.screen[index].replace('hook','')
 					self.screen = self.screen[index:]
 					break
 			else:
 				self.screen = []
-				self.screen.append(chunks)
-			self.line_num =0
-			for line in chunks:
-				print(line.replace('hook',''))
-				self.line_num += 1
+				for chunk in chunks:
+					self.screen.append(chunk)
+
+		os.system('cls')
+		for line in self.screen:
+			print(line.replace('hook',''))

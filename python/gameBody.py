@@ -5,6 +5,7 @@ import fileHandler
 import os
 import storyHandler
 import Window
+from time import sleep
 
 #TODO Create a game body
 
@@ -14,7 +15,7 @@ playerlist = []
 story_path = os.path.join(os.getcwd(), 'story')
 storyStack = storyHandler.get_storyparts(story_path)
 
-window = Window.Window(256, 16)
+window = Window.Window(64, 16)
 
 folder = os.path.join(os.getcwd(), 'player')
 
@@ -36,4 +37,5 @@ def getPlayers(method):
 
 for event in storyStack:
 	txt_to_draw = fileHandler.read(os.path.join(event, 'storypart.txt'))
-	window.draw(txt_to_draw)
+	window.send_txt(txt_to_draw)
+	
