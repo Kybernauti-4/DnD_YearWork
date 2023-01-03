@@ -37,12 +37,13 @@ def getPlayers(method):
 #print(playerlist[0]['player_info']['Name'])
 
 for event in storyStack:
+	npc_list = []
 	txt_to_draw = fileHandler.read(os.path.join(event, 'storypart.txt'))
 	try:
 		npc_path = fileHandler.getFolder(event,'npc')
 		npc_file_list = [file for file in os.listdir(npc_path)]
 		for file in npc_file_list:
-			npc_list.append(fileHandler.read(file))
+			npc_list.append(fileHandler.read(os.path.join(npc_path,file)))
 	except:
 		print("No NPC found")
 	print(npc_list)

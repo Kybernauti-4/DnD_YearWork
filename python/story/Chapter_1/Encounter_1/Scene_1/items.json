@@ -1,0 +1,16 @@
+{
+	"drops":{
+		"npcVillager":{
+			"gold_coins":"1-5",
+			"exp":"1-5"
+	
+		},
+		"npcSkeleton":{
+			"gold_coins":"10-20",
+			"exp":"20-55",
+			"bad_sword":0.75,
+			"lesser_sword":0.20,
+			"sword":0.05
+		}
+	}
+}
