@@ -8,9 +8,9 @@
 		"npcSkeleton":{
 			"gold_coins":"10-20",
 			"exp":"20-55",
-			"bad_sword":0.75,
-			"lesser_sword":0.20,
-			"sword":0.05
+			"bad_sword":"chance[0.75]",
+			"lesser_sword":"chance[0.20]",
+			"sword":"chance[0.05]"
 		}
 	}
 }
