@@ -1,0 +1,11 @@
+{
+	"ID":"npc[Villager2]",
+	"RPC":"0",
+	"npc_info":{
+		"HP":100,
+		"MP":10,
+		"Name":"Villager",
+		"Age":35,
+		"Gender":"Male"
+	}
+}

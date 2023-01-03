@@ -1,16 +1,17 @@
+import json
+import os
+from time import sleep
+
 import comm
 import deviceHandler
-import json
 import fileHandler
-import os
 import storyHandler
 import Window
-from time import sleep
 
 #TODO Create a game body
 
-#? I need to implement an event stack that advances each round
-#* Create a list of players either through comm or through searching in files
+npc_list = []
+item_list = []
 playerlist = []
 story_path = os.path.join(os.getcwd(), 'story')
 storyStack = storyHandler.get_storyparts(story_path)
@@ -37,5 +38,14 @@ def getPlayers(method):
 
 for event in storyStack:
 	txt_to_draw = fileHandler.read(os.path.join(event, 'storypart.txt'))
-	window.send_txt(txt_to_draw)
+	try:
+		npc_path = fileHandler.getFolder(event,'npc')
+		npc_file_list = [file for file in os.listdir(npc_path)]
+		for file in npc_file_list:
+			npc_list.append(fileHandler.read(file))
+	except:
+		print("No NPC found")
+	print(npc_list)
+	#window.send_txt(txt_to_draw)
+
 	

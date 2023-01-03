@@ -1,4 +1,6 @@
 import json
+import os
+
 
 def read(filename):
 	try:
@@ -47,3 +49,6 @@ def rewriteJSON(filename, field, strToReplace, newStr):
 		return 'done'
 	else:
 		raise Exception('Wrong file type')
+
+def getFolder(path, folder):
+	return os.path.join(path, folder)
