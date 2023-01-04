@@ -1,0 +1,5 @@
+{
+	"print_text[1]":["txt1.txt","txt2.txt"],
+	"ask_1":["Where do you want to go?", "Dungeon 1","Dungeon 2","Dungeon 3","Dungeon 4"],
+	"ask":["Where do "]
+}

@@ -48,5 +48,3 @@ for event in storyStack:
 		print("No NPC found")
 	print(npc_list)
 	#window.send_txt(txt_to_draw)
-
-	

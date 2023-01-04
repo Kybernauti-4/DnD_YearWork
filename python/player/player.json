@@ -1,5 +1,6 @@
 {
-	"ID":"player[Giganto]",
+	"ID":"Giganto",
+	"type":"player",
 	"RPC":"0",
 	"player_info":{
 			"HP":300,
