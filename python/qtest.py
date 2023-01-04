@@ -1,4 +1,4 @@
-import story.events_scripts.Window as Window
+import story.init.Window as Window
 
 window = Window.Window(256, 32)
 while(True):

@@ -2,11 +2,13 @@ import json
 import os
 from time import sleep
 
-import comm
-import deviceHandler
+import story.init.comm as comm
+import story.init.deviceHandler as deviceHandler
 import fileHandler
 import storyHandler
-import story.events_scripts.Window as Window
+import sys
+import importlib
+import story.init.Window as Window
 
 #TODO Create a game body
 
@@ -16,7 +18,28 @@ playerlist = []
 story_path = os.path.join(os.getcwd(), 'story')
 storyStack = storyHandler.get_storyparts(story_path)
 
-window = Window.Window(64, 16)
+#* import loop
+scripts_path = {path for path in fileHandler.read('scriptlocation')}
+
+event_scripts_list = []
+
+for index,path in scripts_path:
+	import_path = os.path.join(os.getcwd(),path)
+	sys.path.insert(index,import_path)
+	event_scripts_list.append([event.replace('.py','') for event in os.listdir(import_path) if os.path.isfile(os.path.join(import_path, event))])
+
+
+import_list = []
+for event in event_scripts_list:
+	import_list.append(importlib.import_module(event.replace('.py','')))
+
+imports = {keys:values for keys in event_scripts_list for values in import_list}
+
+def handle(event_string, arguments):
+	function = getattr(imports[event_string],event_string)
+	function(arguments)
+
+window = Window.Window(256, 128)
 
 folder = os.path.join(os.getcwd(), 'player')
 
