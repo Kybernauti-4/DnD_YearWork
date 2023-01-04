@@ -1,5 +1,5 @@
 {
-	"ID":"npc",
+	"ID":"npc_1",
 	"type":"villager",
 	"RPC":"0",
 	"npc_info":{
