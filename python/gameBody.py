@@ -6,7 +6,7 @@ import comm
 import deviceHandler
 import fileHandler
 import storyHandler
-import Window
+import story.events_scripts.Window as Window
 
 #TODO Create a game body
 
