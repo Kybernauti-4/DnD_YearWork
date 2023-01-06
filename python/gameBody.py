@@ -1,14 +1,14 @@
+import importlib
 import json
 import os
+import sys
 from time import sleep
 
+import fileHandler
 import story.init.comm as comm
 import story.init.deviceHandler as deviceHandler
-import fileHandler
-import storyHandler
-import sys
-import importlib
 import story.init.Window as Window
+import storyHandler
 
 #TODO Create a game body
 
