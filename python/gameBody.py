@@ -19,11 +19,12 @@ story_path = os.path.join(os.getcwd(), 'story')
 storyStack = storyHandler.get_storyparts(story_path)
 
 #* import loop
-scripts_path = {path for path in fileHandler.read('scriptlocation')}
+scripts_path = fileHandler.read('scriptlocation.json')
+print(scripts_path)
 
 event_scripts_list = []
 
-for index,path in scripts_path:
+for index,path in scripts_path.items():
 	import_path = os.path.join(os.getcwd(),path)
 	sys.path.insert(index,import_path)
 	event_scripts_list.append([event.replace('.py','') for event in os.listdir(import_path) if os.path.isfile(os.path.join(import_path, event))])

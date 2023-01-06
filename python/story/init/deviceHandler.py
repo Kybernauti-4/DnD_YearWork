@@ -1,5 +1,6 @@
-import comm
 import serial.tools.list_ports
+
+import story.init.comm as comm
 
 devices = {}
 
