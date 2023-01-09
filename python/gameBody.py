@@ -46,7 +46,7 @@ window = Window.Window(256, 128)
 
 folder = os.path.join(os.getcwd(), 'player')
 
-def getPlayers(method):
+def getPlayersFromDevice(method):
 	match method:
 		case 'device':
 			devicesList = deviceHandler.findDevices()
