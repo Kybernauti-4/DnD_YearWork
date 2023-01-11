@@ -47,26 +47,33 @@ for index,path in scripts_path.items():
 				info['info']['obj'].append(value)
 			
 import_list = []
+#print(event_scripts_list)
 for event in event_scripts_list:
-	import_list.append(importlib.import_module(event.replace('.py','')))
+	module = importlib.import_module(event)
+	import_list.append(module)
 
-imports = {keys:values for keys in event_scripts_list for values in import_list}
-
-#print(imports)
+#print(import_list)
+imports = dict(zip(event_scripts_list, import_list))
+#for import_key,import_name in imports.items():
+	#print("Imported: {} => {}".format(import_key, import_name))
 def handle(event_string, arguments):
 	for arg in arguments:
-		if '&' in arg:
+		if '&' in str(arg):
 			id = arg.replace('&','')
 			for value in valueStack:
 				if value[1] == id:
 					arguments[index(arg)] = value[0]
-	
-	function = getattr(imports[event_string],event_string)
-	function(*arguments)
+	event_string_id = info['id'][event_string]
+	if event_string_id in info['info']['func']:
+		function = getattr(imports[event_string],event_string)
+		function(*arguments)
+	elif event_string_id in info['info']['obj']:
+		obj = getattr(imports[event_string],event_string)
+		use_obj = obj(*arguments)
 
-window = Window.Window(256, 128)
+player_folder = os.path.join(os.getcwd(), 'players')
 
-folder = os.path.join(os.getcwd(), 'players')
+handle('Window', [256,128])
 
 #getPlayers('files')
 #print(playerlist)
