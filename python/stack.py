@@ -4,8 +4,12 @@ class listStack:
         self.stack = []
         pass
     
-    def append(self, value):
-        self.stack.append(value)
+    def append(self, appendage):
+        if type(appendage) == list:
+            for value in appendage:
+                self.stack.append(value)
+        else:
+            self.stack.append(appendage)
     
     def pop(self, argument = 'last'):
         #? If default value used pop the last item
@@ -33,7 +37,7 @@ class dictStack:
         self.stack = {}
         pass
     
-    def append(self, value):
+    def append(self, value:dict):
         self.stack.append(value)
     
     def pop(self, argument = 'last'):

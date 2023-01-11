@@ -1,0 +1,12 @@
+{
+    "id":{
+        "comm":1,
+        "deviceHandler":2,
+        "players":3,
+        "Window":4
+    },
+    "info":{
+        "func":[1,2],
+        "obj":[3,4]
+    }
+}

@@ -48,14 +48,14 @@ class Player:
 	def getHit(dmg_amount):
 		HP-=dmg_amount
 		
-f = open('player/player.json')
-
-player_data = json.load(f)
-Giganto = Player(player_data["player_info"])
-
-f.close()
-
-print(Giganto.HP)
+#f = open('players/player.json')
+#
+#player_data = json.load(f)
+#Giganto = Player(player_data["player_info"])
+#
+#f.close()
+#
+#print(Giganto.HP)
 
 #def all_equal(interator):
 #	iterator = iter(iterator)
@@ -64,8 +64,3 @@ print(Giganto.HP)
 #	except StopIteration:
 #		return True
 #	return all(first == x for x in iterator)
-
-#def assignID():
-#	with open('playerlist.json') as list:
-#		player_list = list['player_list']
-#		for player in list:			 

@@ -9,59 +9,64 @@ import story.init.comm as comm
 import story.init.deviceHandler as deviceHandler
 import story.init.Window as Window
 import storyHandler
+import stack
 
 #TODO Create a game body
 #TODO Create a global stack for functions with id checks
 #TODO Create a smart garbage collector
+#TODO Finish the handling of functions and objects
 
 npc_list = []
 item_list = []
 playerlist = []
+valueStack = stack.dictStack()
 story_path = os.path.join(os.getcwd(), 'story')
-storyStack = storyHandler.get_storyparts(story_path)
+storyStack = stack.listStack()
+storyStack.append(storyHandler.get_storyparts(story_path))
 
 #* import loop
 scripts_path = fileHandler.read('scriptlocation.json')
 
 event_scripts_list = []
 
+info = {'id':{},'info':{'func':[],'obj':[]}}
+
 for index,path in scripts_path.items():
 	import_path = os.path.join(os.getcwd(),path)
 	sys.path.insert(int(index),import_path)
 	for event in os.listdir(import_path):
-		if os.path.isfile(os.path.join(import_path, event)): 
+		if os.path.isfile(os.path.join(import_path, event)) and '.py' in event: 
 			event_scripts_list.append(event.replace('.py',''))
-
+		if 'info.json' in event:
+			pure_info = fileHandler.read(os.path.join(import_path, event))
+			for key,value in pure_info['id'].items():
+				info['id'][key] = value
+			for value in pure_info['info']['func']:
+				info['info']['func'].append(value)
+			for value in pure_info['info']['obj']:
+				info['info']['obj'].append(value)
+			
 import_list = []
 for event in event_scripts_list:
 	import_list.append(importlib.import_module(event.replace('.py','')))
 
 imports = {keys:values for keys in event_scripts_list for values in import_list}
 
-print(imports)
-
+#print(imports)
 def handle(event_string, arguments):
 	for arg in arguments:
 		if '&' in arg:
-			arguments[index(arg)] = 
+			id = arg.replace('&','')
+			for value in valueStack:
+				if value[1] == id:
+					arguments[index(arg)] = value[0]
+	
 	function = getattr(imports[event_string],event_string)
 	function(*arguments)
 
 window = Window.Window(256, 128)
 
-folder = os.path.join(os.getcwd(), 'player')
-
-def getPlayersFromDevice(method):
-	match method:
-		case 'device':
-			devicesList = deviceHandler.findDevices()
-			for player in devicesList:
-				comm.sendMessage(player, 'sendpdata')
-				playerlist.append(json.loads(comm.readMessageBlock(player, True)))
-		case 'files':
-			players = os.listdir(folder)
-			for player in players:
-				playerlist.append(fileHandler.read(os.path.join(folder, player)))
+folder = os.path.join(os.getcwd(), 'players')
 
 #getPlayers('files')
 #print(playerlist)
