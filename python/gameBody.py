@@ -19,10 +19,11 @@ import stack
 npc_list = []
 item_list = []
 playerlist = []
-valueStack = stack.dictStack() #* The global stack that will be used
+valueStack = stack.listStack() #* The global stack that will be used
 story_path = os.path.join(os.getcwd(), 'story')
 storyStack = stack.listStack()
-storyStack.append(storyHandler.get_storyparts(story_path))
+for part in storyHandler.get_storyparts(story_path):
+	storyStack.append(part)
 
 #* import loop
 scripts_path = fileHandler.read('scriptlocation.json')
@@ -60,9 +61,9 @@ def handle(event_string, arguments):
 	for arg in arguments:
 		if '&' in str(arg):
 			id = arg.replace('&','')
-			for value in valueStack:
-				if value[1] == id:
-					arguments[index(arg)] = value[0]
+			for value in valueStack.getList():
+				if value[1] == int(id):
+					arguments[arguments.index(arg)] = value[0]
 	event_string_id = info['id'][event_string]
 	if event_string_id in info['info']['func']:
 		function = getattr(imports[event_string],event_string)
@@ -70,10 +71,12 @@ def handle(event_string, arguments):
 	elif event_string_id in info['info']['obj']:
 		obj = getattr(imports[event_string],event_string)
 		use_obj = obj(*arguments)
+		valueStack.append([use_obj,event_string_id])
 
 player_folder = os.path.join(os.getcwd(), 'players')
 
 handle('Window', [256,128])
+handle('print_text', ['Hello World!', '&4'])
 
 #getPlayers('files')
 #print(playerlist)

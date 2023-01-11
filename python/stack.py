@@ -5,11 +5,7 @@ class listStack:
         pass
     
     def append(self, appendage):
-        if type(appendage) == list:
-            for value in appendage:
-                self.stack.append(value)
-        else:
-            self.stack.append(appendage)
+        self.stack.append(appendage)
     
     def pop(self, argument = 'last'):
         #? If default value used pop the last item
