@@ -38,9 +38,12 @@ for event in event_scripts_list:
 
 imports = {keys:values for keys in event_scripts_list for values in import_list}
 
-print(imports) 
+print(imports)
 
 def handle(event_string, arguments):
+	for arg in arguments:
+		if '&' in arg:
+			arguments[index(arg)] = 
 	function = getattr(imports[event_string],event_string)
 	function(*arguments)
 

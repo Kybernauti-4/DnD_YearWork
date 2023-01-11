@@ -5,11 +5,12 @@ class Window:
 
 	id = 4;
 
-	def __init__(self, width, height):
+	def __init__(self, width, height) -> None:
 		self.width = width
 		self.height = height
 		self.screen = []
 		self.line_num = 0
+		pass
 	
 	def clear():
 		print("\x1B\x5B2J", end="")
