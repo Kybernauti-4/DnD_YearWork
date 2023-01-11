@@ -19,7 +19,7 @@ import stack
 npc_list = []
 item_list = []
 playerlist = []
-valueStack = stack.dictStack()
+valueStack = stack.dictStack() #* The global stack that will be used
 story_path = os.path.join(os.getcwd(), 'story')
 storyStack = stack.listStack()
 storyStack.append(storyHandler.get_storyparts(story_path))
