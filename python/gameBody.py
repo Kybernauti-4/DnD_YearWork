@@ -15,6 +15,7 @@ import stack
 #TODO Create a smart garbage collector
 #! Handler is more or less done but a lot still isn't
 #TODO Comment handler (Kill me now)
+#TODO FIX THE FUCKING WINDOW
 
 #! &0 == current path
 
