@@ -1,4 +1,3 @@
-import init.Window
-
-def print_text(text):
-	print(1)
+def print_text(text, window):
+	window.draw(text)
+	return window

@@ -1,5 +1,6 @@
 {
-	"print_text_1":["txt1.txt","txt2.txt"],
+	"print_text_1":["txt1.txt","stack_4"],
+	"print_text_2":["txt2.txt","stack_4"],
 	"ask_1":["Where do you want to go?", "Dungeon 1","Dungeon 2","Dungeon 3","Dungeon 4"],
 	"ask_2":["Where do "]
 }

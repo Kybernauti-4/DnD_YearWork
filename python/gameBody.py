@@ -11,6 +11,8 @@ import story.init.Window as Window
 import storyHandler
 
 #TODO Create a game body
+#TODO Create a global stack for functions with id checks
+#TODO Create a smart garbage collector
 
 npc_list = []
 item_list = []
@@ -40,7 +42,7 @@ print(imports)
 
 def handle(event_string, arguments):
 	function = getattr(imports[event_string],event_string)
-	function(arguments)
+	function(*arguments)
 
 window = Window.Window(256, 128)
 
