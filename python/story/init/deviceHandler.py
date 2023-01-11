@@ -29,7 +29,7 @@ def id_chck(comport):
 		comm.sendMessage(comport, msg_txt)
 	
 
-def findDevices():
+def deviceHandler(stackID):
 	ports = serial.tools.list_ports.comports() # list of all the ports present on the machine
 	counter = 0 # counter for while function and a tool for assigning the ports to a dict
 	while counter<len(ports):
