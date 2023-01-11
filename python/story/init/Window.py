@@ -27,16 +27,19 @@ class Window:
 		
 		if len(chunks) > self.height:
 			print_chunks = [chunks[i:i+self.height] for i in range(0, len(str_to_draw), self.height)]
-			for chunks in print_chunks:
-				if len(chunks) != 0:
-					self.draw(chunks)
-
-		self.draw(chunks)
+			for chonks in print_chunks:
+				if len(chonks) != 0:
+					self.draw(chonks)
+		else:
+			self.draw(chunks)
 
 	def draw(self, chunks):
 		input()
-		for chunk in chunks:
-			self.screen.append(chunk)
+		if type(chunks) == str:
+			self.screen.append(chunks)
+		elif type(chunks) == list:
+			for chunk in chunks:
+				self.screen.append(chunk)
 
 		if len(self.screen) > self.height:
 			for i in range(len(self.screen)):

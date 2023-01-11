@@ -12,9 +12,11 @@ import storyHandler
 import stack
 
 #TODO Create a game body
-#TODO Create a global stack for functions with id checks
 #TODO Create a smart garbage collector
-#TODO Finish the handling of functions and objects
+#! Handler is more or less done but a lot still isn't
+#TODO Comment handler (Kill me now)
+
+#! &0 == current path
 
 npc_list = []
 item_list = []
@@ -30,7 +32,7 @@ scripts_path = fileHandler.read('scriptlocation.json')
 
 event_scripts_list = []
 
-info = {'id':{},'info':{'func':[],'obj':[]}}
+info = {'id':{},'info':{}}
 
 for index,path in scripts_path.items():
 	import_path = os.path.join(os.getcwd(),path)
@@ -42,10 +44,11 @@ for index,path in scripts_path.items():
 			pure_info = fileHandler.read(os.path.join(import_path, event))
 			for key,value in pure_info['id'].items():
 				info['id'][key] = value
-			for value in pure_info['info']['func']:
-				info['info']['func'].append(value)
-			for value in pure_info['info']['obj']:
-				info['info']['obj'].append(value)
+			for info_type in pure_info['info']:
+				if info_type not in info['info']:
+					info['info'][info_type] = []
+				for value in pure_info['info'][info_type]:
+					info['info'][info_type].append(value)
 			
 import_list = []
 #print(event_scripts_list)
@@ -57,6 +60,7 @@ for event in event_scripts_list:
 imports = dict(zip(event_scripts_list, import_list))
 #for import_key,import_name in imports.items():
 	#print("Imported: {} => {}".format(import_key, import_name))
+
 def handle(event_string, arguments):
 	for arg in arguments:
 		if '&' in str(arg):
@@ -64,19 +68,36 @@ def handle(event_string, arguments):
 			for value in valueStack.getList():
 				if value[1] == int(id):
 					arguments[arguments.index(arg)] = value[0]
+					if int(id) not in info['info']['lock']:
+						valueStack.pop(valueStack.getList().index(value))
 	event_string_id = info['id'][event_string]
 	if event_string_id in info['info']['func']:
 		function = getattr(imports[event_string],event_string)
-		function(*arguments)
+		return_value = function(*arguments)
+		if return_value != None:
+			if type(return_value) == list:
+				for value in return_value:
+					valueStack.append([value,event_string_id])
+			else:
+				valueStack.append([return_value,event_string_id])
+
 	elif event_string_id in info['info']['obj']:
 		obj = getattr(imports[event_string],event_string)
 		use_obj = obj(*arguments)
 		valueStack.append([use_obj,event_string_id])
 
+def garbageCollector():
+	pass
+
 player_folder = os.path.join(os.getcwd(), 'players')
 
-handle('Window', [256,128])
-handle('print_text', ['Hello World!', '&4'])
+valueStack.append([os.path.join(os.getcwd(),'story','Chapter_1','Encounter_1','Scene_1','texts'),0])
+
+
+handle('Window', [64,30])
+handle('add_text', ['&0','txt1.txt','txt2.txt'])
+handle('print_text', ['&13', '&4'])
+handle('print_text', ['&13', '&4'])
 
 #getPlayers('files')
 #print(playerlist)

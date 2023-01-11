@@ -13,6 +13,7 @@
 		"python.languageServer": "Pylance",
 		"picowgo.syncFolder": "",
 		"picowgo.openOnStart": false,
-		"picowgo.ctrlCOnConnect": true
+		"picowgo.ctrlCOnConnect": true,
+		"editor.wordWrap": "on"
 	}
 }
