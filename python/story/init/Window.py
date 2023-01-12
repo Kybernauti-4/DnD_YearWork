@@ -1,11 +1,11 @@
 import time
-import os
 
 class Window:
 
 	def __init__(self, width, height) -> None:
 		self.width = width
 		self.height = height
+		self.slowtime = 0.03
 		self.screen = []
 		self.line_num = 0
 		pass
@@ -24,35 +24,44 @@ class Window:
 					chunks.append(line)
 		else:
 			chunks = [str_to_draw[i:i+self.width] for i in range(0, len(str_to_draw), self.width)]
-		
-		if len(chunks) > self.height:
-			print_chunks = [chunks[i:i+self.height] for i in range(0, len(str_to_draw), self.height)]
-			for chonks in print_chunks:
-				if len(chonks) != 0:
-					self.draw(chonks)
-		else:
-			self.draw(chunks)
+		for chunk in chunks:
+			if chunks == '':
+				chunks.remove(chunk)
+		self.draw(chunks)
 
+	def clear(self):
+		print("\x1B\x5B2J", end="")
+		print("\x1B\x5BH", end="")
+	
 	def draw(self, chunks):
+		#print(chunks)
 		input()
-		if type(chunks) == str:
-			self.screen.append(chunks)
-		elif type(chunks) == list:
-			for chunk in chunks:
-				self.screen.append(chunk)
-
-		if len(self.screen) > self.height:
-			for i in range(len(self.screen)):
-				index = -(i + 1 - len(self.screen))
-				if self.screen[index].__contains__('hook'):
-					self.screen[index] = self.screen[index].replace('hook','')
-					self.screen = self.screen[index:]
+		self.clear()
+		for chunk in chunks:
+			self.screen.append(chunk)
+		index = 0
+		hook_index = 0
+		while True:
+			try:
+				self.screen[index]
+			except:
+				break
+			if 'hook' in self.screen[index]:
+				self.screen[index] = self.screen[index].replace('hook','')
+				hook_index = index
+			print(self.screen[index])
+			index += 1
+			time.sleep(self.slowtime)
+			if index == self.height:
+				input()
+				self.clear()
+				delete = hook_index if hook_index != 0 else self.height
+				try:
+					self.screen = self.screen[delete:]
+					index = 0
+				except:
+					index = 0
 					break
-			else:
-				self.screen = []
-				for chunk in chunks:
-					self.screen.append(chunk)
+				
 
-		os.system('cls')
-		for line in self.screen:
-			print(line.replace('hook',''))
+		

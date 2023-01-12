@@ -22,7 +22,7 @@ class listStack:
     def moveItem(self, what, where):
         to = what + where
         self.stack.insert(to, self.stack.pop(what))
-    
+
     def getList(self):
         return self.stack
                 

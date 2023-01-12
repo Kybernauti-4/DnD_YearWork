@@ -95,7 +95,7 @@ player_folder = os.path.join(os.getcwd(), 'players')
 valueStack.append([os.path.join(os.getcwd(),'story','Chapter_1','Encounter_1','Scene_1','texts'),0])
 
 
-handle('Window', [64,30])
+handle('Window', [15,15])
 handle('add_text', ['&0','txt1.txt','txt2.txt'])
 handle('print_text', ['&13', '&4'])
 handle('print_text', ['&13', '&4'])

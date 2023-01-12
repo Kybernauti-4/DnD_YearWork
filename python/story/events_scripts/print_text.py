@@ -1,2 +1,2 @@
 def print_text(text, window):
-	window.draw(text)
+	window.send_txt(text)
