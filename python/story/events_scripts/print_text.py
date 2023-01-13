@@ -1,2 +1,5 @@
 def print_text(text, window):
-	window.send_txt(text)
+	window.add_text(text)
+	while True:
+		window.format_render()
+		window.show()
