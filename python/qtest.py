@@ -29,35 +29,48 @@ class window():
 				line = self.screen[0]
 			except IndexError:
 				break
-
-			if 'hook' in line:
+			
+			if len(self.fast_render) > 0 and 'hook' in self.fast_render[delete]:
 				delete +=1
 				while True:
-					if 'hook' in self.screen[delete]:
+					if 'hook' in self.fast_render[delete]:
 						delete += 1
 					else:
 						break
 			
-			if 'unhook' in line:
+			if len(self.fast_render) > 0 and 'unhook' in self.fast_render[delete]:
 				self.screen = self.screen[delete+1:]
 				delete = 0
 			
 			self.clear()
+			curr_height = 0
+			curr_width = 0
 			i = 0
-			for fast_line in self.fast_render:
-				i += 1
-				words = fast_line.split()
-				print(words[i], end="", flush=True)
-				curr_width += len(words[i])
-				try:
-					len(words[i+1])
-				except:
-					break
-				if curr_width + len(words[i+1]) > self.width:
-					print()
-					curr_width = 0
-					curr_height += 1
 
+			for fast_line in self.fast_render:
+				words = fast_line.split(' ')
+				for word in words:
+					print(word, end="", flush=True)
+					curr_width += len(words[i])
+					try:
+						if curr_width + len(words[i+1]) > len(fast_line):
+							print()
+							curr_width = 0
+							curr_height += 1
+						elif curr_width + len(words[i+1]) > self.width:
+							print()
+							curr_width = 0
+							curr_height += 1
+					except:
+						i = 0
+						break
+					print(" ", end="", flush=True)
+					curr_width += 1
+					
+			print()
+			print(curr_height)
+			input()
+			curr_width = 0
 			for word in line.split():
 				if curr_height >= self.height:
 					input()
@@ -69,7 +82,11 @@ class window():
 					time.sleep(self.slowtime)
 
 				curr_width += len(word)
-				if curr_width + len(word) > self.width:
+				if curr_width + len(word) > len(line):
+						print()
+						curr_width = 0
+						curr_height += 1
+				elif curr_width + len(word) > self.width:
 					print()
 					curr_width = 0
 					curr_height += 1
@@ -80,8 +97,6 @@ class window():
 
 			if len(self.fast_render) < self.height-1:
 				self.fast_render.append(line)
-				print(self.fast_render)
-				input()
 			else:
 				del self.fast_render[delete]
 				self.fast_render.append(line)
