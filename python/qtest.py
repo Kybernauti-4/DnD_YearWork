@@ -2,7 +2,7 @@ from time import sleep
 import threading
 from math import ceil
 
-class window():
+class Window():
 
 	def __init__(self, width, height) -> None:
 		self.height = height
