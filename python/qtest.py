@@ -1,5 +1,6 @@
-import time
+from time import sleep
 import threading
+from math import ceil
 
 class window():
 
@@ -8,7 +9,12 @@ class window():
 		self.width = width
 		self.slowtime = 0.03
 		self.screen = []
-		self.fast_render = []
+		self.render = []
+		self.start_index = 0
+		self.end_index = 0
+		self.skip = 0
+		self.curr_height = 0
+		self.curr_width = 0
 		pass
 
 	def add_text(self, text):
@@ -20,89 +26,77 @@ class window():
 		print("\x1B\x5BH", end="")
 		pass
 
-	def render(self):
-		curr_width = 0
-		curr_height = 0
-		delete = 0
-		while True:
-			try:
-				line = self.screen[0]
-			except IndexError:
-				break
-			
-			if len(self.fast_render) > 0 and 'hook' in self.fast_render[delete]:
-				delete +=1
-				while True:
-					if 'hook' in self.fast_render[delete]:
-						delete += 1
-					else:
-						break
-			
-			if len(self.fast_render) > 0 and 'unhook' in self.fast_render[delete]:
-				self.screen = self.screen[delete+1:]
-				delete = 0
-			
-			self.clear()
-			curr_height = 0
-			curr_width = 0
-			i = 0
+	def format_render(self):
+		unhook = False
 
-			for fast_line in self.fast_render:
-				words = fast_line.split(' ')
-				for word in words:
-					print(word, end="", flush=True)
-					curr_width += len(words[i])
-					try:
-						if curr_width + len(words[i+1]) > len(fast_line):
-							print()
-							curr_width = 0
-							curr_height += 1
-						elif curr_width + len(words[i+1]) > self.width:
-							print()
-							curr_width = 0
-							curr_height += 1
-					except:
-						i = 0
-						break
-					print(" ", end="", flush=True)
-					curr_width += 1
-					
-			print()
-			print(curr_height)
-			input()
-			curr_width = 0
-			for word in line.split():
-				if curr_height >= self.height:
-					input()
-					print("\x1B\x5B2J", end="")
-					print("\x1B\x5BH", end="")
-					curr_height = 0
-				for letter in word:
-					print(letter, end="", flush=True)
-					time.sleep(self.slowtime)
-
-				curr_width += len(word)
-				if curr_width + len(word) > len(line):
-						print()
-						curr_width = 0
-						curr_height += 1
-				elif curr_width + len(word) > self.width:
-					print()
-					curr_width = 0
-					curr_height += 1
-				print(" ", end="", flush=True)
-				time.sleep(self.slowtime)
-				curr_width += 1
-			
-
-			if len(self.fast_render) < self.height-1:
-				self.fast_render.append(line)
-			else:
-				del self.fast_render[delete]
-				self.fast_render.append(line)
-			del self.screen[0]
+		line = self.screen[self.start_index]
+		line_break_num = ceil(len(line)/self.width)
 		
-window = window(60, 10)
+		
+		if self.curr_height <= self.height:
+			self.end_index += 1
+		self.curr_height += line_break_num
+		
+		if self.skip == 0:
+			self.render = self.screen[self.start_index:self.end_index]
+		else:
+			self.render = self.render[:self.skip]
+			for line in self.screen[self.start_index+self.skip:self.end_index]:
+				self.render.append(line)
+
+		if self.curr_height >= self.height:
+			self.start_index += 1
+			self.curr_height -= line_break_num
+
+		i = self.skip
+
+
+		if i != 0 and '<un>' in self.render[i]:
+			unhook = True
+			self.skip -= 1
+			
+		while not unhook:
+			if '<h>' in self.render[i]:
+				self.skip += 1
+				i+=1
+			else:
+				break
+
+	def show(self):
+		fast_render = self.end_index - self.start_index - (1 if self.start_index == 0 else 0)
+		self.clear()
+		for line in self.render:
+			self.curr_width = 0
+			words = line.split(' ')
+			for i in range(len(words)):
+				if fast_render> 0: 
+					print(words[i], end="", flush=True)
+				else:
+					for char in words[i]:
+						print(char, end="", flush=True)
+						sleep(self.slowtime)
+				self.curr_width += len(words[i])
+				
+				try:
+					if self.curr_width + len(words[i+1])+1 > self.width:
+						print()
+						self.curr_width = 0
+						continue
+				except:
+					print()
+					continue
+				
+				print(' ', end="", flush=True)
+				self.curr_width += 1
+			
+			fast_render -= 1
+			
+				
+		
+window = window(10, 10)
 text = open('test.txt', 'r').read()
 window.add_text(text)
-window.render()
+while True:
+	window.format_render()
+	window.show()
+	input()
