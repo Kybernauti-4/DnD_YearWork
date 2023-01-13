@@ -119,7 +119,7 @@ class Window():
 			
 				
 		
-window = window(60, 10)
+window = Window(60, 10)
 text = open('test.txt', 'r').read()
 window.add_text(text)
 while True:
