@@ -71,7 +71,9 @@ def handle(event_string, arguments):
 					arguments[arguments.index(arg)] = value[0]
 					if int(id) not in info['info']['lock']:
 						valueStack.pop(valueStack.getList().index(value))
+
 	event_string_id = info['id'][event_string]
+	
 	if event_string_id in info['info']['func']:
 		function = getattr(imports[event_string],event_string)
 		return_value = function(*arguments)

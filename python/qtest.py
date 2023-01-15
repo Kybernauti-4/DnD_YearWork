@@ -65,6 +65,7 @@ class Window():
 			self.render = self.render[:self.skip]
 			for line in self.screen[self.start_index+self.skip:self.end_index]:
 				self.render.append(line)
+				
 		if self.height % line_break_num != 0:
 			if self.curr_height + line_break_num >= self.height:
 				self.start_index += 1
@@ -119,7 +120,7 @@ class Window():
 			
 				
 		
-window = Window(60, 10)
+window = Window(10, 10)
 text = open('test.txt', 'r').read()
 window.add_text(text)
 while True:
