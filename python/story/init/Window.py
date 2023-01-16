@@ -79,6 +79,11 @@ class Window():
 		if i != 0 and '<un>' in self.render[i]:
 			unhook = True
 			self.skip -= 1
+			try:
+				start_slice = self.render[i].index('<')
+				self.screen[self.screen.index(self.render[i])] = self.render[i][:start_slice]
+			except:
+				pass
 			
 		while not unhook:
 			if '<h>' in self.render[i]:

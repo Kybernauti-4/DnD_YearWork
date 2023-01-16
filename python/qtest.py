@@ -15,6 +15,8 @@ class Window():
 		self.skip = 0
 		self.curr_height = 0
 		self.curr_width = 0
+		self.ar_thread = None
+		self.thread_run = False
 		pass
 
 	def add_text(self, text):
@@ -43,6 +45,22 @@ class Window():
 
 		for line in text.splitlines():
 			self.screen.append(line)
+
+	def start_auto_render(self):
+		self.ar_thread = threading.Thread(target=self.auto_render, daemon=True)
+		self.thread_run = True
+		self.ar_thread.start()
+		self.ar_thread.run()
+
+	def stop_auto_render(self):
+		self.thread_run = False
+		self.ar_thread.join()
+	
+	def auto_render(self):
+		while self.thread_run:
+			self.format_render()
+			self.show()
+			input()
 
 	def clear(self):
 		print("\x1B\x5B2J", end="")
@@ -81,6 +99,11 @@ class Window():
 		if i != 0 and '<un>' in self.render[i]:
 			unhook = True
 			self.skip -= 1
+			try:
+				start_slice = self.render[i].index('<')
+				self.screen[self.screen.index(self.render[i])] = self.render[i][:start_slice]
+			except:
+				pass	
 			
 		while not unhook:
 			if '<h>' in self.render[i]:
@@ -120,10 +143,11 @@ class Window():
 			
 				
 		
-window = Window(10, 10)
+window = Window(60, 10)
 text = open('test.txt', 'r').read()
 window.add_text(text)
-while True:
-	window.format_render()
-	window.show()
-	input()
+window.start_auto_render()
+sleep(10)
+print('stop')
+window.stop_auto_render()
+
