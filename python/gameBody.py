@@ -116,7 +116,7 @@ if __name__ == "__main__":
 		story_events = fileHandler.read(os.path.join(story_part,'events.json'))
 		print(story_events)
 		for event,args in story_events.items():
-			if match := re.search('_[0-9]+', event):
+			if match := re.search('_[0-99]+', event):
 				event = event.replace(match.group(0),'')
 			handle(event,args)
 		#garbageCollector()
