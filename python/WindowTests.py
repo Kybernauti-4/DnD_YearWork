@@ -47,10 +47,9 @@ class Window():
 			self.screen.append(line)
 
 	def start_auto_render(self):
-		self.ar_thread = threading.Thread(target=self.auto_render, daemon=True)
+		self.ar_thread = threading.Thread(target=self.auto_render)
 		self.thread_run = True
 		self.ar_thread.start()
-		self.ar_thread.run()
 
 	def stop_auto_render(self):
 		self.thread_run = False
@@ -69,6 +68,11 @@ class Window():
 
 	def format_render(self):
 		unhook = False
+
+		try:
+			line = self.screen[self.end_index]
+		except:
+			return
 
 		line = self.screen[self.start_index]
 		line_break_num = ceil(len(line)/self.width)
@@ -144,10 +148,9 @@ class Window():
 				
 		
 window = Window(60, 10)
-text = open('test.txt', 'r').read()
-window.add_text(text)
+#text = open('test.txt', 'r').read()
+#window.add_text(text)
 window.start_auto_render()
-sleep(10)
-print('stop')
-window.stop_auto_render()
+#window.stop_auto_render()
+
 

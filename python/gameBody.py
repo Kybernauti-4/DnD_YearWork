@@ -103,7 +103,6 @@ if __name__ == "__main__":
 
 	for event,args in init_events.items():
 		try:
-			#print(event,args)
 			handle(event,args)
 		except Exception as e:
 			print("Error in init event: {} => {}".format(event, e))
@@ -114,11 +113,8 @@ if __name__ == "__main__":
 	for story_part in story_parts:
 		valueStack.setValueByID(0,story_part)
 		story_events = fileHandler.read(os.path.join(story_part,'events.json'))
-		#print(story_events)
 		for event,args in story_events.items():
 			if match := re.search('_[0-99]+', event):
 				event = event.replace(match.group(0),'')
-			print(event,args)
-			input()
 			handle(event,args)
 		#garbageCollector()

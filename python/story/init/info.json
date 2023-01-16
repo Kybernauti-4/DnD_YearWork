@@ -4,11 +4,13 @@
         "deviceHandler":2,
         "players":3,
         "Window":4,
-        "storyHandler":5
+        "storyHandler":5,
+        "auto_render":6,
+        "stop_auto_render":7
     },
     "info":{
         "lock" : [0,4],
-        "func":[1,2,5],
+        "func":[1,2,5,6,7],
         "obj":[3,4]
     }
 }

@@ -1,6 +1,6 @@
 {
-	"add_text":["&0","txt1.txt","txt2.txt"],
-	"print_text_1":["&13","&4"],
-	"print_text_2":["&13","&4"],
-	"ask_1":["Where do you want to go?", "Dungeon 1","Dungeon 2","Dungeon 3","Dungeon 4"]
+	"add_text_1":["&0","txt1.txt"],
+	"print_text_1":["&13","&4","&6"],
+	"add_text_2":["&0","txt2.txt"],
+	"print_text_2":["&13","&4","&6"]
 }

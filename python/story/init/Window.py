@@ -1,5 +1,6 @@
 from time import sleep
 from math import ceil
+import threading
 
 class Window():
 
@@ -48,8 +49,28 @@ class Window():
 		print("\x1B\x5BH", end="")
 		pass
 
+	def start_auto_render(self):
+		self.ar_thread = threading.Thread(target=self.auto_render)
+		self.thread_run = True
+		self.ar_thread.start()
+
+	def stop_auto_render(self):
+		self.thread_run = False
+		self.ar_thread.join()
+	
+	def auto_render(self):
+		while self.thread_run:
+			self.format_render()
+			self.show()
+			input()
+
 	def format_render(self):
 		unhook = False
+
+		try:
+			line = self.screen[self.end_index]
+		except:
+			return
 
 		line = self.screen[self.start_index]
 		line_break_num = ceil(len(line)/self.width)

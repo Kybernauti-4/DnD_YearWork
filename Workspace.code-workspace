@@ -15,6 +15,7 @@
 		"picowgo.openOnStart": false,
 		"picowgo.ctrlCOnConnect": true,
 		"editor.wordWrap": "on",
-		"terminal.integrated.fontFamily": "monospace"
+		"terminal.integrated.fontFamily": "monospace",
+		"editor.insertSpaces": false
 	}
 }
