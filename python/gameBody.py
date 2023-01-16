@@ -1,15 +1,10 @@
 import importlib
-import json
 import os
 import sys
-from time import sleep
 
 import fileHandler
-import story.init.comm as comm
-import story.init.deviceHandler as deviceHandler
-import story.init.Window as Window
-import storyHandler
 import stack
+import re
 
 #TODO Create a game body
 #TODO Create a smart garbage collector
@@ -22,10 +17,7 @@ npc_list = []
 item_list = []
 playerlist = []
 valueStack = stack.listStack() #* The global stack that will be used
-story_path = os.path.join(os.getcwd(), 'story')
 storyStack = stack.listStack()
-for part in storyHandler.get_storyparts(story_path):
-	storyStack.append(part)
 
 #* import loop
 scripts_path = fileHandler.read('scriptlocation.json')
@@ -59,17 +51,18 @@ for event in event_scripts_list:
 #print(import_list)
 imports = dict(zip(event_scripts_list, import_list))
 #for import_key,import_name in imports.items():
-	#print("Imported: {} => {}".format(import_key, import_name))
+#	print("Imported: {} => {}".format(import_key, import_name))
 
 def handle(event_string, arguments):
+	stack = valueStack.getValue()
 	for arg in arguments:
 		if '&' in str(arg):
 			id = arg.replace('&','')
-			for value in valueStack.getList():
+			for value in stack:
 				if value[1] == int(id):
 					arguments[arguments.index(arg)] = value[0]
 					if int(id) not in info['info']['lock']:
-						valueStack.pop(valueStack.getList().index(value))
+						valueStack.pop(stack.index(value))
 
 	event_string_id = info['id'][event_string]
 	
@@ -77,43 +70,53 @@ def handle(event_string, arguments):
 		function = getattr(imports[event_string],event_string)
 		return_value = function(*arguments)
 		if return_value != None:
-			if type(return_value) == list:
-				for value in return_value:
-					valueStack.append([value,event_string_id])
-			else:
-				valueStack.append([return_value,event_string_id])
+			valueStack.append([return_value,event_string_id])
 
 	elif event_string_id in info['info']['obj']:
 		obj = getattr(imports[event_string],event_string)
 		use_obj = obj(*arguments)
 		valueStack.append([use_obj,event_string_id])
 
+#* used more or less just for getting values into variables in the main loop
+def getValue(id):
+	stack = valueStack.getValue()
+	for value in stack:
+		if value[1] == int(id):
+			return_val = value[0]
+			if int(id) not in info['info']['lock']:
+				valueStack.pop(stack.index(value))
+			return return_val
+
 def garbageCollector():
-	pass
+	stack = valueStack.getValue()
+	for value in stack:
+		if int(value[1]) not in info['info']['lock']:
+			valueStack.pop(stack.index(value))
 
-player_folder = os.path.join(os.getcwd(), 'players')
+#* The main loop
+if __name__ == "__main__":
+	#* First we go through init events and then we go through the story
+	player_folder = os.path.join(os.getcwd(), 'players')
+	story_path = os.path.join(os.getcwd(), 'story')
+	valueStack.append([story_path,0])
+	init_events = fileHandler.read(os.path.join(os.getcwd(),'story','init.json'))
 
-valueStack.append([os.path.join(os.getcwd(),'story','Chapter_1','Encounter_1','Scene_1','texts'),0])
+	for event,args in init_events.items():
+		try:
+			#print(event,args)
+			handle(event,args)
+		except Exception as e:
+			print("Error in init event: {} => {}".format(event, e))
+			
 
-
-handle('Window', [15,15])
-handle('add_text', ['&0','txt1.txt','txt2.txt'])
-handle('print_text', ['&13', '&4'])
-handle('print_text', ['&13', '&4'])
-
-#getPlayers('files')
-#print(playerlist)
-#print(playerlist[0]['player_info']['Name'])
-
-#for event in storyStack:
-#	npc_list = []
-#	txt_to_draw = fileHandler.read(os.path.join(event, 'storypart.txt'))
-#	try:
-#		npc_path = fileHandler.getFolder(event,'npc')
-#		npc_file_list = [file for file in os.listdir(npc_path)]
-#		for file in npc_file_list:
-#			npc_list.append(fileHandler.read(os.path.join(npc_path,file)))
-#	except:
-#		print("No NPC found")
-#	print(npc_list)
-#	#window.send_txt(txt_to_draw)
+	#now we have the actual paths for the story parts so we can go to main loop
+	story_parts = getValue(5)
+	for story_part in story_parts:
+		valueStack.setValueByID(0,story_part)
+		story_events = fileHandler.read(os.path.join(story_part,'events.json'))
+		print(story_events)
+		for event,args in story_events.items():
+			if match := re.search('_[0-9]+', event):
+				event = event.replace(match.group(0),'')
+			handle(event,args)
+		#garbageCollector()

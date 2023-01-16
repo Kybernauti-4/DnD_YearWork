@@ -23,10 +23,29 @@ class listStack:
         to = what + where
         self.stack.insert(to, self.stack.pop(what))
 
-    def getList(self):
-        return self.stack
-                
+    def setValueByID(self, id, val):
+        for value in self.stack:
+            if value[1] == id:
+                value[0] = val
+                break
 
+    def setValueByIndex(self, index, value):
+        self.stack[index][0] = value
+    
+    
+    def getValue(self, index=None, value = None, id = None):
+        if index == None:
+            return self.stack
+        if value != None:
+            for val in self.stack:
+                if val[0] == value:
+                    return val
+        elif id != None:
+            for val in self.stack:
+                if val[1] == id:
+                    return val
+        else:
+            return self.stack[index]
 class dictStack:
 
     def __init__(self) -> None:

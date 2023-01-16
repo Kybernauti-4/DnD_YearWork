@@ -3,11 +3,12 @@
         "comm":1,
         "deviceHandler":2,
         "players":3,
-        "Window":4
+        "Window":4,
+        "storyHandler":5
     },
     "info":{
         "lock" : [0,4],
-        "func":[1,2],
+        "func":[1,2,5],
         "obj":[3,4]
     }
 }

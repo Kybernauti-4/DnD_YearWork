@@ -1,7 +1,6 @@
 import os
-import json
 
-def get_storyparts(folder):
+def storyHandler(folder):
     # Initialize an empty list to store the file paths
     file_paths = []
 
