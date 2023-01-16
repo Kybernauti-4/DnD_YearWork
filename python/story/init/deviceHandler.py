@@ -74,7 +74,7 @@ def deviceHandler():
 			fix_count+=1
 		else:
 			fix_count+=1
-	print(devices)
+	#print(devices)
 	return devices
 	# I wrote it last week and I have no idea what the fuck is going on here anymore
 	#print(comm) # control print

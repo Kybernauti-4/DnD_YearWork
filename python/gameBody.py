@@ -54,6 +54,8 @@ imports = dict(zip(event_scripts_list, import_list))
 #	print("Imported: {} => {}".format(import_key, import_name))
 
 def handle(event_string, arguments):
+	#print("Handling: {} => {}".format(event_string, arguments))
+	#input('Press enter to continue')
 	stack = valueStack.getValue()
 	for arg in arguments:
 		if '&' in str(arg):
@@ -113,6 +115,12 @@ if __name__ == "__main__":
 	for story_part in story_parts:
 		valueStack.setValueByID(0,story_part)
 		story_events = fileHandler.read(os.path.join(story_part,'events.json'))
+		try:
+			if story_events['input'] == 'None':
+				print('Breaking out of main loop')
+				break
+		except:
+			pass
 		for event,args in story_events.items():
 			if match := re.search('_[0-99]+', event):
 				event = event.replace(match.group(0),'')
