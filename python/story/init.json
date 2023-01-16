@@ -2,5 +2,5 @@
 	"deviceHandler":[],
 	"getPlayersFromDevice":["&2"],
 	"storyHandler":["&0"],
-	"Window":[256,30]
+	"Window":[128,15]
 } 

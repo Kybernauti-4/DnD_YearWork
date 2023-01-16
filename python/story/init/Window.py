@@ -20,7 +20,7 @@ class Window():
 		hook_count = 0
 		max_word_len = 0
 		max_break_num = 0
-		for line in text.splitlines():
+		for line in (text.splitlines() if type(text) == str else text):
 			if '<h>' in line:
 				hook_count += 1
 			if '<un>' in line:
@@ -40,7 +40,7 @@ class Window():
 		elif self.height - max_break_num < hook_count:
 			raise Exception("Too many hooks in text for screen")
 
-		for line in text.splitlines():
+		for line in (text.splitlines() if type(text) == str else text):
 			self.screen.append(line)
 
 	def clear(self):
