@@ -15,7 +15,7 @@
 		"picowgo.openOnStart": false,
 		"picowgo.ctrlCOnConnect": true,
 		"editor.wordWrap": "on",
-		"terminal.integrated.fontFamily": "monospace",
+		"terminal.integrated.fontFamily": "Fira Code, monospace",
 		"editor.insertSpaces": false,
 		"editor.tabCompletion": "on",
 		"diffEditor.codeLens": true
