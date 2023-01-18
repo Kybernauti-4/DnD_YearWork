@@ -25,7 +25,7 @@ class listStack:
 
     def setValueByID(self, id, val):
         for value in self.stack:
-            if value[1] == id:
+            if id in value[1]:
                 value[0] = val
                 break
 
@@ -33,45 +33,12 @@ class listStack:
         self.stack[index][0] = value
     
     
-    def getValue(self, index=None, value = None, id = None):
+    def getValue(self, index=None, id = None):
         if index == None:
             return self.stack
-        if value != None:
-            for val in self.stack:
-                if val[0] == value:
-                    return val
         elif id != None:
             for val in self.stack:
-                if val[1] == id:
+                if id in val[1]:
                     return val
         else:
             return self.stack[index]
-class dictStack:
-
-    def __init__(self) -> None:
-        self.stack = {}
-        pass
-    
-    def append(self, value:dict):
-        self.stack.append(value)
-    
-    def pop(self, argument = 'last'):
-        match argument:
-            case 'first':
-                (B := next(iter(self.stack)), self.stack.pop(B))
-            case 'last':
-                self.stack.popitem()
-            case _:
-                self.stack.popitem(argument)
-    def moveItem(self, what, where):
-        to = what + where
-        keys = list(self.stack.keys())
-        values = list(self.stack.values())
-
-        keys.insert(to, keys.pop(what))
-        values.insert(to, values.pop(what))
-
-        self.stack = dict(zip(keys,values))
-    
-    def getDict(self):
-        return self.stack
