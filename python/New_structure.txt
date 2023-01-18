@@ -1,0 +1,11 @@
+Index:['ID_*<tags>','Value']
+tags:
+	<l> lock
+	<v> value
+	<o> object
+	<f> function
+	<i> ignore(one time lock)
+
+	<e> event
+		- Can be creating an object
+		- This will be the values that will be itterated over
