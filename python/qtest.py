@@ -1,8 +1,4 @@
-import re
-
-s = 'print_1'
-
-if match := re.search('_[0-9]+', s):
-	print(match.group(0))
-else:
-	print('not found')
+return_value = None
+temp = input()
+return_value = temp if temp != '' else None
+print(return_value)

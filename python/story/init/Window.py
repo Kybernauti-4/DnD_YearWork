@@ -15,6 +15,8 @@ class Window():
 		self.skip = 0
 		self.curr_height = 0
 		self.curr_width = 0
+		self.return_value = None
+		self.return_value_set = False
 		pass
 
 	def add_text(self, text):
@@ -62,7 +64,6 @@ class Window():
 		while self.thread_run:
 			self.format_render()
 			self.show()
-			input()
 
 	def format_render(self):
 		unhook = False
@@ -113,11 +114,26 @@ class Window():
 			else:
 				break
 
+	def getReturnValue(self):
+		while self.return_value == None:
+			continue
+		r = self.return_value
+		self.return_value = None
+		self.return_value_set = False
+		return r
+
 	def show(self):
+		in_val = input()
+		if self.return_value_set:
+			if in_val != '':
+				return_value = in_val
 		fast_render = self.end_index - self.start_index - (1 if self.start_index == 0 else 0)
 		self.clear()
+		print(True if return_value == '' else False)
 		for line in self.render:
 			self.curr_width = 0
+			line.replace('<h>', '')
+			line.replace('<un>', '')
 			words = line.split(' ')
 			for i in range(len(words)):
 				if fast_render> 0: 
@@ -141,3 +157,11 @@ class Window():
 				self.curr_width += 1
 			
 			fast_render -= 1
+		try:
+			if('<r>' in self.render[0]):
+				self.return_value_set = True
+				for i in range(len(self.screen)):
+					if self.render[0] == self.screen[i]:
+						self.screen[i] = self.render[0].replace('<r>', '')
+		except:
+			pass

@@ -121,8 +121,10 @@ if __name__ == "__main__":
 				break
 		except:
 			pass
+		i=0
 		for event,args in story_events.items():
 			if match := re.search('_[0-99]+', event):
 				event = event.replace(match.group(0),'')
+			i+=1
 			handle(event,args)
 		#garbageCollector()

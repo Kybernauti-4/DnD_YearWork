@@ -9,7 +9,7 @@
         "stop_auto_render":7
     },
     "info":{
-        "lock" : [0,4],
+        "lock" : [0,4,6],
         "func":[1,2,5,6,7],
         "obj":[3,4]
     }
