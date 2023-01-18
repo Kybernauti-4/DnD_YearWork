@@ -16,6 +16,8 @@
 		"picowgo.ctrlCOnConnect": true,
 		"editor.wordWrap": "on",
 		"terminal.integrated.fontFamily": "monospace",
-		"editor.insertSpaces": false
+		"editor.insertSpaces": false,
+		"editor.tabCompletion": "on",
+		"diffEditor.codeLens": true
 	}
 }
