@@ -1,4 +1,8 @@
-return_value = None
-temp = input()
-return_value = temp if temp != '' else None
-print(return_value)
+import importlib
+
+test = importlib.import_module('testObject')
+
+testObject = getattr(test, 'Test')
+test = testObject()
+testFunction = getattr(test, 'getValue')
+print(testFunction())
