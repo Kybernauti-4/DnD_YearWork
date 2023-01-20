@@ -1,10 +1,10 @@
 import importlib
 import os
+import re
 import sys
 
 import fileHandler
 import stack
-import re
 
 #TODO Create a game body
 #TODO Create a smart garbage collector
