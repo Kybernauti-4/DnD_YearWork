@@ -126,10 +126,11 @@ class Window():
 		in_val = input()
 		if self.return_value_set:
 			if in_val != '':
-				return_value = in_val
+				self.return_value = in_val
 		fast_render = self.end_index - self.start_index - (1 if self.start_index == 0 else 0)
 		self.clear()
-		print(True if return_value == '' else False)
+		
+		print(True if self.return_value == '' or None else False)
 		for line in self.render:
 			self.curr_width = 0
 			line.replace('<h>', '')

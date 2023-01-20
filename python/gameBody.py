@@ -105,6 +105,7 @@ if __name__ == "__main__":
 
 	for event,args in init_events.items():
 		try:
+			print("Handling: {} => {}".format(event, args))
 			handle(event,args)
 		except Exception as e:
 			print("Error in init event: {} => {}".format(event, e))

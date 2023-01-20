@@ -1,8 +1,3 @@
-import importlib
-
-test = importlib.import_module('testObject')
-
-testObject = getattr(test, 'Test')
-test = testObject()
-testFunction = getattr(test, 'getValue')
-print(testFunction())
+test_value = None
+if test_value == None:
+	print('test_value is None')
