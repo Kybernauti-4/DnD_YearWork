@@ -159,10 +159,10 @@ class Window():
 			
 			fast_render -= 1
 		try:
-			if('<r>' in self.render[0]):
+			if('<r>' in self.render[-1]):
 				self.return_value_set = True
 				for i in range(len(self.screen)):
-					if self.render[0] == self.screen[i]:
-						self.screen[i] = self.render[0].replace('<r>', '')
+					if self.render[-1] == self.screen[i]:
+						self.screen[i] = self.render[-1].replace('<r>', '')
 		except:
 			pass
