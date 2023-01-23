@@ -1,6 +1,7 @@
 import os
 import importlib
 import keyboard
+from sys import stdin
 
 def update_variable(e, my_variable):
 	if e.name == "space":
@@ -21,7 +22,7 @@ def update_variable(e, my_variable):
 def get_input():
 	command = []
 	keyboard.on_press(lambda e: update_variable(e,command))
-	keyboard.wait('enter')
+	keyboard.wait('enter', suppress=True)
 	keyboard.unhook_all()
 	return ''.join(command)
 
@@ -57,3 +58,6 @@ while __name__ == '__main__':
 	print(*commands, end=' ')
 	print()
 	command = get_input()
+	print()
+	print('Command entered : {}'.format(command))
+	input('Press enter to continue...')
