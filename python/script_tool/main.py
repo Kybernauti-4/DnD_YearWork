@@ -35,13 +35,13 @@ def clear():
 
 commands = ['exit', 'cd', 'list_files', 'list_dir']
 
-for file in os.listdir():
-	#print(file)
-	#print(file.endswith('.py'))
-	#print(file != 'main.py')
-	#print(file != 'fileHandler.py')
-	if file.endswith('.py') and (file != 'main.py' and 'fileHandler.py'):
-		print('Importing {}'.format(file))
+for file in [f for f in os.listdir() if os.path.isfile(f)]:
+	if  file == 'main.py':
+		continue
+	elif file == 'fileHandler.py':
+		continue
+	else:
+		#print('Importing {}'.format(file))
 		input()
 		try:
 			importlib.import_module(file.replace('.py', ''))
