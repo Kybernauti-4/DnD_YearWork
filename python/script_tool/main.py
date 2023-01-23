@@ -1,13 +1,16 @@
 import os
 import importlib
 
+runtime_path = os.path.dirname(__file__)
+os.chdir(runtime_path)
+
 def clear():
 	print("\x1B\x5B2J", end="")
 	print("\x1B\x5BH", end="")
 	pass
 
 commands = ['exit', 'cd', 'list_files', 'list_dir']
-print(os.getcwd())
+
 print(os.listdir())
 input()
 for file in os.listdir():

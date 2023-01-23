@@ -3,7 +3,10 @@ import fileHandler
 import json
 
 
-
+def clear():
+	print("\x1B\x5B2J", end="")
+	print("\x1B\x5BH", end="")
+	pass
 
 main_commands = ['exit', 'cd', 'cf']
 cf_commands = ['exit', 'cd', 'cf', 'write', 'clear']
