@@ -12,7 +12,7 @@ main_commands = ['exit', 'cd', 'cf']
 cf_commands = ['exit', 'cd', 'cf', 'write', 'clear']
 file_content = ''
 check_val = ''
-while True:
+while __name__ == '__main__':
 	if check_val == '':
 		pass
 	else:

@@ -1,5 +1,29 @@
 import os
 import importlib
+import keyboard
+
+def update_variable(e, my_variable):
+	if e.name == "space":
+		my_variable.append(" ")
+		print(' ', end='', flush=True)
+	elif e.name == "backspace":
+		try:
+			my_variable.pop()
+			print('\b\033[K', end='', flush=True)
+		except:
+			pass
+	elif e.name == "enter":
+		pass
+	elif e.event_type == keyboard.KEY_DOWN and e.name not in keyboard.all_modifiers:
+		my_variable.append(e.name)
+		print(e.name, end='', flush=True)
+
+def get_input():
+	command = []
+	keyboard.on_press(lambda e: update_variable(e,command))
+	keyboard.wait('enter')
+	keyboard.unhook_all()
+	return ''.join(command)
 
 runtime_path = os.path.dirname(__file__)
 os.chdir(runtime_path)
@@ -11,23 +35,25 @@ def clear():
 
 commands = ['exit', 'cd', 'list_files', 'list_dir']
 
-print(os.listdir())
-input()
 for file in os.listdir():
-	if file.endswith('.py') and file != 'main.py':
+	#print(file)
+	#print(file.endswith('.py'))
+	#print(file != 'main.py')
+	#print(file != 'fileHandler.py')
+	if file.endswith('.py') and (file != 'main.py' and 'fileHandler.py'):
+		print('Importing {}'.format(file))
+		input()
 		try:
-			importlib.import_module(file[:-3])
-			commands.append(file[:-3])
+			importlib.import_module(file.replace('.py', ''))
+			commands.append(file.replace('.py', ''))
 		except Exception as e:
 			print(e)
 		
-
-
-while True:
+while __name__ == '__main__':
 	clear()
 	print('Scripttool v0.1.0')
 	print("Current dir : {}".format(os.getcwd()))
 	print("commands : ", end='')
 	print(*commands, end=' ')
 	print()
-	command = input().casefold()
+	command = get_input()
