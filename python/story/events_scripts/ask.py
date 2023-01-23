@@ -1,8 +1,8 @@
 def ask(window, question, *answers):
 	if len(answers) == 0:
-		window.add_text(question)
+		window.add_text(question.join("<r>"))
 	else:
-		window.add_text(question)
+		window.add_text(question.join("<r>"))
 		i = 0
 		for answer in answers:
 			q_str = f"{i+1}: {answer}"

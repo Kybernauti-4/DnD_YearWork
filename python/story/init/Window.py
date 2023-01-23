@@ -130,7 +130,7 @@ class Window():
 		fast_render = self.end_index - self.start_index - (1 if self.start_index == 0 else 0)
 		self.clear()
 		
-		print(True if self.return_value == '' or None else False)
+		#print(True if self.return_value == None else False)
 		for line in self.render:
 			self.curr_width = 0
 			line.replace('<h>', '')
