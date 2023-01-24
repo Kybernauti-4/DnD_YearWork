@@ -1,27 +1,73 @@
-import os
 import importlib
-import keyboard
+import os
 from sys import stdin
 
-def update_variable(e, my_variable):
+import keyboard
+
+
+def update_variable(e, my_variable, context):
+	folders = [item for item in os.listdir() if os.path.isdir(item)]
+	if (''.join(my_variable)).strip() == 'cd':
+		if e.name in ['up', 'down'] and len(context) == 0:
+			for folder in folders:
+				print("\033[96m{}\033[00m".format(folder), end=' ', flush=True)
+				context.append(folder)
+				context.append(' ')
+
+	if e.name in ['left', 'right'] and len(context) > 2:
+		del_len = 0
+		nows_context = [elem for elem in context if elem != ' ']
+		for i in range(len(context)):
+			del_len += len(context.pop())
+		for i in range(del_len):
+			print('\b\033[K', end='', flush=True)
+
+		if e.name == 'left':
+			nows_context.append(nows_context.pop(0))
+			for elem in nows_context:
+				context.append(elem)
+				context.append(' ')
+				print("\033[96m{}\033[00m".format(elem), end=' ', flush=True)
+
+		elif e.name == 'right':
+			nows_context.insert(0, nows_context.pop())
+			for elem in nows_context:
+				context.append(elem)
+				context.append(' ')
+				print("\033[96m{}\033[00m".format(elem), end=' ', flush=True)
+
+	if e.name == 'tab' and len(context) > 0:
+		del_len = 0
+		for elem in context:
+			del_len += len(elem)
+		for i in range(del_len):
+			print('\b\033[K', end='', flush=True)
+		
 	if e.name == "space":
 		my_variable.append(" ")
 		print(' ', end='', flush=True)
 	elif e.name == "backspace":
 		try:
-			my_variable.pop()
-			print('\b\033[K', end='', flush=True)
+			if len(context) > 0:
+				del_len = len(context.pop())
+				for i in range(del_len):
+					print('\b\033[K', end='', flush=True)
+			else:
+				del_len = len(my_variable.pop())
+				for i in range(del_len):
+					print('\b\033[K', end='', flush=True)
 		except:
 			pass
 	elif e.name == "enter":
 		pass
-	elif e.event_type == keyboard.KEY_DOWN and e.name not in keyboard.all_modifiers:
+	elif e.event_type == keyboard.KEY_DOWN and e.name not in keyboard.all_modifiers and e.name not in ['up', 'down', 'left', 'right']:
 		my_variable.append(e.name)
 		print(e.name, end='', flush=True)
 
 def get_input():
+	context = []
 	command = []
-	keyboard.on_press(lambda e: update_variable(e,command))
+	keyboard.on_press(lambda e: update_variable(e,command, context))
 	keyboard.wait('enter', suppress=True)
 	keyboard.unhook_all()
 	return ''.join(command)

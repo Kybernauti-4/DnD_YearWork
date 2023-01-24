@@ -1,9 +1,5 @@
-msg = input()
-if msg == 'exit':
-	print(msg)
-elif msg == 'cd':
-	print(msg)
-elif msg == 'list_files':
-	pass
-elif msg == 'list_dir':
-	print(msg)
+import keyboard
+
+keyboard.on_press(lambda e: print(e.name))
+
+keyboard.wait()
