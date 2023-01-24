@@ -1,9 +1,21 @@
 import os
 
-def main(args, path):
-	print(args)
+def ls(args, path):
+	files = [file for file in os.listdir(path) if os.path.isfile(file)]
+	if len(files) == 0:
+		print('No files found')
+	else:
+		print(*files, sep=' ')
+
+def list_files(args, path):
+	files = [file for file in os.listdir(path) if os.path.isfile(file)]
+	if len(files) == 0:
+		print('No files found')
+	else:
+		print(*files, sep=' ')
 
 def get_attr(path):
 	return {
-		'list_files':[[file for file in os.listdir() if os.path.isfile(file)], 'No files in directory']
+		'ls':[[], ''],
+		'list_files':[[], '']
 	}

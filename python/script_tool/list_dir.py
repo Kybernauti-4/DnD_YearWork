@@ -1,9 +1,21 @@
 import os
 
-def main(args, path):
-	print(args)
+def list_dir(args, path):
+	dir_list = [item for item in os.listdir(path) if os.path.isdir(item)]
+	if len(dir_list) == 0:
+		print('No directories found')
+	else:
+		print(*dir_list, sep=' ')
+
+def ld(args, path):
+	dir_list = [item for item in os.listdir(path) if os.path.isdir(item)]
+	if len(dir_list) == 0:
+		print('No directories found')
+	else:
+		print(*dir_list, sep=' ')
 
 def get_attr(path):
 	return {
-		'list_dir':[[file for file in os.listdir() if os.path.isdir(file)], 'No directories in directory']
+		'list_dir':[[], ''],
+		'ld':[[], ''],
 	}
