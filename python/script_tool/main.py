@@ -18,6 +18,16 @@ r_commands = {}
 r_commands.update(base_commands)
 ignore_keys = ['up', 'down', 'left', 'right', 'tab', 'esc', 'enter']
 
+#!fuck off, didn't find a better way to do this
+def flush_input():
+    try:
+        import msvcrt
+        while msvcrt.kbhit():
+            msvcrt.getch()
+    except ImportError:
+        import sys, termios
+        termios.tcflush(sys.stdin, termios.TCIOFLUSH)
+
 def update_cmenu(command, new_cmenu='', new_invalid_message=''):
 	global r_commands
 	global base_commands
@@ -113,8 +123,9 @@ def get_input():
 	context = []
 	command = []
 	keyboard.on_press(lambda e: update_variable(e,command, context))
-	keyboard.wait('enter')
+	keyboard.wait('enter', suppress=True)
 	keyboard.unhook_all()
+	flush_input()
 	print('\r\033[K', end='', flush=True)
 	return ''.join(command)
 
@@ -171,6 +182,12 @@ if __name__ == '__main__':
 
 		if command == 'exit':
 			break
+		elif command == 'cls':
+			clear()
+			print('Scripttool v0.1.0')
+			print("commands : ", end='')
+			print(*command_keys)
+			continue
 		elif command == 'cd':
 			for arg in args:
 				os.chdir(arg)
@@ -193,5 +210,3 @@ if __name__ == '__main__':
 					updated_cmenu(command, new_invalid_message = updated_msg)
 			except Exception as e:
 				pass
-
-			input('Press enter to return to main menu')
