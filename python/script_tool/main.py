@@ -47,7 +47,7 @@ def update_variable(e, my_variable, context):
 	if curr_command in r_commands.keys():
 		context_menu = r_commands[curr_command][0]
 		invalid_message = r_commands[curr_command][1]
-		if e.name in ['up', 'down'] and len(context) == 0:
+		if e.name == 'up' and len(context) == 0:
 			if len(context_menu) == 0:
 				print("\033[96m{}\033[00m".format(invalid_message), end=' ', flush=True)
 				context.append(invalid_message)
@@ -56,6 +56,12 @@ def update_variable(e, my_variable, context):
 				print("\033[96m{}\033[00m".format(context_item), end=' ', flush=True)
 				context.append(context_item)
 				context.append(' ')
+		elif e.name == 'down' and len(context) > 0:
+			del_len = 0
+			for i in range(len(context)):
+				del_len += len(context.pop())
+			for i in range(del_len):
+				print('\b\033[K', end='', flush=True)
 
 	if e.name in ['left', 'right'] and len(context) > 2:
 		del_len = 0
@@ -78,6 +84,12 @@ def update_variable(e, my_variable, context):
 				context.append(elem)
 				context.append(' ')
 				print("\033[96m{}\033[00m".format(elem), end=' ', flush=True)
+
+	elif e.name in ['left', 'right'] and len(context) == 0:
+		if e.name == 'left':
+			print('\033[D', end='', flush=True)
+		elif e.name == 'right':
+			print('\033[C', end='', flush=True)
 
 	if e.name == 'tab' and len(context) > 0:
 		del_len = 0
@@ -102,12 +114,14 @@ def update_variable(e, my_variable, context):
 	elif e.name == "backspace":
 		try:
 			if len(context) > 0:
-				del_len = 0
-				for celem in context:
-					del_len += len(celem)
+				#? no_whitespace_context
+				del_elem = context.pop()
+				del_len = len(del_elem)
+				while del_elem == ' ':
+					del_elem = context.pop()
+					del_len += len(del_elem)
 				for i in range(del_len):
 					print('\b\033[K', end='', flush=True)
-				context.clear()
 			else:
 				del_len = len(my_variable.pop())
 				for i in range(del_len):
@@ -126,7 +140,7 @@ def get_input():
 	keyboard.wait('enter', suppress=True)
 	keyboard.unhook_all()
 	flush_input()
-	print('\r\033[K', end='', flush=True)
+	print()
 	return ''.join(command)
 
 def clear():
@@ -171,9 +185,14 @@ if __name__ == '__main__':
 	print(*command_keys)
 	while True:
 		print("{} +>>".format(os.getcwd()), end=' ', flush=True)
+
 		command_list = get_input().split(' ')
 		command = command_list[0].casefold()
 		args = command_list[1:]
+
+		print(command)
+		input()
+		
 		if len(args) == 0:
 			args.append('')
 		for arg in args:
