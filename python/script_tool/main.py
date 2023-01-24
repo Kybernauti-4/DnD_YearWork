@@ -84,7 +84,7 @@ def update_variable(e, my_variable, context):
 			if my_variable[-1] != ' ': my_variable.append(' ')
 			my_variable.append(choice)
 		context.clear()
-		
+
 	if e.name == "space":
 		my_variable.append(" ")
 		print(' ', end='', flush=True)
@@ -103,7 +103,6 @@ def update_variable(e, my_variable, context):
 				for i in range(del_len):
 					print('\b\033[K', end='', flush=True)
 		except Exception as e:
-			print(e)
 			pass
 
 	elif e.event_type == keyboard.KEY_DOWN and e.name not in keyboard.all_modifiers and e.name not in ignore_keys:
@@ -116,7 +115,6 @@ def get_input():
 	keyboard.on_press(lambda e: update_variable(e,command, context))
 	keyboard.wait('enter')
 	keyboard.unhook_all()
-	input()
 	print('\r\033[K', end='', flush=True)
 	return ''.join(command)
 
@@ -155,44 +153,45 @@ for file,data in import_commands.items():
 
 command_keys = list(r_commands.keys())
 
-while __name__ == '__main__':
+if __name__ == '__main__':
 	clear()
 	print('Scripttool v0.1.0')
-	print("Current dir : {}".format(os.getcwd()))
 	print("commands : ", end='')
-	print(*command_keys, end=' ')
-	print()
-	command_list = get_input().split(' ')
-	command = command_list[0].casefold()
-	args = command_list[1:]
-	if len(args) == 0:
-		args.append('')
-	for arg in args:
-		if arg == '' and args.index(arg) != 1:
-			args.remove(arg)
-
-	if command == 'exit':
-		break
-	elif command == 'cd':
+	print(*command_keys)
+	while True:
+		print("{} +>>".format(os.getcwd()), end=' ', flush=True)
+		command_list = get_input().split(' ')
+		command = command_list[0].casefold()
+		args = command_list[1:]
+		if len(args) == 0:
+			args.append('')
 		for arg in args:
-			os.chdir(arg)
-		if arg == '':
-			os.chdir('..')
-		new_menu = [item for item in os.listdir() if os.path.isdir(item)]
-		update_cmenu('cd', new_cmenu = new_menu)
-	elif command in command_keys:
-		command_file = ''
-		for file, data in import_commands.items():
-			if command in list(data.keys()):
-				command_file = file
-				break
-		try:
-			updated_cmenu, updated_msg = getattr(sys.modules[command_file], command)(args, os.getcwd())
-			if updated_cmenu != None:
-				update_cmenu(command, new_cmenu = updated_cmenu)
-			if updated_msg != None:
-				updated_cmenu(command, new_invalid_message = updated_msg)
-			input('Press enter to return to main menu')
-		except:
-			print('Error in {}'.format(command))
+			if arg == '' and args.index(arg) != 1:
+				args.remove(arg)
+
+		if command == 'exit':
+			break
+		elif command == 'cd':
+			for arg in args:
+				os.chdir(arg)
+			if arg == '':
+				os.chdir('..')
+			new_menu = [item for item in os.listdir() if os.path.isdir(item)]
+			print('\r\033[K', end='', flush=True)
+			update_cmenu('cd', new_cmenu = new_menu)
+		elif command in command_keys:
+			command_file = ''
+			for file, data in import_commands.items():
+				if command in list(data.keys()):
+					command_file = file
+					break
+			try:
+				updated_cmenu, updated_msg = getattr(sys.modules[command_file], command)(args, os.getcwd())
+				if updated_cmenu != None:
+					update_cmenu(command, new_cmenu = updated_cmenu)
+				if updated_msg != None:
+					updated_cmenu(command, new_invalid_message = updated_msg)
+			except Exception as e:
+				pass
+
 			input('Press enter to return to main menu')
