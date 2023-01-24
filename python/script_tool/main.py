@@ -1,19 +1,38 @@
 import importlib
 import os
-from sys import stdin
+import sys
 
 import keyboard
 
-def update_variable(e, my_variable, context):
-	ignore_keys = ['up', 'down', 'left', 'right', 'tab']
+#TODO: Add command line tags
+#TODO: Add importable commands
 
-	folders = [item for item in os.listdir() if os.path.isdir(item)]
+#----------------- context menu -----------------#
+
+def update_variable(e, my_variable, context, extra_data):
+	ignore_keys = ['up', 'down', 'left', 'right', 'tab', 'esc']
 	
-	if (''.join(my_variable)).strip() == 'cd':
+	#'cd':[[context menu][invalid message]]
+	
+	base_commadns = {
+		'cd':[[item for item in os.listdir() if os.path.isdir(item)], 'No directory found'],
+	}
+	if len(extra_data) > 0:
+		base_commadns.update(extra_data)
+
+
+	curr_command = ''.join(my_variable).strip().casefold()
+	if curr_command in base_commadns.keys():
+		context_menu = base_commadns[curr_command][0]
+		invalid_message = base_commadns[curr_command][1]
 		if e.name in ['up', 'down'] and len(context) == 0:
-			for folder in folders:
-				print("\033[96m{}\033[00m".format(folder), end=' ', flush=True)
-				context.append(folder)
+			if len(context_menu) == 0:
+				print("\033[96m{}\033[00m".format(invalid_message), end=' ', flush=True)
+				context.append(invalid_message)
+				context.append(' ')
+			for context_item in context_menu:
+				print("\033[96m{}\033[00m".format(context_item), end=' ', flush=True)
+				context.append(context_item)
 				context.append(' ')
 
 	if e.name in ['left', 'right'] and len(context) > 2:
@@ -40,6 +59,7 @@ def update_variable(e, my_variable, context):
 
 	if e.name == 'tab' and len(context) > 0:
 		del_len = 0
+		#? no_whitespace_context
 		nows_context = [elem for elem in context if elem != ' ']
 		choice = nows_context[0]
 		for elem in context:
@@ -47,8 +67,11 @@ def update_variable(e, my_variable, context):
 		for i in range(del_len):
 			print('\b\033[K', end='', flush=True)
 
-		print(choice, end='', flush=True)
-		my_variable.append(choice)
+		if choice != invalid_message:
+			print(choice, end='', flush=True)
+			if my_variable[-1] != ' ': my_variable.append(' ')
+			my_variable.append(choice)
+		context.clear()
 		
 	if e.name == "space":
 		my_variable.append(" ")
@@ -71,10 +94,10 @@ def update_variable(e, my_variable, context):
 		my_variable.append(e.name)
 		print(e.name, end='', flush=True)
 
-def get_input():
+def get_input(extra_data={}):
 	context = []
 	command = []
-	keyboard.on_press(lambda e: update_variable(e,command, context))
+	keyboard.on_press(lambda e: update_variable(e,command, context, extra_data))
 	keyboard.wait('enter')
 	keyboard.unhook_all()
 	input()
@@ -89,7 +112,11 @@ def clear():
 	print("\x1B\x5BH", end="")
 	pass
 
-commands = ['exit', 'cd', 'list_files', 'list_dir']
+#-------------------------	main -------------------------#
+
+# commands {'command_file': {'command': [context menu, invalid message]}}
+
+commands = {}
 
 for file in [f for f in os.listdir() if os.path.isfile(f)]:
 	if  file == 'main.py':
@@ -101,6 +128,7 @@ for file in [f for f in os.listdir() if os.path.isfile(f)]:
 		input()
 		try:
 			importlib.import_module(file.replace('.py', ''))
+			extra_data = getattr(sys.modules[file.replace('.py', '')], 'get_attr')(os.getcwd())
 			commands.append(file.replace('.py', ''))
 		except Exception as e:
 			print(e)
@@ -115,9 +143,22 @@ while __name__ == '__main__':
 	command_list = get_input().split(' ')
 	command = command_list[0]
 	args = command_list[1:]
+	if len(args) == 0:
+		args.append('')
+	for arg in args:
+		if arg == '' and args.index(arg) != 1:
+			args.remove(arg)
 
 	if command == 'exit':
 		break
 	elif command == 'cd':
 		for arg in args:
 			os.chdir(arg)
+		if arg == '':
+			os.chdir('..')
+	elif command in commands:
+		try:
+			getattr(sys.modules[command], 'main')(args, os.getcwd())
+		except:
+			print('Error in {}'.format(command))
+			input('Press enter to continue')
