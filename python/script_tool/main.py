@@ -4,9 +4,11 @@ from sys import stdin
 
 import keyboard
 
-
 def update_variable(e, my_variable, context):
+	ignore_keys = ['up', 'down', 'left', 'right', 'tab']
+
 	folders = [item for item in os.listdir() if os.path.isdir(item)]
+	
 	if (''.join(my_variable)).strip() == 'cd':
 		if e.name in ['up', 'down'] and len(context) == 0:
 			for folder in folders:
@@ -38,10 +40,15 @@ def update_variable(e, my_variable, context):
 
 	if e.name == 'tab' and len(context) > 0:
 		del_len = 0
+		nows_context = [elem for elem in context if elem != ' ']
+		choice = nows_context[0]
 		for elem in context:
 			del_len += len(elem)
 		for i in range(del_len):
 			print('\b\033[K', end='', flush=True)
+
+		print(choice, end='', flush=True)
+		my_variable.append(choice)
 		
 	if e.name == "space":
 		my_variable.append(" ")
@@ -60,7 +67,7 @@ def update_variable(e, my_variable, context):
 			pass
 	elif e.name == "enter":
 		pass
-	elif e.event_type == keyboard.KEY_DOWN and e.name not in keyboard.all_modifiers and e.name not in ['up', 'down', 'left', 'right']:
+	elif e.event_type == keyboard.KEY_DOWN and e.name not in keyboard.all_modifiers and e.name not in ignore_keys:
 		my_variable.append(e.name)
 		print(e.name, end='', flush=True)
 
@@ -68,8 +75,10 @@ def get_input():
 	context = []
 	command = []
 	keyboard.on_press(lambda e: update_variable(e,command, context))
-	keyboard.wait('enter', suppress=True)
+	keyboard.wait('enter')
 	keyboard.unhook_all()
+	input()
+	print('\r\033[K', end='', flush=True)
 	return ''.join(command)
 
 runtime_path = os.path.dirname(__file__)
@@ -103,7 +112,12 @@ while __name__ == '__main__':
 	print("commands : ", end='')
 	print(*commands, end=' ')
 	print()
-	command = get_input()
-	print()
-	print('Command entered : {}'.format(command))
-	input('Press enter to continue...')
+	command_list = get_input().split(' ')
+	command = command_list[0]
+	args = command_list[1:]
+
+	if command == 'exit':
+		break
+	elif command == 'cd':
+		for arg in args:
+			os.chdir(arg)
