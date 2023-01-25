@@ -85,12 +85,6 @@ def update_variable(e, my_variable, context):
 				context.append(' ')
 				print("\033[96m{}\033[00m".format(elem), end=' ', flush=True)
 
-	elif e.name in ['left', 'right'] and len(context) == 0:
-		if e.name == 'left':
-			print('\033[D', end='', flush=True)
-		elif e.name == 'right':
-			print('\033[C', end='', flush=True)
-
 	if e.name == 'tab' and len(context) > 0:
 		del_len = 0
 		#? no_whitespace_context
@@ -190,8 +184,8 @@ if __name__ == '__main__':
 		command = command_list[0].casefold()
 		args = command_list[1:]
 
-		print(command)
-		input()
+		#print(command)
+		#input()
 		
 		if len(args) == 0:
 			args.append('')

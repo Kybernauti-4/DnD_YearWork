@@ -18,6 +18,7 @@
 		"terminal.integrated.fontFamily": "Fira Code, monospace",
 		"editor.insertSpaces": false,
 		"editor.tabCompletion": "on",
-		"diffEditor.codeLens": true
+		"diffEditor.codeLens": true,
+		"editor.fontSize": 10
 	}
 }
