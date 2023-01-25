@@ -19,6 +19,6 @@
 		"editor.insertSpaces": false,
 		"editor.tabCompletion": "on",
 		"diffEditor.codeLens": true,
-		"editor.fontSize": 10
+		"editor.fontSize": 14
 	}
 }

@@ -20,7 +20,11 @@ def create(args, path):
 			print('Invalid file type')
 	
 def get_attr(path):
-	return {
-		'edit': [[], 'No file to edit'],
-		'create': [['json', 'txt', 'sc_info', 'events', 'player', 'player_template'], 'No file to create'],
-	}
+	create_command = ['create', 'c']
+	create_options = ['json', 'txt', 'sc_info', 'events', 'player', 'player_template']
+	tags = ['-empty', '-e', '-notepad', '-np']
+	for command in create_command:
+		return_dict.update({command: [create_options, '']})
+
+	return_dict = {}
+	return return_dict
