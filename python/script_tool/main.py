@@ -181,6 +181,8 @@ if __name__ == '__main__':
 		print("{} +>>".format(os.getcwd()), end=' ', flush=True)
 
 		command_list = get_input().split(' ')
+		while command_list[0] == '':
+			command_list.pop(0)
 		command = command_list[0].casefold()
 		args = command_list[1:]
 
@@ -189,9 +191,9 @@ if __name__ == '__main__':
 		
 		if len(args) == 0:
 			args.append('')
-		for arg in args:
-			if arg == '' and args.index(arg) != 1:
-				args.remove(arg)
+		for index,arg in enumerate(args):
+			if arg == '' and index != 1:
+				args.pop(index)
 
 		if command == 'exit':
 			break
