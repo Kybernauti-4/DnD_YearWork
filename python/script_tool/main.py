@@ -46,6 +46,8 @@ def update_variable(e, my_variable, context):
 	curr_command = ''.join(my_variable).strip().casefold()
 	if curr_command in r_commands.keys():
 		context_menu = r_commands[curr_command][0]
+		if context_menu[0] == '__local_files__':
+			context_menu = [item for item in os.listdir() if os.path.isfile(item)]
 		invalid_message = r_commands[curr_command][1]
 		if e.name == 'up' and len(context) == 0:
 			if len(context_menu) == 0:
@@ -60,16 +62,14 @@ def update_variable(e, my_variable, context):
 			del_len = 0
 			for i in range(len(context)):
 				del_len += len(context.pop())
-			for i in range(del_len):
-				print('\b\033[K', end='', flush=True)
+			print(f'\u001b[{del_len}\033[K', end='', flush=True)
 
 	if e.name in ['left', 'right'] and len(context) > 2:
 		del_len = 0
 		nows_context = [elem for elem in context if elem != ' ']
 		for i in range(len(context)):
 			del_len += len(context.pop())
-		for i in range(del_len):
-			print('\b\033[K', end='', flush=True)
+		print(f'\u001b[{del_len}\033[K', end='', flush=True)
 
 		if e.name == 'left':
 			nows_context.append(nows_context.pop(0))
@@ -114,12 +114,11 @@ def update_variable(e, my_variable, context):
 				while del_elem == ' ':
 					del_elem = context.pop()
 					del_len += len(del_elem)
-				for i in range(del_len):
-					print('\b\033[K', end='', flush=True)
+				
+				print(f'\u001b[{del_len}\033[K', end='', flush=True)
 			else:
 				del_len = len(my_variable.pop())
-				for i in range(del_len):
-					print('\b\033[K', end='', flush=True)
+				print(f'\u001b[{del_len}\033[K', end='', flush=True)
 		except Exception as e:
 			pass
 
@@ -181,8 +180,16 @@ if __name__ == '__main__':
 		print("{} +>>".format(os.getcwd()), end=' ', flush=True)
 
 		command_list = get_input().split(' ')
-		while command_list[0] == '':
-			command_list.pop(0)
+
+		try:
+			while command_list[0] == '':
+				command_list.pop(0)
+		except Exception as e:
+			clear()
+			print('Scripttool v0.1.0')
+			print("commands : ", end='')
+			print(*command_keys)
+			continue
 		command = command_list[0].casefold()
 		args = command_list[1:]
 
