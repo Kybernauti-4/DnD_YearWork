@@ -11,15 +11,31 @@ def flush_input():
         import sys, termios
         termios.tcflush(sys.stdin, termios.TCIOFLUSH)
 
-def update_variable(e,command, context, context_menu, vertical, horizontal):
-	if e.name == 'up':
-		print(f'\u001b[A\033[K', end='', flush=True)
-	if e.name == 'down':
-		print(f'\u001b[B\033[K', end='', flush=True)
+def update_variable(e,command, context, context_menu, vertical, horizontal, screen):
+
+	if e.name == 'up' and len(context) == 0:
+		print(f'\u001b[A', end='', flush=True)
+		vertical[0] -= 1
+		try:
+			line = screen[vertical[0]]
+			print(f'\u001b[32m{line}\u001b[0m', end = '', flush=True)
+		except IndexError:
+			vertical[0] += 1
+
+	if e.name == 'down' and len(context) == 0:
+		vertical[0] += 1
+		try:
+			line = screen[vertical[0]]
+			print(f'\u001b[B', end='', flush=True)
+			print(f'\u001b[32m{line}\u001b[0m', end = '', flush=True)
+		except IndexError:
+			vertical[0] -= 1
+
+
 	if e.name == 'left':
-		print(f'\u001b[D\033[K', end='', flush=True)
+		print(f'\u001b[D', end='', flush=True)
 	if e.name == 'right':
-		print(f'\u001b[C\033[K', end='', flush=True)
+		print(f'\u001b[C', end='', flush=True)
 
 def edit(args, path):
 	file_types = {}
@@ -54,20 +70,38 @@ def edit(args, path):
 
 	elif file_type == 'json':
 		with open(os.path.join(path,file), 'r') as f:
+
 			file_content = json.load(f)
-			for line in json.dumps(file_content, indent=4):
-				screen.append(line)
+			curr_line = ''
+
+			screen = []
+			for char in json.dumps(file_content, indent=4):
+				if char == '\n':
+					screen.append(curr_line)
+					curr_line = ''
+					continue
+				curr_line += char
+
+			for line in screen:
+				print(line)
 
 			context_menu = ['[]', '\{\}', '""', ":", '()']
 			initial_cmlen = len(context_menu)
-			screen = []
+			
 			context = []
-			vertical = []
-			horizontal = []
+			vertical = [len(screen)+1]
+			horizontal = [0]
 			line = []
-			keyboard.on_press(lambda e: update_variable(e,line, context, context_menu, vertical, horizontal))
+
+			keyboard.on_press(lambda e: update_variable(e,line, context, context_menu, vertical, horizontal, screen))
+
 			while True:
 				index = horizontal[0]
+
+				try:
+					line[index-1]
+				except IndexError:
+					continue
 				
 				if line[index-1] == '[' and line[index+1] == ']':
 					path_parts = path.split('/')
@@ -177,3 +211,7 @@ def get_attr(path):
 	}
 
 	return return_dict
+
+
+if __name__ == '__main__':
+	edit(['Test.json'], os.path.dirname(__file__))
