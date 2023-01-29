@@ -11,7 +11,7 @@ def flush_input():
         import sys, termios
         termios.tcflush(sys.stdin, termios.TCIOFLUSH)
 
-def update_variable(e,command, context, context_menu, vertical, horizontal, screen):
+def update_variable(e,line, context, context_menu, vertical, horizontal, screen):
 
 	if e.name == 'up' and len(context) == 0:
 		print(f'\u001b[A', end='', flush=True)
@@ -81,6 +81,8 @@ def edit(args, path):
 					curr_line = ''
 					continue
 				curr_line += char
+			else:
+				screen.append(curr_line)
 
 			for line in screen:
 				print(line)
