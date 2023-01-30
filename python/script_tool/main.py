@@ -62,14 +62,14 @@ def update_variable(e, my_variable, context):
 			del_len = 0
 			for i in range(len(context)):
 				del_len += len(context.pop())
-			print(f'\u001b[{del_len}\033[K', end='', flush=True)
+			print(f'\u001b[{del_len}D\033[K', end='', flush=True)
 
 	if e.name in ['left', 'right'] and len(context) > 2:
 		del_len = 0
 		nows_context = [elem for elem in context if elem != ' ']
 		for i in range(len(context)):
 			del_len += len(context.pop())
-		print(f'\u001b[{del_len}\033[K', end='', flush=True)
+		print(f'\u001b[{del_len}D\033[K', end='', flush=True)
 
 		if e.name == 'left':
 			nows_context.append(nows_context.pop(0))
@@ -115,10 +115,10 @@ def update_variable(e, my_variable, context):
 					del_elem = context.pop()
 					del_len += len(del_elem)
 				
-				print(f'\u001b[{del_len}\033[K', end='', flush=True)
+				print(f'\u001b[{del_len}D\033[K', end='', flush=True)
 			else:
 				del_len = len(my_variable.pop())
-				print(f'\u001b[{del_len}\033[K', end='', flush=True)
+				print(f'\u001b[{del_len}D\033[K', end='', flush=True)
 		except Exception as e:
 			pass
 

@@ -61,10 +61,10 @@ def ld(args, path):
 
 def get_attr(path):
 	return {
-		'ls':[[], ''],
-		'list_all':[[], ''],
-		'lf':[[], ''],
-		'list_files':[[], ''],
-		'list_dir':[[], ''],
-		'ld':[[], '']
+		'ls':[[''], ''],
+		'list_all':[[''], ''],
+		'lf':[[''], ''],
+		'list_files':[[''], ''],
+		'list_dir':[[''], ''],
+		'ld':[[''], '']
 	}

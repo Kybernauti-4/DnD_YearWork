@@ -35,24 +35,61 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 			print(f'\r\u001b[{down_num}B{curr_line.strip()}', end='', flush=True)
 			line[0] = curr_line.strip()
 			horizontal[0] = len(line[0])
+
+
 	else:
-		if e.name == 'left':
+		if e.name == 'left' and len(context[0]) == 0:
 			print(f'\u001b[D', end='', flush=True)
 			horizontal[0] -= 1
 
-		elif e.name == 'right':
+		elif e.name == 'right' and len(context[0]) == 0:
 			print(f'\u001b[C', end='', flush=True)
 			horizontal[0] += 1
 		
 		elif e.name == 'up':
-			print(f'\u001b[34m{context_menu[cm_idx[0]]}\u001b[0m', end='', flush=True)	
-					
-			cm_idx[0] += 1
-			if cm_idx[0] >= len(context_menu):
-				cm_idx[0] = 0
-			context[0] = context_menu[cm_idx[0]]
-			print(f'{line[horizontal[0]:]}', end='', flush=True)
-			print(f'\u001b[{len(line)-horizontal[0]}D', end='', flush=True)
+			if len(context[0]) > 0:
+				print(f'\u001b[{len(context[0])}D\u001b[K', end='', flush=True)
+				print(f'\u001b[34m{context_menu[cm_idx[0]]}\u001b[0m', end='', flush=True)
+				print(f'{line[0][horizontal[0]:]}', end='', flush=True)
+				context[0] = context_menu[cm_idx[0]] + line[0][horizontal[0]:]
+				cm_idx[0] += 1
+				if cm_idx[0] >= len(context_menu):
+					cm_idx[0] = 0
+				
+			else:
+				print(f'\u001b[34m{context_menu[cm_idx[0]]}\u001b[0m\u001b[K', end='', flush=True)
+				print(f'{line[0][horizontal[0]:]}', end='', flush=True)
+				context[0] = context_menu[cm_idx[0]] + line[0][horizontal[0]:]
+				cm_idx[0] += 1
+				if cm_idx[0] >= len(context_menu):
+					cm_idx[0] = 0
+
+		elif e.name == 'down':
+			print(f'\r\u001b[K{line[0]}', end='', flush=True)
+			horizontal[0] = len(line[0])
+			cm_idx[0] = 0
+			context[0] = ''
+
+		elif e.name == 'tab':
+			line[0] = line[0][:horizontal[0]] + context[0]
+			print(f'\r\u001b[K{line[0]}', end='', flush=True)
+			horizontal[0] = len(line[0])
+			cm_idx[0] = 0
+			context[0] = ''
+		
+		elif e.name == 'backspace' and len(context[0]) == 0:
+			line[0] = line[0][:horizontal[0]-1] + line[0][horizontal[0]:]
+			horizontal[0] -= 1
+			print(f'\r\u001b[K{line[0]}', end='', flush=True)
+			print(f'\r\u001b[{horizontal[0]}C', end='', flush=True)
+		
+		elif e.name == 'delete' and len(context[0]) == 0:
+			line[0] = line[0][:horizontal[0]] + line[0][horizontal[0]+1:]
+			print(f'\r\u001b[K{line[0]}', end='', flush=True)
+			print(f'\r\u001b[{horizontal[0]}C', end='', flush=True)
+
+		elif e.name == 'enter':
+			
 
 with open(os.path.join(os.path.dirname(__file__), 'test.json'), 'r') as f:
 	file_content = json.load(f)
@@ -96,7 +133,7 @@ vertical[0] = len(screen) - 1
 horizontal = [0]
 
 line = ['']
-context_menu = ['[]', '\{\}', '""', ":", '()']
+context_menu = ["[]", "{}", "\"\"", ":", "()"]
 context = ['']
 cm_idx = [0]
 
