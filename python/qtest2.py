@@ -1,10 +1,4 @@
-import keyboard
-
-
-def get_input():
-	keyboard.on_press(lambda e: print(e))
-
-	keyboard.wait('enter', suppress=True)
-	return 'done'
-
-print(get_input())
+org_line = 'Hello World'
+indent  = 4
+line = ' ' * indent + org_line
+print(line)
