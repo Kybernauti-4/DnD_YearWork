@@ -31,6 +31,7 @@ def print_file(file_content):
 	return screen
 
 ignore_keys = ['up', 'down', 'left', 'right', 'tab', 'esc', 'enter']
+events_menu = ["add_text", "print_text", "lol", "kek", "cheburek"]
 
 def update_variable(e, vertical, screen, line, context_menu, context, horizontal, cm_idx, indent):
 	global ignore_keys
@@ -188,7 +189,6 @@ horizontal = [len(screen[-1])]
 
 line = ['']
 context_menu = ["[]", "{}", "\"\"", ":", "()"]
-events_menu = ["add_text", "print_text", "lol", "kek", "cheburek"]
 initial_cmlen = len(context_menu)
 context = ['']
 cm_idx = [0]
