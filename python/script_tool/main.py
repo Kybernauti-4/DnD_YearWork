@@ -37,12 +37,12 @@ def update_cmenu(command, new_cmenu='', new_invalid_message=''):
 	
 
 #!----------------- update_variable == screen -----------------#
-def update_variable(e, my_variable, context):
+def update_variable(e, my_variable, context, curr_len):
 	global ignore_keys
 	#'cd':[[context menu][invalid message]]
 	global r_commands
 
-
+	print_len = 100
 	curr_command = ''.join(my_variable).strip().casefold()
 	if curr_command in r_commands.keys():
 		context_menu = r_commands[curr_command][0]
@@ -54,46 +54,51 @@ def update_variable(e, my_variable, context):
 				print("\033[96m{}\033[00m".format(invalid_message), end=' ', flush=True)
 				context.append(invalid_message)
 				context.append(' ')
+			
 			for context_item in context_menu:
-				print("\033[96m{}\033[00m".format(context_item), end=' ', flush=True)
+				if curr_len[0] < print_len:
+					print("\033[96m{}\033[00m".format(context_item), end=' ', flush=True)
+					curr_len[0] += len(context_item)+1
+
 				context.append(context_item)
 				context.append(' ')
 		elif e.name == 'down' and len(context) > 0:
-			del_len = 0
 			for i in range(len(context)):
-				del_len += len(context.pop())
-			print(f'\u001b[{del_len}D\033[K', end='', flush=True)
+				context.pop()
+			print(f'\u001b[{curr_len[0]}D\033[K', end='', flush=True)
+			curr_len[0] = 0
 
 	if e.name in ['left', 'right'] and len(context) > 2:
-		del_len = 0
 		nows_context = [elem for elem in context if elem != ' ']
 		for i in range(len(context)):
-			del_len += len(context.pop())
-		print(f'\u001b[{del_len}D\033[K', end='', flush=True)
+			context.pop()
+		print(f'\u001b[{curr_len[0]}D\033[K', end='', flush=True)
+		curr_len[0] = 0
 
 		if e.name == 'left':
 			nows_context.append(nows_context.pop(0))
 			for elem in nows_context:
 				context.append(elem)
 				context.append(' ')
-				print("\033[96m{}\033[00m".format(elem), end=' ', flush=True)
+				if curr_len[0] < print_len:
+					print("\033[96m{}\033[0m".format(elem), end=' ', flush=True)
+					curr_len[0] += len(elem)+1
+				
 
 		elif e.name == 'right':
 			nows_context.insert(0, nows_context.pop())
 			for elem in nows_context:
 				context.append(elem)
 				context.append(' ')
-				print("\033[96m{}\033[00m".format(elem), end=' ', flush=True)
+				if curr_len[0] < print_len:
+					print("\033[96m{}\033[0m".format(elem), end=' ', flush=True)
+					curr_len[0] += len(elem)+1
 
 	if e.name == 'tab' and len(context) > 0:
-		del_len = 0
 		#? no_whitespace_context
 		nows_context = [elem for elem in context if elem != ' ']
 		choice = nows_context[0]
-		for elem in context:
-			del_len += len(elem)
-		for i in range(del_len):
-			print('\b\033[K', end='', flush=True)
+		print(f'\u001b[{curr_len[0]}D\033[K', end='', flush=True)
 
 		if choice != invalid_message:
 			print(choice, end='', flush=True)
@@ -129,7 +134,8 @@ def update_variable(e, my_variable, context):
 def get_input():
 	context = []
 	command = []
-	keyboard.on_press(lambda e: update_variable(e,command, context))
+	curr_len = [0]
+	keyboard.on_press(lambda e: update_variable(e,command, context, curr_len))
 	keyboard.wait('enter', suppress=True)
 	keyboard.unhook_all()
 	flush_input()

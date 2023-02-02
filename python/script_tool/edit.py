@@ -3,7 +3,59 @@ import json
 import keyboard
 
 ignore_keys = ['up', 'down', 'left', 'right', 'tab', 'esc', 'enter']
-events_menu = []
+
+def add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_menu):
+	try:
+		line[0][horizontal[0]-1]
+	except IndexError:
+		return
+
+	if line[0][horizontal[0]-1] == '[' and line[0][horizontal[0]] == ']':
+		path_parts = path.split('\\')
+		match my_f_type:
+			case 'events':
+
+				if len(context_menu) > initial_cmlen:
+					return
+				
+				new_path = ''
+				if 'python' in path_parts:
+					index = path_parts.index('python')
+					index += 1
+					new_path = '/'.join(path_parts[:(index)])
+				else:
+					print(f"python not found in {path}")
+				
+				with open(os.path.join(new_path, 'scriptlocation.json'), 'r') as f:
+					script_location = json.load(f)
+				
+					for s in script_location:
+						for script in [file for file in os.listdir(os.path.join(new_path, script_location[s])) if file.endswith('.py')]:
+							context_menu.append(script.replace('.py', ''))
+
+			case 'sc_info':
+				
+				if len(context_menu) > initial_cmlen:
+					return
+				
+				new_path = ''
+				if 'python' in path_parts:
+					index = path_parts.index('python')
+					index += 1
+					new_path = '/'.join(path_parts[:(index)])
+				else:
+					print(f"python not found in {path}")
+				
+				with open(os.path.join(new_path, 'scriptlocation.json'), 'r') as f:
+					script_location = json.load(f)
+				
+					for s in script_location:
+						for script in [file for file in os.listdir(os.path.join(new_path, script_location[s])) if file.endswith('.py')]:
+							context_menu.append(script.replace('.py', ''))
+			
+			case 'player':
+				#TODO : add player context menu
+				context_menu = ['player']
 
 def flush_input():
     try:
@@ -223,47 +275,9 @@ def edit(args, path):
 		indent = [0]
 
 		keyboard.on_press(lambda e: update_variable(e, vertical, screen, line, context_menu,context, horizontal, cm_idx, indent))
+		keyboard.on_release(lambda e: add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_menu))	
 
-		keyboard.wait()
-
-		while True:
-
-			try:
-				line[horizontal[0]-1]
-			except IndexError:
-				continue
-			
-			if line[horizontal[0]-1] == '[' and line[horizontal[0]] == ']':
-				path_parts = path.split('/')
-				match my_f_type:
-					case 'events':
-
-						if len(context_menu) > initial_cmlen:
-							continue
-
-						if 'python' in path_parts:
-							index = path_parts.index('python')
-							new_path = '/'.join(path_parts[:index+1])
-						else:
-							print(f"python not found in {path}")
-						
-						with open(os.path.join(new_path, 'scriptlocation.json'), 'r') as f:
-							script_location = json.load(f)
-						
-						for idx,s in script_location.items():
-							for script in [file for file in os.listdir(os.path.join(new_path, s)) if file.endswith('.py')]:
-								context_menu.append(script.replace('.py', ''))
-
-					case 'sc_info':
-						context_menu = ['sc_info']
-					
-					case 'player':
-						context_menu = ['player']
-						
-
-			if ''.join(line) == 'exit': 
-				print('exit')
-				break
+		keyboard.wait('esc')
 		keyboard.unhook_all()
 		flush_input()
 
@@ -327,6 +341,68 @@ def c(args, path):
 
 	if edit == 'y':
 		edit([f, file_type], path)
+
+def e(args, path):
+	file_types = {}
+	with open(os.path.join(os.path.dirname(__file__), 'file_types.json'), 'r') as f:
+		file_types = json.load(f)
+	
+	try:
+		file = args[0]
+	except IndexError:
+		print('Invalid file')
+		return
+
+	try:
+		my_f_type = args[1]
+	except IndexError:
+		while True:
+			for f in file_types:
+				print(f, end=' ')
+			print()
+			print('Provide a file type : ', end='')
+			my_f_type = input().casefold().strip()
+
+			if my_f_type not in file_types:
+				print('Unsupported file type')
+			else:
+				break
+
+	file_type = file_types[my_f_type]
+
+	if file_type == 'txt':
+		os.system('notepad.exe ' + file)
+
+	elif file_type == 'json':
+		with open(os.path.join(path,file), 'r') as f:
+
+			file_content = json.load(f)
+		vertical = [0]
+
+		screen = print_file(file_content)
+
+		for i in range(len(screen)):
+			if i != len(screen) - 1:
+				print(screen[i])
+			else:
+				print(screen[i], end = '', flush=True)
+
+		vertical[0] = len(screen) - 1
+		horizontal = [len(screen[-1])]
+
+		line = ['']
+		context_menu = ["[]", "{}", "\"\"", ":", "()"]
+		initial_cmlen = len(context_menu)
+		context = ['']
+		cm_idx = [0]
+		indent = [0]
+
+		keyboard.on_press(lambda e: update_variable(e, vertical, screen, line, context_menu,context, horizontal, cm_idx, indent))
+		keyboard.on_release(lambda e: add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_menu))	
+
+		keyboard.wait('esc')
+		keyboard.unhook_all()
+		flush_input()
 	
 def get_attr(path):
 
