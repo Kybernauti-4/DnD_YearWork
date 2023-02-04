@@ -5,11 +5,13 @@ import keyboard
 ignore_keys = ['up', 'down', 'left', 'right', 'tab', 'esc', 'enter']
 
 def add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_menu):
+	#FIXME : it ain't working properly
 	try:
 		line[0][horizontal[0]-1]
 	except IndexError:
 		return
 
+	print('add_to_menu')
 	if line[0][horizontal[0]-1] == '[' and line[0][horizontal[0]] == ']':
 		path_parts = path.split('\\')
 		match my_f_type:
@@ -18,6 +20,7 @@ def add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_men
 				if len(context_menu) > initial_cmlen:
 					return
 				
+				print("Ading events to context menu")
 				new_path = ''
 				if 'python' in path_parts:
 					index = path_parts.index('python')
@@ -94,9 +97,9 @@ def print_file(file_content):
 		screen.append(curr_line)
 	return screen
 
-def update_variable(e, vertical, screen, line, context_menu, context, horizontal, cm_idx, indent):
+def update_variable(e, vertical, screen, line, context_menu, context, horizontal, cm_idx, indent, insert, edit_mode):
 	global ignore_keys
-	if line[0] == '':
+	if not edit_mode[0]:
 		if e.name == 'up':
 			if vertical[0] > 0:
 				curr_line = screen[vertical[0]]
@@ -131,6 +134,39 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 					indent[0] += 1
 			line[0] = curr_line.strip()
 			horizontal[0] = len(line[0])
+			edit_mode[0] = True
+
+		if e.name == 'n':
+			#FICXME : ASYNC destroys this logic
+			insert[0] = True
+			line[0] = 'new_line'
+			flush_input()
+			down_num = len(screen) - vertical[0] 
+			print(f'\r\u001b[{down_num}B', end='', flush=True)
+			print('Please enter the indent level: ', end='', flush=True)
+			indent[0] = int(input())
+			print(f'\r\u001b[0m', end='', flush=True)
+			horizontal[0] = len(line[0])
+			print(f'{line[0]}', end='', flush=True)
+			flush_input()
+			edit_mode[0] = True
+		
+		if e.name == 'r':
+			#! SAFEFAULT : this is a safe fault, if the file is not a json file, it will crash
+			print(f'\r\u001b[{len(screen)-1}A\u001b[J', end='', flush=True)
+			new_screen = print_file(json.loads(''.join(screen)))
+			screen.clear()
+			for line in new_screen:
+				screen.append(line)
+			for i in range(len(screen)):
+				if i != len(screen) - 1:
+					print(screen[i])
+				else:
+					print(screen[i], end = '', flush=True)
+			vertical[0] = len(screen) - 1
+			
+
+
 
 
 	else:
@@ -194,9 +230,16 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 
 		elif e.name == 'enter':
 			if line[0] == '':
-				del screen[vertical[0]]
+				if insert[0]:
+					pass
+				else:
+					del screen[vertical[0]]
 			else:
-				screen[vertical[0]] = ' '*indent[0] + line[0]
+				if insert[0]:
+					add_line = ' '*indent[0] + line[0]
+					screen.insert(vertical[0], add_line)
+				else:
+					screen[vertical[0]] = ' '*indent[0] + line[0]
 
 			line[0] = ''
 			context[0] = ''
@@ -211,6 +254,7 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 					print(screen[i], end = '', flush=True)
 					
 			vertical[0] = len(screen) - 1
+			edit_mode[0] = False
 
 
 		elif e.event_type == keyboard.KEY_DOWN and e.name not in keyboard.all_modifiers and e.name not in ignore_keys:
@@ -273,8 +317,10 @@ def edit(args, path):
 		context = ['']
 		cm_idx = [0]
 		indent = [0]
+		insert = [False]
+		edit_mode = [False]
 
-		keyboard.on_press(lambda e: update_variable(e, vertical, screen, line, context_menu,context, horizontal, cm_idx, indent))
+		keyboard.on_press(lambda e: update_variable(e, vertical, screen, line, context_menu,context, horizontal, cm_idx, indent, insert, edit_mode))
 		keyboard.on_release(lambda e: add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_menu))	
 
 		keyboard.wait('esc')
@@ -396,9 +442,10 @@ def e(args, path):
 		context = ['']
 		cm_idx = [0]
 		indent = [0]
+		insert = [False]
 
 		keyboard.on_press(lambda e: update_variable(e, vertical, screen, line, context_menu,context, horizontal, cm_idx, indent))
-		keyboard.on_release(lambda e: add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_menu))	
+		keyboard.on_press(lambda e: add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_menu))	
 
 		keyboard.wait('esc')
 		keyboard.unhook_all()
