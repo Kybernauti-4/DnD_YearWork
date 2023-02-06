@@ -144,7 +144,6 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 			edit_mode[0] = True
 
 		if e.name == 'n':
-			#FICXME : ASYNC destroys this logic
 			insert[0] = True
 			line[0] = ''
 			flush_input()
@@ -156,29 +155,86 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 			edit_mode[0] = True
 		
 		if e.name == 'r':
-			#! SAFEFAULT : this is a safe fault, if the file is not a json file, it will crash
-			try:
-				new_screen = print_file(json.loads(''.join(screen)))
-			except:
-				vertical[0] = len(screen) - 1
-				new_screen = screen
-				pass
-			print(f'\r\u001b[{len(screen)-1}A\u001b[J', end='', flush=True)
-			screen.clear()
-			for line in new_screen:
-				screen.append(line)
-			for i in range(len(screen)):
-				if i != len(screen) - 1:
-					print(screen[i])
-				else:
-					print(screen[i], end = '', flush=True)
-			vertical[0] = len(screen) - 1
+			wrong = False
+			wrong_num_line = 0
+			for line in screen:
+				wrong_num_line += 1
+				if line.strip() != '{' or screen != '}':
+					try:
+						if line.strip()[len(line)-1] == ',':
+							try_line = line.strip()[:len(line)-1]
+						else:
+							try_line = line.strip()
+
+						json.loads('{\n'+try_line+'\n}')
+
+					except:
+						wrong = True
+						break
+
+			if wrong:
+				print(f'\r\u001b[{len(screen)-1}A\033[J', end='', flush=True)
+				for i in range(len(screen)):
+					if i != len(screen) - 1:
+						if i == wrong_num_line:
+							print(f'\u001b[31m{screen[i]}\u001b[0m')
+						else:
+							print(screen[i])
+					else:
+						if i == wrong_num_line:
+							print(f'\u001b[31m{screen[i]}\u001b[0m', end='', flush=True)
+						else:
+							print(screen[i], end='', flush=True)
+			else:
+				print(f'\r\u001b[{len(screen)-1}A\033[J', end='', flush=True)
+				new_screen = print_file(''.join(screen))
+				screen.clear()
+				for line in new_screen:
+					screen.append(line)
+
+				for i in range(len(screen)):
+					if i != len(screen) - 1:
+						print(screen[i])
+					else:
+						print(screen[i], end='', flush=True)
+
 
 
 		if e.name == 's':
-			with open(os.path.join(path,file), 'w') as f:
-				json.dump(json.loads(''.join(screen)), f, indent=4)
-			editing_done[0] = True
+			wrong = False
+			wrong_num_line = 0
+			for line in screen:
+				if screen != '{' or '}':
+					try:
+						if line[-1] == ',':
+							try_line = line[:-1]
+						else:
+							try_line = line
+
+						json.loads('{'+try_line+'}')
+
+					except:
+						wrong = True
+						wrong_num_line = screen.index(line)
+						break
+			if wrong:
+				print(f'\r\u001b[{len(screen)}A\033[J', end='', flush=True)
+				for i in range(len(screen)):
+					if i != len(screen) - 1:
+						if i == wrong_num_line:
+							print(f'\u001b[31m{screen[i]}\u001b[0m')
+						else:
+							print(screen[i])
+					else:
+						if i == wrong_num_line:
+							print(f'\u001b[31m{screen[i]}\u001b[0m', end='', flush=True)
+						else:
+							print(screen[i], end='', flush=True)
+			else:
+				vertical[0] = len(screen) - 1
+				with open(os.path.join(path,file), 'w') as f:
+					json.dump(json.loads(''.join(screen)), f, indent=4)
+				editing_done[0] = True
 
 
 	else:
@@ -241,7 +297,6 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 			print(f'\r\u001b[{horizontal[0]}C', end='', flush=True)
 
 		elif e.name == 'enter':
-			wrong = False
 			print(f'\r\u001b[{len(screen)}A\033[J', end='', flush=True)
 			if line[0] == '':
 				if insert[0]:
@@ -250,11 +305,6 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 				else:
 					del screen[vertical[0]]
 			else:
-				try:
-					json.loads(''.join(screen))
-				except:
-					wrong = True
-
 				if insert[0]:
 					add_line = ' '*indent[0] + line[0]
 					screen.insert(vertical[0]+1, add_line)
@@ -269,15 +319,9 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 			
 			for i in range(len(screen)):
 				if i != len(screen) - 1:
-					if i == vertical[0] and wrong:
-						print(f'\u001b[31m{screen[i]}\u001b[0m')
-					else:
-						print(screen[i])
+					print(screen[i])
 				else:
-					if i == vertical[0] and wrong:
-						print(f'\u001b[31m{screen[i]}\u001b[0m')
-					else:
-						print(screen[i], end='', flush=True)
+					print(screen[i], end='', flush=True)
 					
 			vertical[0] = len(screen) - 1
 			edit_mode[0] = False
@@ -470,11 +514,13 @@ def e(args, path):
 		cm_idx = [0]
 		indent = [0]
 		insert = [False]
+		edit_mode = [False]
+		editing_done = [False]
 
-		keyboard.on_press(lambda e: update_variable(e, vertical, screen, line, context_menu,context, horizontal, cm_idx, indent, insert, path, file))
-		#keyboard.on_press(lambda e: add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_menu))	
-
-		keyboard.wait('esc')
+		keyboard.on_press(lambda e: update_variable(e, vertical, screen, line, context_menu,context, horizontal, cm_idx, indent, insert, edit_mode, path, file, editing_done))
+		#keyboard.on_release(lambda e: add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_menu))	
+		while not editing_done[0]:
+			pass
 		keyboard.unhook_all()
 		flush_input()
 	
