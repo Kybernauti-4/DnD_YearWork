@@ -159,14 +159,14 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 			wrong_num_line = 0
 			for line in screen:
 				wrong_num_line += 1
-				if line.strip() != '{' or screen != '}':
+				if line.strip() != '{' or line.strip() != '}':
 					try:
-						if line.strip()[len(line)-1] == ',':
-							try_line = line.strip()[:len(line)-1]
+						if line[-1] == ',':
+							try_line = line[:-1]
 						else:
-							try_line = line.strip()
+							try_line = line
 
-						json.loads('{\n'+try_line+'\n}')
+						json.loads('{'+try_line+'}')
 
 					except:
 						wrong = True
