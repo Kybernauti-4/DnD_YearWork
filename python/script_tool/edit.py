@@ -4,6 +4,7 @@ import keyboard
 
 ignore_keys = ['up', 'down', 'left', 'right', 'tab', 'esc', 'enter']
 
+"""
 def add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_menu):
 	#FIXME : it ain't working properly
 	try:
@@ -59,6 +60,8 @@ def add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_men
 			case 'player':
 				#TODO : add player context menu
 				context_menu = ['player']
+
+"""
 
 def flush_input():
     try:
@@ -345,7 +348,7 @@ def edit(args, path):
 		edit_mode = [False]
 
 		keyboard.on_press(lambda e: update_variable(e, vertical, screen, line, context_menu,context, horizontal, cm_idx, indent, insert, edit_mode, path, file))
-		keyboard.on_release(lambda e: add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_menu))	
+		#keyboard.on_release(lambda e: add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_menu))	
 
 		keyboard.wait('esc')
 		keyboard.unhook_all()
