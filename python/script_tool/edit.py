@@ -1,6 +1,7 @@
 import os
 import json
 import keyboard
+from math import ceil
 
 ignore_keys = ['up', 'down', 'left', 'right', 'tab', 'esc', 'enter']
 
@@ -99,6 +100,10 @@ def print_file(file_content):
 
 def update_variable(e, vertical, screen, line, context_menu, context, horizontal, cm_idx, indent, insert, edit_mode):
 	global ignore_keys
+
+	if horizontal[0] < 0:
+		horizontal[0] = 0
+
 	if not edit_mode[0]:
 		if e.name == 'up':
 			if vertical[0] > 0:
@@ -139,16 +144,13 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 		if e.name == 'n':
 			#FICXME : ASYNC destroys this logic
 			insert[0] = True
-			line[0] = 'new_line'
+			line[0] = ''
 			flush_input()
 			down_num = len(screen) - vertical[0] 
 			print(f'\r\u001b[{down_num}B', end='', flush=True)
-			print('Please enter the indent level: ', end='', flush=True)
-			indent[0] = int(input())
 			print(f'\r\u001b[0m', end='', flush=True)
 			horizontal[0] = len(line[0])
 			print(f'{line[0]}', end='', flush=True)
-			flush_input()
 			edit_mode[0] = True
 		
 		if e.name == 'r':
@@ -206,8 +208,8 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 		elif e.name == 'tab':
 			line[0] = line[0][:horizontal[0]] + context[0] + line[0][horizontal[0]:]
 			print(f'\r\u001b[K{line[0]}', end='', flush=True)
-			print(f'\u001b[{len(line[0]) - horizontal[0] -1}D', end='', flush=True)
-			horizontal[0] += 1
+			print(f'\u001b[{len(line[0]) - horizontal[0] - round(len(context[0]) / 2)}D', end='', flush=True)
+			horizontal[0] += round(len(context[0]) / 2)
 			cm_idx[0] = 0
 			context[0] = ''
 		
@@ -245,7 +247,8 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 			context[0] = ''
 			cm_idx[0] = 0
 			indent[0] = 0
-			print(f'\r\u001b[{len(screen)}A\033[J', end='', flush=True)
+			up_len = len(screen) - (1 if insert[0] else 0)
+			print(f'\r\u001b[{up_len}A\033[J', end='', flush=True)
 
 			for i in range(len(screen)):
 				if i != len(screen) - 1:
