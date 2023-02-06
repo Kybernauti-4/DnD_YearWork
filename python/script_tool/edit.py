@@ -237,6 +237,7 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 
 		elif e.name == 'enter':
 			wrong = False
+			up_len = len(screen) - (1 if insert[0] else 0)
 			if line[0] == '':
 				if insert[0]:
 					pass
@@ -262,20 +263,19 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 			context[0] = ''
 			cm_idx[0] = 0
 			indent[0] = 0
-			up_len = len(screen) - (1 if insert[0] else 0)
 			print(f'\r\u001b[{up_len}A\033[J', end='', flush=True)
 
 			for i in range(len(screen)):
 				if i != len(screen) - 1:
-					if i == vertical[0]:
+					if i == vertical[0] and wrong:
 						print(f'\u001b[31m{screen[i]}\u001b[0m')
 					else:
 						print(screen[i])
 				else:
-					if i == vertical[0]:
+					if i == vertical[0] and wrong:
 						print(f'\u001b[31m{screen[i]}\u001b[0m')
 					else:
-						print(screen[i])
+						print(screen[i], end='', flush=True)
 					
 			vertical[0] = len(screen) - 1
 			edit_mode[0] = False
