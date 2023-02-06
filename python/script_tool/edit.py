@@ -1,7 +1,6 @@
 import os
 import json
 import keyboard
-from math import ceil
 
 ignore_keys = ['up', 'down', 'left', 'right', 'tab', 'esc', 'enter']
 
@@ -98,7 +97,7 @@ def print_file(file_content):
 		screen.append(curr_line)
 	return screen
 
-def update_variable(e, vertical, screen, line, context_menu, context, horizontal, cm_idx, indent, insert, edit_mode):
+def update_variable(e, vertical, screen, line, context_menu, context, horizontal, cm_idx, indent, insert, edit_mode, path, file):
 	global ignore_keys
 
 	if horizontal[0] < 0:
@@ -155,8 +154,12 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 		
 		if e.name == 'r':
 			#! SAFEFAULT : this is a safe fault, if the file is not a json file, it will crash
+			try:
+				new_screen = print_file(json.loads(''.join(screen)))
+			except:
+				vertical[0] = len(screen) - 1
+				return
 			print(f'\r\u001b[{len(screen)-1}A\u001b[J', end='', flush=True)
-			new_screen = print_file(json.loads(''.join(screen)))
 			screen.clear()
 			for line in new_screen:
 				screen.append(line)
@@ -166,9 +169,11 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 				else:
 					print(screen[i], end = '', flush=True)
 			vertical[0] = len(screen) - 1
-			
 
 
+		if e.name == 's':
+			with open(os.path.join(path,file), 'w') as f:
+				json.dump(json.loads(''.join(screen)), f, indent=4)
 
 
 	else:
@@ -231,6 +236,7 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 			print(f'\r\u001b[{horizontal[0]}C', end='', flush=True)
 
 		elif e.name == 'enter':
+			wrong = False
 			if line[0] == '':
 				if insert[0]:
 					pass
@@ -239,9 +245,18 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 			else:
 				if insert[0]:
 					add_line = ' '*indent[0] + line[0]
-					screen.insert(vertical[0], add_line)
+					screen.insert(vertical[0]+1, add_line)
 				else:
 					screen[vertical[0]] = ' '*indent[0] + line[0]
+
+			try:
+				json.loads(''.join(screen))
+			except:
+				if insert[0]:
+					del screen[vertical[0]+1]
+				else:
+					wrong = True
+				insert[0] = False
 
 			line[0] = ''
 			context[0] = ''
@@ -252,9 +267,15 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 
 			for i in range(len(screen)):
 				if i != len(screen) - 1:
-					print(screen[i])
+					if i == vertical[0]:
+						print(f'\u001b[31m{screen[i]}\u001b[0m')
+					else:
+						print(screen[i])
 				else:
-					print(screen[i], end = '', flush=True)
+					if i == vertical[0]:
+						print(f'\u001b[31m{screen[i]}\u001b[0m')
+					else:
+						print(screen[i])
 					
 			vertical[0] = len(screen) - 1
 			edit_mode[0] = False
@@ -323,7 +344,7 @@ def edit(args, path):
 		insert = [False]
 		edit_mode = [False]
 
-		keyboard.on_press(lambda e: update_variable(e, vertical, screen, line, context_menu,context, horizontal, cm_idx, indent, insert, edit_mode))
+		keyboard.on_press(lambda e: update_variable(e, vertical, screen, line, context_menu,context, horizontal, cm_idx, indent, insert, edit_mode, path, file))
 		keyboard.on_release(lambda e: add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_menu))	
 
 		keyboard.wait('esc')
@@ -447,7 +468,7 @@ def e(args, path):
 		indent = [0]
 		insert = [False]
 
-		keyboard.on_press(lambda e: update_variable(e, vertical, screen, line, context_menu,context, horizontal, cm_idx, indent))
+		keyboard.on_press(lambda e: update_variable(e, vertical, screen, line, context_menu,context, horizontal, cm_idx, indent, insert, path, file))
 		keyboard.on_press(lambda e: add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_menu))	
 
 		keyboard.wait('esc')
