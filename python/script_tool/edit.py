@@ -155,6 +155,7 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 			edit_mode[0] = True
 		
 		if e.name == 'r':
+			#TODO : FIX THIS the checking for the wrong line is not working it is always the first line
 			wrong = False
 			wrong_num_line = 0
 			for line in screen:
