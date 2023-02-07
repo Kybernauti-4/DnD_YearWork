@@ -1,6 +1,6 @@
 from time import sleep
 from math import ceil
-from multiprocessing import Process
+import threading
 
 class Window():
 
@@ -52,7 +52,7 @@ class Window():
 		pass
 
 	def start_auto_render(self):
-		self.ar_thread = Process(target=self.auto_render)
+		self.ar_thread = threading.Thread(target=self.auto_render)
 		self.thread_run = True
 		self.ar_thread.start()
 
@@ -63,22 +63,17 @@ class Window():
 	def auto_render(self):
 		while self.thread_run:
 			self.format_render()
-			self.show()
+			self.do_render()
+	
+	def get_return_value(self):
+		sleep_time_ns = 1/1000000
+		while self.return_value == None:
+			sleep(sleep_time_ns)
 
-	def getReturnValue(self):
-		async_thread = Process(target=self.awaitReturnValue)
-		async_thread.start()
-		async_thread.join()
 		r = self.return_value
 		self.return_value = None
 		self.return_value_set = False
 		return r
-		
-		
-
-	def awaitReturnValue(self):
-		while self.return_value == None:
-			continue
 
 	def format_render(self):
 		unhook = False
@@ -129,11 +124,12 @@ class Window():
 			else:
 				break
 
-	def show(self):
+	def do_render(self):
 		in_val = input()
 		if self.return_value_set:
 			if in_val != '':
 				self.return_value = in_val
+				self.return_value_set = False
 		fast_render = self.end_index - self.start_index - (1 if self.start_index == 0 else 0)
 		self.clear()
 		
@@ -171,8 +167,7 @@ class Window():
 				self.return_value_set = True
 				for i in range(len(self.screen)):
 					if self.render[-1] == self.screen[i]:
-						self.render[-1] = self.render[-1].replace('<r>', '')
-						self.screen[i] = self.render[-1]
+						self.screen[i] = self.render[-1].replace('<r>', '')
 			else:
 				self.return_value_set = False
 		except:
