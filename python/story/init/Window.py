@@ -135,6 +135,7 @@ class Window():
 			self.curr_width = 0
 			line.replace('<h>', '')
 			line.replace('<un>', '')
+			line.replace('<r>', '')
 			words = line.split(' ')
 			for i in range(len(words)):
 				if fast_render> 0: 
@@ -163,6 +164,9 @@ class Window():
 				self.return_value_set = True
 				for i in range(len(self.screen)):
 					if self.render[-1] == self.screen[i]:
-						self.screen[i] = self.render[-1].replace('<r>', '')
+						self.render[-1] = self.render[-1].replace('<r>', '')
+						self.screen[i] = self.render[-1]
+			else:
+				self.return_value_set = False
 		except:
 			pass

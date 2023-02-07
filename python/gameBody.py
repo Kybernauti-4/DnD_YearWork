@@ -108,7 +108,8 @@ if __name__ == "__main__":
 			#print("Handling: {} => {}".format(event, args))
 			handle(event,args)
 		except Exception as e:
-			print("Error in init event: {} => {}".format(event, e))
+			#print("Error in init event: {} => {}".format(event, e))
+			pass
 			
 
 	#now we have the actual paths for the story parts so we can go to main loop
