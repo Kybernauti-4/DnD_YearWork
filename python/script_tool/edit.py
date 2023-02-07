@@ -5,24 +5,32 @@ import keyboard
 
 ignore_keys = ['up', 'down', 'left', 'right', 'tab', 'esc', 'enter']
 
-"""
-def add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_menu):
+
+def update_menu(line, horizontal, initial_cmlen, path, my_f_type, context_menu, screen):
 	#FIXME : it ain't working properly
 	try:
 		line[0][horizontal[0]-1]
 	except IndexError:
 		return
 
-	print('add_to_menu')
-	if line[0][horizontal[0]-1] == '[' and line[0][horizontal[0]] == ']':
+	add_to_menu = False
+	if len(context_menu) <= initial_cmlen:
+		if line[0][horizontal[0]-1] == '"' and line[0][horizontal[0]] == '"':
+			add_to_menu = True
+
+	else:
+		if line[0][horizontal[0]-1] != '"' or line[0][horizontal[0]] != '"':
+			for i in range(len(context_menu)):
+				if i >= initial_cmlen:
+					context_menu.pop(initial_cmlen)
+
+	if add_to_menu:
 		path_parts = path.split('\\')
 		match my_f_type:
 			case 'events':
 
-				if len(context_menu) > initial_cmlen:
-					return
+				extra_items = []
 				
-				print("Ading events to context menu")
 				new_path = ''
 				if 'python' in path_parts:
 					index = path_parts.index('python')
@@ -36,7 +44,14 @@ def add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_men
 				
 					for s in script_location:
 						for script in [file for file in os.listdir(os.path.join(new_path, script_location[s])) if file.endswith('.py')]:
-							context_menu.append(script.replace('.py', ''))
+							extra_items.append(script.replace('.py', ''))
+				
+				for item in extra_items:
+					item_num = 1
+					for line in screen:
+						if item in line:
+							item_num += 1
+					context_menu.append(f'{item}_{item_num}')
 
 			case 'sc_info':
 				
@@ -62,7 +77,6 @@ def add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_men
 				#TODO : add player context menu
 				context_menu = ['player']
 
-"""
 
 def flush_input():
     try:
@@ -102,8 +116,10 @@ def print_file(file_content):
 		screen.append(curr_line)
 	return screen
 
-def update_variable(e, vertical, screen, line, context_menu, context, horizontal, cm_idx, indent, insert, edit_mode, path, file, editing_done):
+def update_variable(e, vertical, screen, line, context_menu, context, horizontal, cm_idx, indent, insert, edit_mode, path, file, editing_done, initial_cmlen, my_f_type):
+	
 	global ignore_keys
+	update_menu(line, horizontal, initial_cmlen, path, my_f_type, context_menu, screen)
 
 	if horizontal[0] < 0:
 		horizontal[0] = 0
@@ -119,7 +135,6 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 				curr_line = screen[vertical[0]]
 				print(f'\u001b[32m{curr_line}\u001b[0m', end = '', flush=True)
 
-
 		if e.name == 'down':
 			if vertical[0] < len(screen) - 1:
 				curr_line = screen[vertical[0]]
@@ -129,7 +144,6 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 				vertical[0] += 1
 				curr_line = screen[vertical[0]]
 				print(f'\u001b[32m{curr_line}\u001b[0m', end = '', flush=True)
-		
 		
 		if e.name == 'enter':
 			curr_line = screen[vertical[0]]
@@ -193,6 +207,7 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 						else:
 							print(screen[i], end='', flush=True)
 				vertical[0] = len(screen) - 1
+			
 			else:
 				print(f'\r\u001b[{len(screen)-1}A\033[J', end='', flush=True)
 				new_screen = print_file(json.loads(''.join(screen)))
@@ -206,8 +221,6 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 					else:
 						print(screen[i], end='', flush=True)
 				vertical[0] = len(screen) - 1
-
-
 
 		if e.name == 's':
 			wrong = False
@@ -253,7 +266,6 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 					json.dump(json.loads(''.join(screen)), f, indent=4)
 				print(f'\u001b[32mFile has been saved!\u001b[0m')
 				editing_done[0] = True
-
 
 	else:
 		if e.name == 'up':
@@ -410,8 +422,7 @@ def edit(args, path):
 		edit_mode = [False]
 		editing_done = [False]
 
-		keyboard.on_press(lambda e: update_variable(e, vertical, screen, line, context_menu,context, horizontal, cm_idx, indent, insert, edit_mode, path, file, editing_done))
-		#keyboard.on_release(lambda e: add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_menu))	
+		keyboard.on_press(lambda e: update_variable(e, vertical, screen, line, context_menu, context, horizontal, cm_idx, indent, insert, edit_mode, path, file, editing_done, initial_cmlen, my_f_type))
 		while not editing_done[0]:
 			pass
 		keyboard.unhook_all()
@@ -536,7 +547,7 @@ def e(args, path):
 		edit_mode = [False]
 		editing_done = [False]
 
-		keyboard.on_press(lambda e: update_variable(e, vertical, screen, line, context_menu,context, horizontal, cm_idx, indent, insert, edit_mode, path, file, editing_done))
+		keyboard.on_press(lambda e: update_variable(e, vertical, screen, line, context_menu,context, horizontal, cm_idx, indent, insert, edit_mode, path, file, editing_done, initial_cmlen, my_f_type))
 		#keyboard.on_release(lambda e: add_to_menu(e, line, horizontal, initial_cmlen, path, my_f_type, context_menu))	
 		while not editing_done[0]:
 			pass
