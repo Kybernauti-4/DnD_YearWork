@@ -1,12 +1,5 @@
 {
-	"add_text_1":["&0","txt1.txt"],
-	"print_text_1":["&13","&4","&6"],
-	"add_text_2":["&0","txt2.txt"],
-	"print_text_2":["&13","&4","&6"],
+	"add_text_1":["&0","&4","&6","txt1.txt","txt2.txt"],
 	"ask_1":["&4", "What is your name?"],
-	"add_text_3":["&0","&11"],
-	"print_text_3":["&13","&4","&6"],
-	"ask_2":["&4", "Where do you want to go?", "Home", "School", "Work"],
-	"add_text_4":["&0","&11"],
-	"print_text_4":["&13","&4","&6"]
+	"ask_2":["&4", "Where do you want to go?", "Home", "School", "Work"]
 }

@@ -1,11 +1,10 @@
 {
     "id":{
         "ask":11,
-        "print_text":12,
-        "add_text":13
+        "add_text":12
     },
     "info":{
-        "func":[11,12,13],
+        "func":[11,12],
         "obj":[]
     }
 }

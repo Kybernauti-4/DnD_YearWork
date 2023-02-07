@@ -1,3 +1,5 @@
+import threading
+
 def ask(window, question, *answers):
 	if len(answers) == 0:
 		window.add_text(question + '<r>')
@@ -12,5 +14,10 @@ def ask(window, question, *answers):
 			else:
 				window.add_text(q_str)
 			i += 1
-	rval = window.getReturnValue()
-	return rval
+
+	rval = window.get_return_value()
+	if type(rval) == str:
+		window.add_text(rval)
+	elif type(rval) == list:
+		for line in rval:
+			window.add_text(line)
