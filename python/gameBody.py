@@ -6,8 +6,6 @@ import sys
 import fileHandler
 import stack
 
-#TODO Create a game body
-#TODO Create a smart garbage collector
 #! Handler is more or less done but a lot still isn't
 #TODO Comment handler (Kill me now)
 

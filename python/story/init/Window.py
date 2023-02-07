@@ -76,7 +76,6 @@ class Window():
 		return r
 
 	def format_render(self):
-		unhook = False
 
 		try:
 			line = self.screen[self.end_index]
@@ -109,36 +108,34 @@ class Window():
 
 
 		if i != 0 and '<un>' in self.render[i]:
-			unhook = True
+			self.screen[self.screen.index(self.render[self.skip])] = self.render[i].replace('<un>', '')
 			self.skip -= 1
-			try:
-				start_slice = self.render[i].index('<')
-				self.screen[self.screen.index(self.render[i])] = self.render[i][:start_slice]
-			except:
-				pass
 			
-		while not unhook:
-			if '<h>' in self.render[i]:
-				self.skip += 1
-				i+=1
-			else:
-				break
+		if '<h>' in self.render[i]:
+			self.screen[self.screen.index(self.render[i])] = self.render[i].replace('<h>', '')
+			self.render[i] = self.render[i].replace('<h>', '')
+			self.skip += 1
+				
+				
 
 	def do_render(self):
 		in_val = input()
+		
 		if self.return_value_set:
 			if in_val != '':
 				self.return_value = in_val
 				self.return_value_set = False
+			
+
 		fast_render = self.end_index - self.start_index - (1 if self.start_index == 0 else 0)
 		self.clear()
 		
 		#print(True if self.return_value == None else False)
 		for line in self.render:
 			self.curr_width = 0
-			line.replace('<h>', '')
-			line.replace('<un>', '')
-			line.replace('<r>', '')
+			line = line.replace('<h>', '')
+			line = line.replace('<un>', '')
+			line = line.replace('<r>', '')
 			words = line.split(' ')
 			for i in range(len(words)):
 				if fast_render> 0: 
@@ -172,3 +169,4 @@ class Window():
 				self.return_value_set = False
 		except:
 			pass
+		

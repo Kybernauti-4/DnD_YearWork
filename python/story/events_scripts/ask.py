@@ -1,5 +1,3 @@
-import threading
-
 def ask(window, question, *answers):
 	if len(answers) == 0:
 		window.add_text(question + '<r>')
@@ -21,3 +19,5 @@ def ask(window, question, *answers):
 	elif type(rval) == list:
 		for line in rval:
 			window.add_text(line)
+	#window.format_render()
+	return rval
