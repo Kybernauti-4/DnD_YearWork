@@ -25,7 +25,8 @@ def flush_input():
         while msvcrt.kbhit():
             msvcrt.getch()
     except ImportError:
-        import sys, termios
+        import sys
+        import termios
         termios.tcflush(sys.stdin, termios.TCIOFLUSH)
 
 def update_cmenu(command, new_cmenu='', new_invalid_message=''):

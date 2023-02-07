@@ -233,6 +233,7 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 
 			if wrong:
 				print(f'\r\u001b[{len(screen)-1}A\033[J', end='', flush=True)
+			
 				for i in range(len(screen)):
 					if i != len(screen) - 1:
 						if i == wrong_num_line:
@@ -247,8 +248,10 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 				vertical[0] = len(screen) - 1
 			
 			else:
+				print(f'\r\u001b[{len(screen)-1}A\033[J', end='', flush=True)
 				with open(os.path.join(path,file), 'w') as f:
 					json.dump(json.loads(''.join(screen)), f, indent=4)
+				print(f'\u001b[32mFile has been saved!\u001b[0m')
 				editing_done[0] = True
 
 
