@@ -401,7 +401,7 @@ def edit(args, path):
 		horizontal = [len(screen[-1])]
 
 		line = ['']
-		context_menu = ["[]", "{}", "\"\"", ":", "()"]
+		context_menu = ["[]", "{}", "\"\"", ":", "()","&"]
 		initial_cmlen = len(context_menu)
 		context = ['']
 		cm_idx = [0]
@@ -527,7 +527,7 @@ def e(args, path):
 		horizontal = [len(screen[-1])]
 
 		line = ['']
-		context_menu = ["[]", "{}", "\"\"", ":", "()"]
+		context_menu = ["[]", "{}", "\"\"", ":", "()", "&"]
 		initial_cmlen = len(context_menu)
 		context = ['']
 		cm_idx = [0]
