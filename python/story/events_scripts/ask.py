@@ -12,5 +12,5 @@ def ask(window, question, *answers):
 			else:
 				window.add_text(q_str)
 			i += 1
-	
-	return window.getReturnValue()
+	rval = window.getReturnValue()
+	return rval
