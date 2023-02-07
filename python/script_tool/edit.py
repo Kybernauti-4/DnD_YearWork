@@ -1,5 +1,6 @@
-import os
 import json
+import os
+
 import keyboard
 
 ignore_keys = ['up', 'down', 'left', 'right', 'tab', 'esc', 'enter']
@@ -69,7 +70,8 @@ def flush_input():
         while msvcrt.kbhit():
             msvcrt.getch()
     except ImportError:
-        import sys, termios
+        import sys
+        import termios
         termios.tcflush(sys.stdin, termios.TCIOFLUSH)
 
 def print_file(file_content):
@@ -160,11 +162,15 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 			wrong_num_line = 0
 			for line in screen:
 				wrong_num_line += 1
-				if line.strip() != '{' or line.strip() != '}':
+				if line != '{' and line != '}':
 					try:
 						if line[-1] == ',':
+							if screen[-2] == line:
+								raise Exception 
 							try_line = line[:-1]
 						else:
+							if screen[-2] != line:
+								raise Exception
 							try_line = line
 
 						json.loads('{'+try_line+'}')
@@ -186,9 +192,10 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 							print(f'\u001b[31m{screen[i]}\u001b[0m', end='', flush=True)
 						else:
 							print(screen[i], end='', flush=True)
+				vertical[0] = len(screen) - 1
 			else:
 				print(f'\r\u001b[{len(screen)-1}A\033[J', end='', flush=True)
-				new_screen = print_file(''.join(screen))
+				new_screen = print_file(json.loads(''.join(screen)))
 				screen.clear()
 				for line in new_screen:
 					screen.append(line)
@@ -198,6 +205,7 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 						print(screen[i])
 					else:
 						print(screen[i], end='', flush=True)
+				vertical[0] = len(screen) - 1
 
 
 
@@ -205,21 +213,26 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 			wrong = False
 			wrong_num_line = 0
 			for line in screen:
-				if screen != '{' or '}':
+				wrong_num_line += 1
+				if line != '{' and line != '}':
 					try:
 						if line[-1] == ',':
+							if screen[-2] == line:
+								raise Exception 
 							try_line = line[:-1]
 						else:
+							if screen[-2] != line:
+								raise Exception
 							try_line = line
 
 						json.loads('{'+try_line+'}')
 
 					except:
 						wrong = True
-						wrong_num_line = screen.index(line)
 						break
+
 			if wrong:
-				print(f'\r\u001b[{len(screen)}A\033[J', end='', flush=True)
+				print(f'\r\u001b[{len(screen)-1}A\033[J', end='', flush=True)
 				for i in range(len(screen)):
 					if i != len(screen) - 1:
 						if i == wrong_num_line:
@@ -231,8 +244,9 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 							print(f'\u001b[31m{screen[i]}\u001b[0m', end='', flush=True)
 						else:
 							print(screen[i], end='', flush=True)
-			else:
 				vertical[0] = len(screen) - 1
+			
+			else:
 				with open(os.path.join(path,file), 'w') as f:
 					json.dump(json.loads(''.join(screen)), f, indent=4)
 				editing_done[0] = True
@@ -317,6 +331,7 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 			context[0] = ''
 			cm_idx[0] = 0
 			indent[0] = 0
+			insert[0] = False
 			
 			for i in range(len(screen)):
 				if i != len(screen) - 1:
