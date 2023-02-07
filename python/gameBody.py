@@ -105,7 +105,7 @@ if __name__ == "__main__":
 
 	for event,args in init_events.items():
 		try:
-			print("Handling: {} => {}".format(event, args))
+			#print("Handling: {} => {}".format(event, args))
 			handle(event,args)
 		except Exception as e:
 			print("Error in init event: {} => {}".format(event, e))
@@ -118,7 +118,7 @@ if __name__ == "__main__":
 		story_events = fileHandler.read(os.path.join(story_part,'events.json'))
 		try:
 			if story_events['input'] == 'None':
-				print('Breaking out of main loop')
+				#print('Breaking out of main loop')
 				break
 		except:
 			pass
