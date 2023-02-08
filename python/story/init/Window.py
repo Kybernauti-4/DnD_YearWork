@@ -2,22 +2,32 @@ from time import sleep
 from math import ceil
 import threading
 
+#TODO Utilize threading to make render async
+#Use a var for num of lines that need to be rendered
+#increment each time a line is added
+#decrement each time render is done
+
 class Window():
 
 	def __init__(self, width, height) -> None:
 		self.height = height
 		self.width = width
+
 		self.slowtime = 0.03
 		self.screen = []
 		self.render = []
+		self.render_amount = 0
+
 		self.start_index = 0
 		self.end_index = 0
 		self.skip = 0
 		self.curr_height = 0
 		self.curr_width = 0
+
 		self.return_value = None
 		self.return_value_set = False
-		self.condition = threading.Event()
+
+		self.got_input = threading.Event()
 		pass
 
 	def add_text(self, text):
@@ -46,6 +56,7 @@ class Window():
 
 		for line in (text.splitlines() if type(text) == str else text):
 			self.screen.append(line)
+			self.render_amount += 1
 
 	def clear(self):
 		print("\x1B\x5B2J", end="")
@@ -63,33 +74,35 @@ class Window():
 	
 	def auto_render(self):
 		while self.thread_run:
-			in_val = input()
-		
-			if self.return_value_set:
-				if in_val != '':
-					self.return_value = in_val
-					self.return_value_set = False
-					self.condition.set()
+			if self.render_amount > 0:
+				self.format_render()
+				in_val = input()
 			
-			try:
-				if('<r>' in self.render[-1]):
-					self.return_value_set = True
-					for i in range(len(self.screen)):
-						if self.render[-1] == self.screen[i]:
-							self.screen[i] = self.render[-1].replace('<r>', '')
-				else:
-					self.return_value_set = False
-			except:
-				pass
-
-			self.format_render()
-			self.do_render()
+				if self.return_value_set:
+					if in_val != '':
+						self.return_value = in_val
+						self.return_value_set = False
+						self.got_input.set()
+				
+				try:
+					if('<r>' in self.render[-1]):
+						self.return_value_set = True
+						for i in range(len(self.screen)):
+							if self.render[-1] == self.screen[i]:
+								self.screen[i] = self.render[-1].replace('<r>', '')
+					else:
+						self.return_value_set = False
+				except:
+					pass
+				self.do_render()
+			else:
+				sleep(0.1)
 	
 	
 
 	def get_return_value(self):
-		self.condition.wait()
-		self.condition.clear()
+		self.got_input.wait()
+		self.got_input.clear()
 		r = self.return_value
 		self.return_value = None
 		return r
