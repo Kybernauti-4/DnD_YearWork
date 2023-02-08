@@ -14,10 +14,4 @@ def ask(window, question, *answers):
 			i += 1
 
 	rval = window.get_return_value()
-	if type(rval) == str:
-		window.add_text(rval)
-	elif type(rval) == list:
-		for line in rval:
-			window.add_text(line)
-	#window.format_render()
 	return rval

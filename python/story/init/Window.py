@@ -17,6 +17,7 @@ class Window():
 		self.curr_width = 0
 		self.return_value = None
 		self.return_value_set = False
+		self.condition = threading.Event()
 		pass
 
 	def add_text(self, text):
@@ -62,18 +63,37 @@ class Window():
 	
 	def auto_render(self):
 		while self.thread_run:
+			in_val = input()
+		
+			if self.return_value_set:
+				if in_val != '':
+					self.return_value = in_val
+					self.return_value_set = False
+					self.condition.set()
+			
+			try:
+				if('<r>' in self.render[-1]):
+					self.return_value_set = True
+					for i in range(len(self.screen)):
+						if self.render[-1] == self.screen[i]:
+							self.screen[i] = self.render[-1].replace('<r>', '')
+				else:
+					self.return_value_set = False
+			except:
+				pass
+
 			self.format_render()
 			self.do_render()
 	
-	def get_return_value(self):
-		sleep_time_ns = 1/1000000
-		while self.return_value == None:
-			sleep(sleep_time_ns)
+	
 
+	def get_return_value(self):
+		self.condition.wait()
+		self.condition.clear()
 		r = self.return_value
 		self.return_value = None
-		self.return_value_set = False
 		return r
+		
 
 	def format_render(self):
 
@@ -119,14 +139,6 @@ class Window():
 				
 
 	def do_render(self):
-		in_val = input()
-		
-		if self.return_value_set:
-			if in_val != '':
-				self.return_value = in_val
-				self.return_value_set = False
-			
-
 		fast_render = self.end_index - self.start_index - (1 if self.start_index == 0 else 0)
 		self.clear()
 		
@@ -159,14 +171,3 @@ class Window():
 				self.curr_width += 1
 			
 			fast_render -= 1
-		try:
-			if('<r>' in self.render[-1]):
-				self.return_value_set = True
-				for i in range(len(self.screen)):
-					if self.render[-1] == self.screen[i]:
-						self.screen[i] = self.render[-1].replace('<r>', '')
-			else:
-				self.return_value_set = False
-		except:
-			pass
-		

@@ -119,7 +119,6 @@ def print_file(file_content):
 def update_variable(e, vertical, screen, line, context_menu, context, horizontal, cm_idx, indent, insert, edit_mode, path, file, editing_done, initial_cmlen, my_f_type):
 	
 	global ignore_keys
-	update_menu(line, horizontal, initial_cmlen, path, my_f_type, context_menu, screen)
 
 	if horizontal[0] < 0:
 		horizontal[0] = 0
@@ -269,6 +268,7 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 
 	else:
 		if e.name == 'up':
+			update_menu(line, horizontal, initial_cmlen, path, my_f_type, context_menu, screen)
 			if len(context[0]) > 0:
 				del_len = len(context[0]) + len(line[0][horizontal[0]:])
 				print(f'\u001b[{del_len}D\u001b[K', end='', flush=True)
@@ -296,12 +296,14 @@ def update_variable(e, vertical, screen, line, context_menu, context, horizontal
 			horizontal[0] += 1
 
 		elif e.name == 'down' and len(context[0]) > 0:
+			update_menu(line, horizontal, initial_cmlen, path, my_f_type, context_menu, screen)
 			print(f'\r\u001b[K{line[0]}', end='', flush=True)
 			print(f'\u001b[{len(line[0]) - horizontal[0]}D', end='', flush=True)
 			cm_idx[0] = 0
 			context[0] = ''
 
 		elif e.name == 'tab':
+			update_menu(line, horizontal, initial_cmlen, path, my_f_type, context_menu, screen)
 			line[0] = line[0][:horizontal[0]] + context[0] + line[0][horizontal[0]:]
 			print(f'\r\u001b[K{line[0]}', end='', flush=True)
 			print(f'\u001b[{len(line[0]) - horizontal[0] - round(len(context[0]) / 2)}D', end='', flush=True)
