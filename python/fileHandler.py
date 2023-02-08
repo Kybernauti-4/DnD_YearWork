@@ -6,7 +6,7 @@ def read(filename):
 	try:
 		file = open(filename, 'r')
 	except:
-		print("file doesn't exist")
+		#print("file doesn't exist")
 		return {'input':'None'}
 	
 	if '.json' in filename:

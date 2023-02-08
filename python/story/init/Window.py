@@ -76,6 +76,7 @@ class Window():
 		while self.thread_run:
 			if self.render_amount > 0:
 				self.format_render()
+				self.render_amount -= 1
 				in_val = input()
 			
 				if self.return_value_set:
@@ -96,7 +97,28 @@ class Window():
 					pass
 				self.do_render()
 			else:
-				sleep(0.1)
+				if self.return_value_set:
+					in_val = input()
+					print(f'\u001b[A', end='', flush=True)
+					if in_val != '':
+						self.return_value = in_val
+						self.return_value_set = False
+						self.got_input.set()
+				else:
+					sleep(0.001)
+					continue
+				try:
+					if('<r>' in self.render[-1]):
+						self.return_value_set = True
+						for i in range(len(self.screen)):
+							if self.render[-1] == self.screen[i]:
+								self.screen[i] = self.render[-1].replace('<r>', '')
+					else:
+						self.return_value_set = False
+				except:
+					pass
+
+				sleep(0.001)
 	
 	
 
