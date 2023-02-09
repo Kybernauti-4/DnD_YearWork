@@ -1,12 +1,27 @@
 {
-	"ID":"Giganto",
+	"ID":"",
 	"type":"player",
-	"RPC":"0",
 	"player_info":{
 			"HP":300,
 			"MP":25,
 			"Name":"Giganto",
 			"Age":149,
 			"Gender":"Male"
-		}
+		},
+	"inventory":[
+			{
+				"ID":"1",
+				"Name":"Sword",
+				"Type":"Weapon",
+				"Damage":10,
+				"Durability":100
+			},
+			{
+				"ID":"2",
+				"Name":"Shield",
+				"Type":"Armor",
+				"Defense":5,
+				"Durability":100
+			}
+	]
 }
