@@ -1,27 +1,51 @@
 {
 	"ID":"",
 	"type":"player",
-	"player_info":{
-			"HP":300,
-			"MP":25,
+	"info":{
 			"Name":"Giganto",
 			"Age":149,
-			"Gender":"Male"
+			"Gender":"Male",
+
+			"HP":300,
+			"MP":25,
+			"Defense":10
+			
 		},
+
 	"inventory":[
 			{
 				"ID":"1",
 				"Name":"Sword",
-				"Type":"Weapon",
+				"Type":"Weapon-melee",
 				"Damage":10,
-				"Durability":100
+				"Durability":100,
+				"Usage":{"Durability":1}
 			},
 			{
 				"ID":"2",
 				"Name":"Shield",
 				"Type":"Armor",
 				"Defense":5,
-				"Durability":100
+				"Usage":{"Durability":2}
+			},
+			{
+				"ID":"3",
+				"Name":"Bow",
+				"Type":"Weapon-ranged",
+				"Damage":15,
+				"Durability":50,
+				"Usage":{"Durability":1}
+			},
+			{
+				"ID":"4",
+				"Name":"Staff",
+				"Type":"Weapon-magic",
+				"Damage":30,
+				"Durability":100,
+				"Usage":{
+					"Durability":1,
+					"MP":5
+				}
 			}
 	]
 }
