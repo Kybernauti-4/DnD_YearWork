@@ -19,6 +19,7 @@
 				"Type":"Weapon-melee",
 				"Damage":10,
 				"Durability":100,
+				"Weight":10,
 				"Usage":{"Durability":1}
 			},
 			{
@@ -26,6 +27,8 @@
 				"Name":"Shield",
 				"Type":"Armor",
 				"Defense":5,
+				"Durability":100,
+				"Weight":15,
 				"Usage":{"Durability":2}
 			},
 			{
@@ -34,6 +37,7 @@
 				"Type":"Weapon-ranged",
 				"Damage":15,
 				"Durability":50,
+				"Weight":5,
 				"Usage":{"Durability":1}
 			},
 			{
@@ -42,6 +46,7 @@
 				"Type":"Weapon-magic",
 				"Damage":30,
 				"Durability":100,
+				"Weight":5,
 				"Usage":{
 					"Durability":1,
 					"MP":5
