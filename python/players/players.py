@@ -1,5 +1,6 @@
 import json
 import random
+import os
 
 class Player:
 	
@@ -37,7 +38,7 @@ class Player:
 		PlayerData["player_info"] = self.info
 		PlayerData["inventory"] = self.inventory
 		
-		with open(self.pid + '.json', 'w') as f:
+		with open((os.path.dirname(__file__) + self.pid + '.json'), 'w') as f:
 			json.dump(PlayerData, f, indent=4)
 
 #def all_equal(interator):
