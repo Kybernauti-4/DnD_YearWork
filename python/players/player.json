@@ -8,15 +8,16 @@
 
 			"HP":300,
 			"MP":25,
-			"Defense":10
+			"Defense":10,
+			"Carry":100
 			
 		},
 
-	"inventory":[
+	"equiped":[
 			{
 				"ID":"1",
 				"Name":"Sword",
-				"Type":"Weapon-melee",
+				"Type":"weapon-melee",
 				"Damage":10,
 				"Durability":100,
 				"Weight":10,
@@ -30,11 +31,14 @@
 				"Durability":100,
 				"Weight":15,
 				"Usage":{"Durability":2}
-			},
+			}
+	],
+
+	"inventory":[
 			{
 				"ID":"3",
 				"Name":"Bow",
-				"Type":"Weapon-ranged",
+				"Type":"weapon-ranged",
 				"Damage":15,
 				"Durability":50,
 				"Weight":5,
@@ -43,7 +47,7 @@
 			{
 				"ID":"4",
 				"Name":"Staff",
-				"Type":"Weapon-magic",
+				"Type":"weapon-magic",
 				"Damage":30,
 				"Durability":100,
 				"Weight":5,

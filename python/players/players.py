@@ -19,6 +19,7 @@ class Player:
 		
 		self.info = PlayerData["info"]
 		self.inventory = PlayerData["inventory"]
+		self.equipped = PlayerData["equipped"]
 
 		
 	def getVar(self, var):
@@ -29,6 +30,45 @@ class Player:
 	
 	def getHit(self, damage):
 		self.info["HP"] -= damage
+
+	def equip(self, item):
+		if item['type'].split('-')[0] == 'weapon':
+			self.inventory.append(self.equipped[0])
+			self.equipped[0] = item
+			self.inventory.remove(item)
+		elif item['type'].split('-')[0] == 'armor':
+			self.inventory.append(self.equipped[1])
+			self.equipped[1] = item
+			self.inventory.remove(item)
+		else:
+			raise Exception('Invalid item type')
+
+	def unequip(self, item):
+		if item['type'].split('-')[0] == 'weapon':
+			self.inventory.append(self.equipped[0])
+			self.equipped[0] = None
+		elif item['type'].split('-')[0] == 'armor':
+			self.inventory.append(self.equipped[1])
+			self.equipped[1] = None
+		else:
+			raise Exception('Invalid item type')
+
+	def addItem(self, item):
+		total_weight = 0
+		for i in self.inventory:
+			total_weight += i['weight']
+		if total_weight + item['weight'] > self.info['Carry']:
+			raise Exception('Inventory full')
+		else:
+			self.inventory.append(item)
+	
+	def removeItem(self, item):
+		self.inventory.remove(item)
+
+	def usedItem(self, item):
+		item['Durability'] -= item['Usage']['Durability']
+		if item['uses'] <= 0:
+			self.inventory.remove(item)
 
 	def save(self):
 
