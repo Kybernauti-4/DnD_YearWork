@@ -15,11 +15,11 @@ class Player:
 		
 		self.pid = PlayerData["ID"]
 		if self.pid == '':
-			self.pid = ''.join(random.choice('0123456789abcdef'), 8) # u32
+			self.pid = ''.join([random.choice('0123456789abcdef') for i in range(8)]) # u32
 		
 		self.info = PlayerData["info"]
 		self.inventory = PlayerData["inventory"]
-		self.equipped = PlayerData["equipped"]
+		self.equiped = PlayerData["equiped"]
 
 		
 	def getVar(self, var):
@@ -33,23 +33,23 @@ class Player:
 
 	def equip(self, item):
 		if item['type'].split('-')[0] == 'weapon':
-			self.inventory.append(self.equipped[0])
-			self.equipped[0] = item
+			self.inventory.append(self.equiped[0])
+			self.equiped[0] = item
 			self.inventory.remove(item)
 		elif item['type'].split('-')[0] == 'armor':
-			self.inventory.append(self.equipped[1])
-			self.equipped[1] = item
+			self.inventory.append(self.equiped[1])
+			self.equiped[1] = item
 			self.inventory.remove(item)
 		else:
 			raise Exception('Invalid item type')
 
 	def unequip(self, item):
 		if item['type'].split('-')[0] == 'weapon':
-			self.inventory.append(self.equipped[0])
-			self.equipped[0] = None
+			self.inventory.append(self.equiped[0])
+			self.equiped[0] = None
 		elif item['type'].split('-')[0] == 'armor':
-			self.inventory.append(self.equipped[1])
-			self.equipped[1] = None
+			self.inventory.append(self.equiped[1])
+			self.equiped[1] = None
 		else:
 			raise Exception('Invalid item type')
 
