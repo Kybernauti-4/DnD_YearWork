@@ -1,11 +1,61 @@
 {
-	"ID":"player[Giganta]",
-	"RPC":"0",
-	"player_info":{
-			"HP":250,
-			"MP":50,
+	"ID":"",
+	"type":"player",
+	"info":{
 			"Name":"Giganta",
-			"Age":147,
-			"Gender":"Female"
-		}
+			"Age":137,
+			"Gender":"Female",
+
+			"HP":250,
+			"MP":75,
+			"Defense":5,
+			"Carry":75
+			
+		},
+
+	"equiped":[
+			{
+				"ID":"4",
+				"Name":"Staff",
+				"Type":"weapon-magic",
+				"Damage":30,
+				"Durability":100,
+				"Weight":5,
+				"Usage":{
+					"Durability":1,
+					"MP":5
+				}
+			}
+	],
+
+	"inventory":[
+			{
+				"ID":"3",
+				"Name":"Bow",
+				"Type":"weapon-ranged",
+				"Damage":15,
+				"Durability":50,
+				"Weight":5,
+				"Usage":{"Durability":1}
+			},
+			{
+				"ID":"1",
+				"Name":"Sword",
+				"Type":"weapon-melee",
+				"Damage":10,
+				"Durability":100,
+				"Weight":10,
+				"Usage":{"Durability":1}
+			},
+			{
+				"ID":"2",
+				"Name":"Shield",
+				"Type":"Armor",
+				"Defense":5,
+				"Durability":100,
+				"Weight":15,
+				"Usage":{"Durability":2}
+			}
+			
+	]
 }
