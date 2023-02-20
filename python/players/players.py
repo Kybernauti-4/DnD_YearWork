@@ -32,26 +32,53 @@ class Player:
 		self.info["HP"] -= damage
 
 	def equip(self, item):
-		if item['type'].split('-')[0] == 'weapon':
-			self.inventory.append(self.equiped[0])
-			self.equiped[0] = item
-			self.inventory.remove(item)
-		elif item['type'].split('-')[0] == 'armor':
-			self.inventory.append(self.equiped[1])
-			self.equiped[1] = item
-			self.inventory.remove(item)
-		else:
-			raise Exception('Invalid item type')
+		type == item['type'].split('-')[0]
+		if type != 'weapon' or type != 'armor':
+			raise Exception('Invalid item type to equip')
+
+		try:
+			self.removeItem(item)
+		except:
+			raise 'Cannot equip item, not in inventory'
+
+		match type:
+			case 'weapon':
+				try:
+					self.addItem(self.equiped[0])
+				except:
+					self.addItem(item)
+					raise 'Cannot unequip item, inventory full'
+
+				self.equiped[0] = item
+
+			case 'armor':
+				try:
+					self.addItem(self.equiped[1])
+				except:
+					self.addItem(item)
+					raise 'Cannot unequip item, inventory full'
+
+				self.equiped[1] = item
+
 
 	def unequip(self, item):
-		if item['type'].split('-')[0] == 'weapon':
-			self.inventory.append(self.equiped[0])
-			self.equiped[0] = None
-		elif item['type'].split('-')[0] == 'armor':
-			self.inventory.append(self.equiped[1])
-			self.equiped[1] = None
-		else:
-			raise Exception('Invalid item type')
+		type == item['type'].split('-')[0]
+		if type != 'weapon' or type != 'armor':
+			raise Exception('Invalid item type to equip')
+		
+		if self.equiped[0] != item or self.equiped[1] != item:
+			raise Exception('Item not equipped')
+
+		try:
+			self.addItem(item)
+		except:
+			raise 'Cannot unequip item, inventory full'
+		
+		match type:
+			case 'weapon':
+				self.equiped[0] = None
+			case 'armor':
+				self.equiped[1] = None
 
 	def addItem(self, item):
 		total_weight = 0
@@ -66,9 +93,18 @@ class Player:
 		self.inventory.remove(item)
 
 	def usedItem(self, item):
+		in_inventory = False
+		for i in self.inventory:
+			if i == item:
+				in_inventory = True
+		
+		if not in_inventory:
+			raise Exception('Item not in inventory')
+
 		item['Durability'] -= item['Usage']['Durability']
 		if item['uses'] <= 0:
 			self.inventory.remove(item)
+			return 'Item destroyed'
 
 	def save(self):
 
