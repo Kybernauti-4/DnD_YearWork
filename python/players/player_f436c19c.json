@@ -16,7 +16,7 @@
             "name": "Sword",
             "type": "weapon-melee",
             "damage": 10,
-            "durability": 97,
+            "durability": 93,
             "weight": 10,
             "usage": {
                 "durability": 1
