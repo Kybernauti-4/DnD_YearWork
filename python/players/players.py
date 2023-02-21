@@ -32,8 +32,8 @@ class Player:
 		self.info["HP"] -= damage
 
 	def equip(self, item):
-		type == item['type'].split('-')[0]
-		if type != 'weapon' or type != 'armor':
+		type = item['type'].split('-')[0]
+		if type != 'weapon' and type != 'shield':
 			raise Exception('Invalid item type to equip')
 
 		try:
@@ -51,7 +51,7 @@ class Player:
 
 				self.equiped[0] = item
 
-			case 'armor':
+			case 'shield':
 				try:
 					self.addItem(self.equiped[1])
 				except:
@@ -62,11 +62,11 @@ class Player:
 
 
 	def unequip(self, item):
-		type == item['type'].split('-')[0]
-		if type != 'weapon' or type != 'armor':
+		type = item['type'].split('-')[0]
+		if type != 'weapon' and type != 'shield':
 			raise Exception('Invalid item type to equip')
 		
-		if self.equiped[0] != item or self.equiped[1] != item:
+		if self.equiped[0] != item and self.equiped[1] != item:
 			raise Exception('Item not equipped')
 
 		try:
@@ -77,14 +77,14 @@ class Player:
 		match type:
 			case 'weapon':
 				self.equiped[0] = None
-			case 'armor':
+			case 'shield':
 				self.equiped[1] = None
 
 	def addItem(self, item):
 		total_weight = 0
 		for i in self.inventory:
 			total_weight += i['weight']
-		if total_weight + item['weight'] > self.info['Carry']:
+		if total_weight + item['weight'] > self.info['carry']:
 			raise Exception('Inventory full')
 		else:
 			self.inventory.append(item)
@@ -101,7 +101,7 @@ class Player:
 		if not in_inventory:
 			raise Exception('Item not in inventory')
 
-		item['Durability'] -= item['Usage']['Durability']
+		item['durability'] -= item['usage']['durability']
 		if item['uses'] <= 0:
 			self.inventory.remove(item)
 			return 'Item destroyed'
