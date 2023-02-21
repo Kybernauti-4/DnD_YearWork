@@ -1,7 +1,7 @@
 {
     "ID": "f436c19c",
     "type": "player",
-    "player_info": {
+    "info": {
         "name": "Giganto",
         "age": 149,
         "gender": "Male",
@@ -16,7 +16,7 @@
             "name": "Sword",
             "type": "weapon-melee",
             "damage": 10,
-            "durability": 99,
+            "durability": 97,
             "weight": 10,
             "usage": {
                 "durability": 1

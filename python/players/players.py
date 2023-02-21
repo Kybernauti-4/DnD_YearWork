@@ -115,17 +115,9 @@ class Player:
 		PlayerData = {}
 		PlayerData["ID"] = self.pid
 		PlayerData["type"] = "player"
-		PlayerData["player_info"] = self.info
+		PlayerData["info"] = self.info
 		PlayerData["equiped"] = self.equiped
 		PlayerData["inventory"] = self.inventory
 		
 		with open((os.path.join(os.path.dirname(__file__), f'player_{self.pid}.json')), 'w') as f:
 			json.dump(PlayerData, f, indent=4)
-
-#def all_equal(interator):
-#	iterator = iter(iterator)
-#	try:
-#		first = next(interator)
-#	except StopIteration:
-#		return True
-#	return all(first == x for x in iterator)
