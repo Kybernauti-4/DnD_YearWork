@@ -93,16 +93,20 @@ class Player:
 		self.inventory.remove(item)
 
 	def usedItem(self, item):
-		in_inventory = False
+		availible = False
 		for i in self.inventory:
 			if i == item:
-				in_inventory = True
+				availible = True
+
+		for i in self.equiped:
+			if i == item:
+				availible = True
 		
-		if not in_inventory:
+		if not availible:
 			raise Exception('Item not in inventory')
 
 		item['durability'] -= item['usage']['durability']
-		if item['uses'] <= 0:
+		if item['durability'] <= 0:
 			self.inventory.remove(item)
 			return 'Item destroyed'
 
@@ -112,9 +116,10 @@ class Player:
 		PlayerData["ID"] = self.pid
 		PlayerData["type"] = "player"
 		PlayerData["player_info"] = self.info
+		PlayerData["equiped"] = self.equiped
 		PlayerData["inventory"] = self.inventory
 		
-		with open((os.path.dirname(__file__) + self.pid + '.json'), 'w') as f:
+		with open((os.path.join(os.path.dirname(__file__), f'player_{self.pid}.json')), 'w') as f:
 			json.dump(PlayerData, f, indent=4)
 
 #def all_equal(interator):

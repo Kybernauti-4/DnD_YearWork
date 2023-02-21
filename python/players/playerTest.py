@@ -15,3 +15,6 @@ for piece in p1.equiped:
 
 for piece in p2.equiped:
 	print(f"p2 - equip: {piece['name']}")
+
+p1.usedItem(p1.equiped[0])
+p1.save()
