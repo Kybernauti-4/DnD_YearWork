@@ -2,14 +2,14 @@
     "id":{
         "comm":1,
         "deviceHandler":2,
-        "players":3,
+        "Player":3,
         "Window":4,
         "storyHandler":5,
         "auto_render":6,
         "stop_auto_render":7
     },
     "info":{
-        "lock" : [0,4,6],
+        "lock" : [0,3,4,6],
         "func":[1,2,5,6,7],
         "obj":[3,4]
     }

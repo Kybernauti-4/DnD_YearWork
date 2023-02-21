@@ -1,5 +1,3 @@
-import players
-
 unique_pid = 'global'
 
 def attack(p1, p2):
