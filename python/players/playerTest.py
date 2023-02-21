@@ -12,7 +12,5 @@ p2 = players.Player(p2_file)
 
 attack.attack(p1, p2)
 
-p1.usedItem(p1.equiped[0])
 p1.save()
-p2.usedItem(p2.equiped[0])
 p2.save()
