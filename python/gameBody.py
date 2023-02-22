@@ -114,20 +114,20 @@ if __name__ == "__main__":
 			
 
 	#now we have the actual paths for the story parts so we can go to main loop
-	#story_parts = getValue(5)
-	#for story_part in story_parts:
-	#	valueStack.setValueByID(0,story_part)
-	#	story_events = fileHandler.read(os.path.join(story_part,'events.json'))
-	#	try:
-	#		if story_events['input'] == 'None':
-	#			#print('Breaking out of main loop')
-	#			break
-	#	except:
-	#		pass
-	#	i=0
-	#	for event,args in story_events.items():
-	#		if match := re.search('_[0-99]+', event):
-	#			event = event.replace(match.group(0),'')
-	#		i+=1
-	#		handle(event,args)
+	story_parts = getValue(5)
+	for story_part in story_parts:
+		valueStack.setValueByID(0,story_part)
+		story_events = fileHandler.read(os.path.join(story_part,'events.json'))
+		try:
+			if story_events['input'] == 'None':
+				#print('Breaking out of main loop')
+				break
+		except:
+			pass
+		i=0
+		for event,args in story_events.items():
+			if match := re.search('_[0-99]+', event):
+				event = event.replace(match.group(0),'')
+			i+=1
+			handle(event,args)
 		#garbageCollector()
