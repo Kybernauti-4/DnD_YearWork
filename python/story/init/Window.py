@@ -2,11 +2,6 @@ from time import sleep
 from math import ceil
 import threading
 
-#TODO Utilize threading to make render async
-#Use a var for num of lines that need to be rendered
-#increment each time a line is added
-#decrement each time render is done
-
 class Window():
 
 	def __init__(self, width, height) -> None:
@@ -95,7 +90,9 @@ class Window():
 						self.return_value_set = False
 				except:
 					pass
+
 				self.do_render()
+
 			else:
 				if self.return_value_set:
 					in_val = input()
@@ -105,20 +102,9 @@ class Window():
 						self.return_value_set = False
 						self.got_input.set()
 				else:
-					sleep(0.001)
+					input()
+					print(f'\u001b[A', end='', flush=True)
 					continue
-				try:
-					if('<r>' in self.render[-1]):
-						self.return_value_set = True
-						for i in range(len(self.screen)):
-							if self.render[-1] == self.screen[i]:
-								self.screen[i] = self.render[-1].replace('<r>', '')
-					else:
-						self.return_value_set = False
-				except:
-					pass
-
-				sleep(0.001)
 	
 	
 

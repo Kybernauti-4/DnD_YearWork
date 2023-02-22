@@ -56,26 +56,26 @@ def handle(event_string, arguments):
 	#input('Press enter to continue')
 	stack = valueStack.getValue()
 	for arg in arguments:
-		if '&' in str(arg):
-			id = arg.replace('&','')
-			for value in stack:
-				if value[1] == int(id):
-					arguments[arguments.index(arg)] = value[0]
-					if int(id) not in info['info']['lock']:
-						valueStack.pop(stack.index(value))
+		if '&' in str(arg): # check if I am asking for adress
+			id = arg.replace('&','') # get the numeric adress
+			for value in stack: # search stack for that addres which is always at [1] in element
+				if value[1] == int(id): # if found
+					arguments[arguments.index(arg)] = value[0] # assign that value to replace the adress
+					if int(id) not in info['info']['lock']: # if the value is not locked
+						valueStack.pop(stack.index(value)) # remove it from the stack
 
-	event_string_id = info['id'][event_string]
+	event_string_id = info['id'][event_string] # get the id of the event
 	
-	if event_string_id in info['info']['func']:
-		function = getattr(imports[event_string],event_string)
-		return_value = function(*arguments)
+	if event_string_id in info['info']['func']: # if the event is a function
+		function = getattr(imports[event_string],event_string) # get the function from the file
+		return_value = function(*arguments) # run the function and unpack the argument list into the arguments
 		if return_value != None:
-			valueStack.append([return_value,event_string_id])
+			valueStack.append([return_value,event_string_id]) # if the function returns a value, add it to the stack
 
-	elif event_string_id in info['info']['obj']:
-		obj = getattr(imports[event_string],event_string)
-		use_obj = obj(*arguments)
-		valueStack.append([use_obj,event_string_id])
+	elif event_string_id in info['info']['obj']: # if the event is an object
+		obj = getattr(imports[event_string],event_string) # get the object from the file
+		use_obj = obj(*arguments) # create the objeck and unpack the argument list into the constructor arguments
+		valueStack.append([use_obj,event_string_id]) # add the object to the stack
 
 #* used more or less just for getting values into variables in the main loop
 def getValue(id):
@@ -115,7 +115,9 @@ if __name__ == "__main__":
 
 	#now we have the actual paths for the story parts so we can go to main loop
 	story_parts = getValue(5)
-	for story_part in story_parts:
+	story_index = 0
+	while True:
+		story_part = story_parts[story_index]
 		valueStack.setValueByID(0,story_part)
 		story_events = fileHandler.read(os.path.join(story_part,'events.json'))
 		try:
@@ -125,9 +127,12 @@ if __name__ == "__main__":
 		except:
 			pass
 		i=0
+		#actual events inside the story parts
 		for event,args in story_events.items():
 			if match := re.search('_[0-99]+', event):
 				event = event.replace(match.group(0),'')
 			i+=1
 			handle(event,args)
+		
+		story_index+=1
 		#garbageCollector()
