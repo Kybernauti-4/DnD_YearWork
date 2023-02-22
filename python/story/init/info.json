@@ -1,7 +1,7 @@
 {
     "id":{
         "comm":1,
-        "deviceHandler":2,
+        "getPlayerList":2,
         "Player":3,
         "Window":4,
         "storyHandler":5,

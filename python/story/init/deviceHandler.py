@@ -1,6 +1,6 @@
 import serial.tools.list_ports
 
-import story.init.comm as comm
+import comm
 
 devices = {}
 
@@ -29,7 +29,7 @@ def id_chck(comport):
 		comm.sendMessage(comport, msg_txt)
 	
 
-def deviceHandler():
+def findDevices():
 	ports = serial.tools.list_ports.comports() # list of all the ports present on the machine
 	counter = 0 # counter for while function and a tool for assigning the ports to a dict
 	while counter<len(ports):
@@ -74,7 +74,6 @@ def deviceHandler():
 			fix_count+=1
 		else:
 			fix_count+=1
-	#print(devices)
-	return devices
+	#print(devices)	
 	# I wrote it last week and I have no idea what the fuck is going on here anymore
-	#print(comm) # control print
+	return devices

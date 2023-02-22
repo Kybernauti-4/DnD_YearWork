@@ -96,7 +96,6 @@ def garbageCollector():
 #* The main loop
 if __name__ == "__main__":
 	#* First we go through init events and then we go through the story
-	player_folder = os.path.join(os.getcwd(), 'players')
 	story_path = os.path.join(os.getcwd(), 'story')
 	valueStack.append([story_path,0])
 	init_events = fileHandler.read(os.path.join(os.getcwd(),'story','init.json'))
@@ -108,23 +107,27 @@ if __name__ == "__main__":
 		except Exception as e:
 			#print("Error in init event: {} => {}".format(event, e))
 			pass
+	
+	playerlist = getValue(2)
+	print('Init events done')
+	print('Playerlist: {}'.format(playerlist))
 			
 
 	#now we have the actual paths for the story parts so we can go to main loop
-	story_parts = getValue(5)
-	for story_part in story_parts:
-		valueStack.setValueByID(0,story_part)
-		story_events = fileHandler.read(os.path.join(story_part,'events.json'))
-		try:
-			if story_events['input'] == 'None':
-				#print('Breaking out of main loop')
-				break
-		except:
-			pass
-		i=0
-		for event,args in story_events.items():
-			if match := re.search('_[0-99]+', event):
-				event = event.replace(match.group(0),'')
-			i+=1
-			handle(event,args)
+	#story_parts = getValue(5)
+	#for story_part in story_parts:
+	#	valueStack.setValueByID(0,story_part)
+	#	story_events = fileHandler.read(os.path.join(story_part,'events.json'))
+	#	try:
+	#		if story_events['input'] == 'None':
+	#			#print('Breaking out of main loop')
+	#			break
+	#	except:
+	#		pass
+	#	i=0
+	#	for event,args in story_events.items():
+	#		if match := re.search('_[0-99]+', event):
+	#			event = event.replace(match.group(0),'')
+	#		i+=1
+	#		handle(event,args)
 		#garbageCollector()
