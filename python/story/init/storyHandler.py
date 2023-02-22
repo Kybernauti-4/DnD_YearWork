@@ -1,4 +1,5 @@
 import os
+import json
 
 def storyHandler(folder):
     # Initialize an empty list to store the file paths
@@ -10,9 +11,11 @@ def storyHandler(folder):
         for filename in files:
             # Check if the file is named "storypart.txt"
             if filename == "storypart.json":
-                # If it is, add the full file path to the list
-                file_path = root
-                file_paths.append(file_path)
+                include = json.load(open(os.path.join(root, filename), 'r'))['include']
+                if include:
+                    # If it is and is to be included, add the full file path to the list
+                    file_path = root
+                    file_paths.append(file_path)
 
     # Return the list of file paths
     return file_paths
