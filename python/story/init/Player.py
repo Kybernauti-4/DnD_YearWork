@@ -15,7 +15,7 @@ class Player:
 		
 		self.pid = PlayerData["ID"]
 		if self.pid == '':
-			self.pid = ''.join([random.choice('0123456789abcdef') for i in range(8)]) # u32
+			self.pid = ''.join([random.choice('0123456789abcdef') for i in range(16)]) # u64
 		
 		self.info = PlayerData["info"]
 		self.inventory = PlayerData["inventory"]
@@ -119,5 +119,5 @@ class Player:
 		PlayerData["equiped"] = self.equiped
 		PlayerData["inventory"] = self.inventory
 		
-		with open((os.path.join(os.path.dirname(__file__), f'player_{self.pid}.json')), 'w') as f:
+		with open(os.path.join('story', 'players', f'player_{self.pid}.json'), 'w') as f:
 			json.dump(PlayerData, f, indent=4)
