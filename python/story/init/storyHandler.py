@@ -9,7 +9,7 @@ def storyHandler(folder):
         # Iterate over the files in the current folder
         for filename in files:
             # Check if the file is named "storypart.txt"
-            if filename == "storypart.txt":
+            if filename == "storypart.json":
                 # If it is, add the full file path to the list
                 file_path = root
                 file_paths.append(file_path)
