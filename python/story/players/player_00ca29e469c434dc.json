@@ -57,6 +57,18 @@
                 "durability": 1,
                 "MP": 5
             }
+        },
+        {
+            "ID": "5",
+            "name": "Potion",
+            "type": "potion",
+            "effects": {
+                "HP": 50
+            },
+            "weight": 5,
+            "usage": {
+                "durability": 1
+            }
         }
     ]
 }

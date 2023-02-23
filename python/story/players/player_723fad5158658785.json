@@ -57,6 +57,18 @@
             "usage": {
                 "durability": 2
             }
+        },
+        {
+            "ID": "5",
+            "name": "Potion",
+            "type": "potion",
+            "effects": {
+                "HP": 50
+            },
+            "durability": 5,
+            "usage": {
+                "durability": 1
+            }
         }
     ]
 }
