@@ -68,6 +68,7 @@ def handle(event_string, arguments):
 	
 	if event_string_id in info['info']['func']: # if the event is a function
 		function = getattr(imports[event_string],event_string) # get the function from the file
+		#print(arguments)
 		return_value = function(*arguments) # run the function and unpack the argument list into the arguments
 		if return_value != None:
 			valueStack.append([return_value,event_string_id]) # if the function returns a value, add it to the stack
@@ -109,8 +110,8 @@ if __name__ == "__main__":
 			pass
 	
 	playerlist = getValue(2)
-	print('Init events done')
-	print('Playerlist: {}'.format(playerlist))
+	#print('Init events done')
+	#print('Playerlist: {}'.format(playerlist))
 			
 
 	#now we have the actual paths for the story parts so we can go to main loop

@@ -6,10 +6,14 @@ def add_text(path,*args):
 	args = args[2:]
 	texts = []
 	for arg in args:
-		if arg.endswith('.txt'):
-			texts.append(open(os.path.join(path,'texts',arg), 'r').read())
-		else:
-			texts.append(arg)
+		try:
+			if arg.endswith('.txt'):
+				texts.append(open(os.path.join(path,'texts',arg), 'r').read())
+			else:
+				texts.append(arg)
+		except:
+			texts.append(str(arg))
+
 	for text in texts:
 		if type(text) == str:
 			window.add_text(text)

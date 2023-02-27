@@ -1,9 +1,7 @@
 {
 	"add_text_1":["&0","&4","&6","txt1.txt","txt2.txt"],
-	"ask_1":["&4", "What is your name?"],
+	"ask_1":["&4", "What is your name?", {}],
 	"add_text_2":["&0","&4","&6","&11"],
-	"ask_2":["&4", "Where do you want to go?", {
-		"Home":1, "School":2, "Work":3}
-	],
+	"ask_2":["&4", "Where do you want to go?", {"Home":1, "School":2, "Work":3}],
 	"add_text_3":["&0","&4","&6","&11"]
 }

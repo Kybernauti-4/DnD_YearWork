@@ -1,13 +1,5 @@
-from story.init.Player import Player
-from story.events_scripts.usePot import usePot
-import os
+def testfn(window, question, answers):
+	print (window, question, answers)
 
-player = Player(os.path.join('story', 'players', 'player_723fad5158658785.json'))
-
-for item in player.inventory:
-	if item['type'] == 'potion':
-		usePot(player, item)
-		break
-
-print(player.info)
-print(player.inventory)
+var = ["&4", "Where do you want to go?", {"Home":1, "School":2, "Work":3}]
+testfn(*var)
