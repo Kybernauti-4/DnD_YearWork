@@ -2,5 +2,5 @@
 	"getPlayerList":["story//players"],
 	"storyHandler":["&0"],
 	"Window":[128,15],
-	"auto_render":["&4"]
+	"auto_render":["&7"]
 } 

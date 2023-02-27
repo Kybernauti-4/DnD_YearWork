@@ -1,16 +1,16 @@
 {
     "id":{
-        "comm":1,
-        "getPlayerList":2,
-        "Player":3,
-        "Window":4,
-        "storyHandler":5,
-        "auto_render":6,
-        "stop_auto_render":7
+        "comm":4,
+        "getPlayerList":5,
+        "Player":6,
+        "Window":7,
+        "storyHandler":8,
+        "auto_render":9,
+        "stop_auto_render":10
     },
     "info":{
-        "lock" : [0,3,4,6],
-        "func":[1,2,5,6,7],
-        "obj":[3,4]
+        "lock" : [0,6,7,9],
+        "func":[4,5,8,9,10],
+        "obj":[6,7]
     }
 }

@@ -9,7 +9,10 @@ import stack
 #! Handler is more or less done but a lot still isn't
 #TODO Comment handler (Kill me now)
 
-#! &0 == current path
+#! &0 = current path
+#! &1 = storyStack
+#! &2 = valueStack
+#! &3 = story_index
 
 npc_list = []
 item_list = []
@@ -109,13 +112,13 @@ if __name__ == "__main__":
 			#print("Error in init event: {} => {}".format(event, e))
 			pass
 	
-	playerlist = getValue(2)
+	playerlist = getValue(5)
 	#print('Init events done')
 	#print('Playerlist: {}'.format(playerlist))
 			
 
 	#now we have the actual paths for the story parts so we can go to main loop
-	story_parts = getValue(5)
+	story_parts = getValue(8)
 	story_index = 0
 	while True:
 		story_part = story_parts[story_index]
