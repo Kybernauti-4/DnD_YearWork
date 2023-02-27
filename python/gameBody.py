@@ -18,14 +18,8 @@ npc_list = []
 item_list = []
 playerlist = []
 valueStack = stack.listStack() #* The global stack that will be used
-storyStack = stack.listStack()
+storyStack = []
 story_index = 0
-
-default_values = {
-	1: storyStack,
-	2: valueStack,
-	3: story_index
-}
 
 #* import loop
 scripts_path = fileHandler.read('scriptlocation.json')
@@ -106,6 +100,7 @@ def garbageCollector():
 
 #* The main loop
 if __name__ == "__main__":
+	#include globals
 	#* First we go through init events and then we go through the story
 	story_path = os.path.join(os.getcwd(), 'story')
 	valueStack.append([story_path,0])
@@ -124,13 +119,23 @@ if __name__ == "__main__":
 	#print('Init events done')
 	#print('Playerlist: {}'.format(playerlist))
 
+	#create list of defaults the defaults with correct values
+	default_values = {
+		1:storyStack,
+		2:playerlist,
+		3:story_index,
+	}
+
+
 	#After init, upload runtine vars to the value stack
 	for index,default in default_values.items():
 		valueStack.append([default,index])
 			
-
+	#print(storyStack)
 	#now we have the actual paths for the story parts so we can go to main loop
 	while True:
+		story_index = getValue(3)
+		storyStack = getValue(1)
 		story_part = storyStack[story_index]
 		valueStack.setValueByID(0,story_part)
 		story_events = fileHandler.read(os.path.join(story_part,'events.json'))
@@ -148,5 +153,5 @@ if __name__ == "__main__":
 			i+=1
 			handle(event,args)
 		
-		story_index+=1
+		valueStack.setValueByID(3,story_index+1)
 		#garbageCollector()

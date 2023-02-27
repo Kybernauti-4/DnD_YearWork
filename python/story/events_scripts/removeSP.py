@@ -8,7 +8,7 @@ def removeSP(storyStack, SP_ID):
 		for filename in files:
 			# Check if the file is named "storypart.txt"
 			if filename == "storypart.json":
-				ID = json.load(open(os.path.join(root, filename), 'r'))['include']
+				ID = json.load(open(os.path.join(root, filename), 'r'))['ID']
 				if ID == SP_ID:
 					storyStack.pop(storyStack.index(os.path.join(root, filename)))
 					return

@@ -19,7 +19,7 @@ class listStack:
                 self.stack.pop(argument)
     
     
-    def moveItem(self, what, where):
+    def moveItem(self, what : int, where : int):
         to = what + where
         self.stack.insert(to, self.stack.pop(what))
 
@@ -46,6 +46,9 @@ class listStack:
                     return val
         else:
             return self.stack[index]
+
+    def insert(self, index, value):
+        self.stack.insert(index, value)
 class dictStack:
 
     def __init__(self) -> None:
