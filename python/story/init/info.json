@@ -5,12 +5,11 @@
         "Player":6,
         "Window":7,
         "storyHandler":8,
-        "auto_render":9,
-        "stop_auto_render":10
+        "auto_render":9
     },
     "info":{
-        "lock" : [0,6,7,9],
-        "func":[4,5,8,9,10],
+        "lock" : [0,1,2,3,6,7,9],
+        "func":[4,5,8,9],
         "obj":[6,7]
     }
 }

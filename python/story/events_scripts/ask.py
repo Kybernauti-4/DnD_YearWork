@@ -1,4 +1,4 @@
-def ask(window, question, answers):
+def ask(window, question, answers = {}):
 	if len(answers) == 0:
 		window.add_text(question + '<r>')
 	else:
@@ -15,6 +15,7 @@ def ask(window, question, answers):
 			i += 1
 
 	windowVal = window.get_return_value()
+	window.add_text(windowVal)
 
 	if len(answers) == 0:
 		return windowVal
@@ -27,5 +28,5 @@ def ask(window, question, answers):
 	rvalues = list(answers.values())
 	if rval == '':
 		rval = rvalues[int(windowVal) - 1]
-				
+	
 	return rval

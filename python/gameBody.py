@@ -19,6 +19,13 @@ item_list = []
 playerlist = []
 valueStack = stack.listStack() #* The global stack that will be used
 storyStack = stack.listStack()
+story_index = 0
+
+default_values = {
+	1: storyStack,
+	2: valueStack,
+	3: story_index
+}
 
 #* import loop
 scripts_path = fileHandler.read('scriptlocation.json')
@@ -113,15 +120,18 @@ if __name__ == "__main__":
 			pass
 	
 	playerlist = getValue(5)
+	storyStack = getValue(8)
 	#print('Init events done')
 	#print('Playerlist: {}'.format(playerlist))
+
+	#After init, upload runtine vars to the value stack
+	for index,default in default_values.items():
+		valueStack.append([default,index])
 			
 
 	#now we have the actual paths for the story parts so we can go to main loop
-	story_parts = getValue(8)
-	story_index = 0
 	while True:
-		story_part = story_parts[story_index]
+		story_part = storyStack[story_index]
 		valueStack.setValueByID(0,story_part)
 		story_events = fileHandler.read(os.path.join(story_part,'events.json'))
 		try:

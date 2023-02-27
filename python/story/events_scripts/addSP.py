@@ -1,8 +1,8 @@
 import os
 import json
 
-def excludeSP(storyStack, SP_ID):
-	
+def addSP(storyStack, story_index, SP_ID):
+
 	for root, directories, files in os.walk('story'):
 		# Iterate over the files in the current folder
 		for filename in files:
@@ -10,5 +10,5 @@ def excludeSP(storyStack, SP_ID):
 			if filename == "storypart.json":
 				ID = json.load(open(os.path.join(root, filename), 'r'))['include']
 				if ID == SP_ID:
-					storyStack.pop(storyStack.index(os.path.join(root, filename)))
+					storyStack.insert(story_index, os.path.join(root, filename))
 					return
