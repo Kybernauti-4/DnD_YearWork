@@ -13,13 +13,15 @@ import stack
 #! &1 = storyStack
 #! &2 = valueStack
 #! &3 = story_index
+#! &4 = playerlist
+#! &5 = event_index 
 
 npc_list = []
 item_list = []
 playerlist = []
 valueStack = stack.listStack() #* The global stack that will be used
 storyStack = []
-story_index = 0
+
 
 #* import loop
 scripts_path = fileHandler.read('scriptlocation.json')
@@ -114,8 +116,10 @@ if __name__ == "__main__":
 			#print("Error in init event: {} => {}".format(event, e))
 			pass
 	
-	playerlist = getValue(5)
-	storyStack = getValue(8)
+	playerlist = getValue(7)
+	storyStack = getValue(10)
+	event_index = 0
+	story_index = 0
 	#print('Init events done')
 	#print('Playerlist: {}'.format(playerlist))
 
@@ -124,6 +128,8 @@ if __name__ == "__main__":
 		1:storyStack,
 		2:playerlist,
 		3:story_index,
+		4:playerlist,
+		5:event_index,
 	}
 
 
@@ -145,12 +151,13 @@ if __name__ == "__main__":
 				break
 		except:
 			pass
-		i=0
 		#actual events inside the story parts
+		valueStack.setValueByID(5,0)
 		for event,args in story_events.items():
-			if match := re.search('_[0-99]+', event):
+			event_index = getValue(5)
+			if match := re.search('_[0-999]+', event):
 				event = event.replace(match.group(0),'')
-			i+=1
+			valueStack.setValueByID(5,event_index+1)
 			handle(event,args)
 		
 		valueStack.setValueByID(3,story_index+1)
