@@ -153,12 +153,34 @@ if __name__ == "__main__":
 			pass
 		#actual events inside the story parts
 		valueStack.setValueByID(5,0)
-		for event,args in story_events.items():
+		while True:
+			#update event_index
 			event_index = getValue(5)
-			if match := re.search('_[0-999]+', event):
-				event = event.replace(match.group(0),'')
+
+			#update events to enable live adding of events
+			story_events = fileHandler.read(os.path.join(story_part,'events.json'))
+			
+			#create list that can be accessed by event_index so that changes can be felt
+			events = list(story_events.keys())
+			args = list(story_events.values())
+
+			#assign values to use in handle
+			try:
+				event = events[event_index]
+				arg = args[event_index]
+			except:
+				#This means that there are no more events
+				break
+
+			#magic to get the pure event name without the index
+			event = '_'.join(event.split('_')[:-1])
+
+			#handle the event
+			handle(event,arg)
+
+			#update event_index
 			valueStack.setValueByID(5,event_index+1)
-			handle(event,args)
+			
 		
 		valueStack.setValueByID(3,story_index+1)
 		#garbageCollector()
