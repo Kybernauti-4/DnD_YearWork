@@ -169,6 +169,7 @@ if __name__ == "__main__":
 				event = events[event_index]
 				arg = args[event_index]
 			except:
+				#! What if last event is deciding event?
 				#This means that there are no more events
 				break
 
