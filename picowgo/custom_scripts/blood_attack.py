@@ -4,7 +4,7 @@ fist = {
 	"damage": 1
 }
 
-def attack(p1, p2):
+def blood_attack(p1, p2):
 	global fist
 	# p1 is the attacker
 	weapon = fist
@@ -17,7 +17,14 @@ def attack(p1, p2):
 	damage = weapon['damage']
 	#got damage from weapon now decrease it by armor unless its magic
 	
+	p1.getHit(damage/2)
+	if weapon != fist:
+		p1.usedItem(weapon)
+	
+	damage = damage * 2
+
 	if weapon['type'].split('-')[1] != 'magic':
+		damage -= p2.defense
 		for item in p2.equiped:
 			if item['type'].split('-')[0] == 'shield':
 				damage -= item['defense']
@@ -26,7 +33,7 @@ def attack(p1, p2):
 	
 	if damage < 0:
 		damage = 0
-	
+		
 	p2.getHit(damage)
 	if weapon != fist:
 		p1.usedItem(weapon)
