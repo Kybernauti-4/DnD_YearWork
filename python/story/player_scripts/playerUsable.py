@@ -18,7 +18,8 @@ def playerUsable(p):
 		sys.path.append('story/player_scripts')
 		script = importlib.import_module(script[:-3])
 		if script.id == 'global' or script.id == p.pid:
-			usable_scripts[script.name] = script
+			if script.name != '':
+				usable_scripts[script.name] = script
 	
 	return usable_scripts
 
