@@ -33,7 +33,7 @@ class listStack:
         self.stack[index][0] = value
     
     
-    def getValue(self, index=None, value = None, id = None):
+    def getValue(self, index = None, value = None, id = None):
         if index == None:
             return self.stack
         if value != None:
