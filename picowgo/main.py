@@ -102,10 +102,11 @@ while True:
 		led.toggle()
 	
 	elif compareCaseIns(recv_msg.split('_')[0], 'script'):
-		data = fileHandler.read(f'custom_scripts/{recv_msg.split("_")[1]}')
+		script_name = '_'.join(recv_msg.split("_")[1:])
+		data = fileHandler.read(f'custom_scripts/{script_name}')
 		print(data)
 		led.toggle()
-		
+
 	else:
 		print (recv_msg + " -ack")
 		led.toggle()

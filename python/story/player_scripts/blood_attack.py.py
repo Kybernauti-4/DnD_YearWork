@@ -1,4 +1,4 @@
-id = '0ca29e469c434dc'
+id = '00ca29e469c434dc'
 
 fist = {
 	"name": "Fist",
