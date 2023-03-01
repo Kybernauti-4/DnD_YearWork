@@ -11,9 +11,9 @@ import stack
 
 #! &0 = current path
 #! &1 = storyStack
-#! &2 = valueStack
+#! &2 = playerlist
 #! &3 = story_index
-#! &4 = playerlist
+#! &4 = duunno for now
 #! &5 = event_index 
 
 npc_list = []
@@ -128,8 +128,7 @@ if __name__ == "__main__":
 		1:storyStack,
 		2:playerlist,
 		3:story_index,
-		4:playerlist,
-		5:event_index,
+		4:event_index,
 	}
 
 
