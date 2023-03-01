@@ -1,5 +1,24 @@
 {
-	"add_text_1":["&0","&9","&11","txt1.txt","txt2.txt"],
-	"ask_1":["&9", "Where do you want to go?", {"Home":2, "School":3, "Work":4}],
-	"addSP_1":["&0","&1","&3","&12"]
+    "add_text_1": [
+        "&0",
+        "&9",
+        "&11",
+        "txt1.txt",
+        "txt2.txt"
+    ],
+    "ask_1": [
+        "&9",
+        "Where do you want to go?",
+        {
+            "Home": 2,
+            "School": 3,
+            "Work": 4
+        }
+    ],
+    "addSP_1": [
+        "&0",
+        "&1",
+        "&3",
+        "&12"
+    ]
 }

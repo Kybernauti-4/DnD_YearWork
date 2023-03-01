@@ -7,9 +7,8 @@ ignore_keys = ['up', 'down', 'left', 'right', 'tab', 'esc', 'enter']
 
 
 def update_menu(line, horizontal, initial_cmlen, path, my_f_type, context_menu, screen):
-	#FIXME : it ain't working properly
 	try:
-		line[0][horizontal[0]-1]
+		line[0][horizontal[0]]
 	except IndexError:
 		return
 
