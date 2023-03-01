@@ -2,6 +2,7 @@ import deviceHandler
 import comm
 import os
 import json
+from Player import Player
 
 
 def getPlayerList(folder):
@@ -22,7 +23,13 @@ def getPlayerList(folder):
 		for player in players:
 			with open(os.path.join(folder, player), 'r') as f:
 				playerlist.append(json.load(f))
-		
+	
+	for player in playerlist:
+		try:
+			p = Player(player)
+		except:
+			playerlist.remove(player)
+			
 	return playerlist
 
 
