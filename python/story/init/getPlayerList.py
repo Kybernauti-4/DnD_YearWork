@@ -9,31 +9,33 @@ def getPlayerList(folder):
 	playerlist =[]
 	try:
 		devicesList = deviceHandler.findDevices()
-		for player in devicesList:
-			comm.sendMessage(player, 'sendpdata')
-			playerlist.append(json.loads(comm.readMessageBlock(player, True)))
-	except:
-		players = os.listdir(folder)
-		for player in players:
-			with open(os.path.join(folder, player), 'r') as f:
-				playerlist.append(json.load(f))
-	
-	if len(playerlist) == 0:
-		players = os.listdir(folder)
-		for player in players:
-			with open(os.path.join(folder, player), 'r') as f:
-				playerlist.append(json.load(f))
-	
-	for player in playerlist:
+	except: devicesList = []
+
+	players = os.listdir(folder)
+	for player in players:
 		try:
-			p = Player(player)
+			p = Player(os.path.join(folder, player))
+			playerlist.append(p)
 		except:
-			playerlist.remove(player)
-			
+			pass
+
+	for player in devicesList:
+		comm.sendMessage(player, 'sendpdata')
+		player_data = json.loads(comm.readMessageBlock(player, True))
+		with open(os.path.join(folder, 'temp.json'), 'w') as f:
+			json.dump(player_data, f)
+			try:
+				p = Player(os.path.join('story\\players', 'temp.json'))
+				p.save()
+				playerlist.append(p)
+			except:
+				pass
+			os.remove(os.path.join(folder, 'temp.json'))
+				
 	return playerlist
 
 
 if __name__ == '__main__':
-	player_path = os.path.join('story', 'players')
+	player_path = os.path.join('story\\players')
 	print(plist := getPlayerList(player_path))
-	print(plist[0]['info']['name'])
+	print(plist[0].info)
