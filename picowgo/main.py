@@ -12,8 +12,12 @@ led.toggle()
 sleep(2)
 
 led.toggle()
+filename = ''
+for file in os.listdir():
+	if file.endswith(".json"):
+		filename = file
 
-filename = 'player_00ca29e469c434dc.json'
+		
 try:
 	repair_count = int(fileHandler.readJSON(filename, 'RPC')) if (fileHandler.readJSON(filename, 'RPC') != 'NoFileError') else 0
 except:
@@ -44,6 +48,12 @@ while True:
 		data = fileHandler.read(filename)
 		ID = data["ID"]
 		print(ID)
+		led.toggle()
+
+	elif compareCaseIns(recv_msg, 'type'):
+		data = fileHandler.read(filename)
+		type = data["type"]
+		print(type)
 		led.toggle()
 
 	elif compareCaseIns(recv_msg, 'IDError'):

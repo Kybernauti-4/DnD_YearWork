@@ -19,7 +19,7 @@ def readMessage(comport, decoding = False, encoding = 'UTF-8'):
 	# message has to be read and decoded, if you want
 	# ! THIS FUNCTION WILL READ ONE LINE AFTER THE THE FEEDBACK MESSAGE !
 	data = comport.readlines()
-	print(data)
+	#print(data)
 	iterator = iter(data)
 	index = 0
 	while(True):
@@ -28,13 +28,13 @@ def readMessage(comport, decoding = False, encoding = 'UTF-8'):
 			break
 	# used to get the message out of it and not the feedback
 	better_data = data[index:]
-	print((better_data[0].decode('UTF-8')).strip() if decoding else better_data[0])
+	#print((better_data[0].decode('UTF-8')).strip() if decoding else better_data[0])
 	return (better_data[0].decode('UTF-8')).strip() if decoding else better_data[0] # return decoded or encoded, doesn't matter
 
 def readMessageBlock(comport,decoding = False, encoding = 'UTF-8'):
 	# The same as readMessage but used to get the entire block of data coming through
 	data = comport.readlines()
-	print(last_send)
+	#print(last_send)
 	iterator = iter(data)
 	index = 0
 	while(True):
