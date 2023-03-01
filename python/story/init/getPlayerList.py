@@ -46,5 +46,5 @@ def getPlayerList(folder):
 if __name__ == '__main__':
 	player_path = os.path.join('story\\players')
 	print(plist := getPlayerList(player_path))
-	print(plist[0].info,'\n',plist[0].inventory,'\n',plist[0].equiped)
-	print(plist[1].info,'\n',plist[1].inventory,'\n',plist[1].equiped)
+	#print(plist[0].info,'\n',plist[0].inventory,'\n',plist[0].equiped)
+	#print(plist[1].info,'\n',plist[1].inventory,'\n',plist[1].equiped)

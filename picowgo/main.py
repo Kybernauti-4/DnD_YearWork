@@ -44,6 +44,7 @@ def clear():
 
 while True:
 	recv_msg = input()
+	led.toggle()
 	if compareCaseIns(recv_msg, 'ID'):
 		data = fileHandler.read(filename)
 		ID = data["ID"]
@@ -67,9 +68,9 @@ while True:
 			newID = ID
 		fileHandler.rewriteJSON(filename, 'ID', data['ID'], newID)
 		fileHandler.rewriteJSON(filename, 'RPC', str(repair_count),str(repair_count+1))
-		led.toggle()
 		repair_count+=1
 		print('ID Moved Up')
+		led.toggle()
 
 	elif compareCaseIns(recv_msg, 'IDRepair'):
 		data = fileHandler.read(filename)
@@ -85,14 +86,26 @@ while True:
 		led.toggle()
 		repair_count = 0
 		print('ID Repaired Up')
+		led.toggle()
 	
 	elif compareCaseIns(recv_msg, 'clear'):
 		clear()
+		led.toggle()
 		
 	elif compareCaseIns(recv_msg, 'sendpdata'):
 		data = fileHandler.read(filename)
 		print(data)
-
+		led.toggle()
+	
+	elif compareCaseIns(recv_msg, 'scripts_list'):
+		print(os.listdir('custom_scripts'))
+		led.toggle()
+	
+	elif compareCaseIns(recv_msg.split('_')[0], 'script'):
+		data = fileHandler.read(f'custom_scripts/{recv_msg.split("_")[1]}')
+		print(data)
+		led.toggle()
+		
 	else:
 		print (recv_msg + " -ack")
 		led.toggle()
