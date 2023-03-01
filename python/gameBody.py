@@ -32,7 +32,7 @@ info = {'id':{},'info':{}}
 
 for index,path in scripts_path.items():
 	import_path = os.path.join(os.getcwd(),path)
-	sys.path.insert(int(index),import_path)
+	sys.path.append(import_path)
 	for event in os.listdir(import_path):
 		if os.path.isfile(os.path.join(import_path, event)) and '.py' in event: 
 			event_scripts_list.append(event.replace('.py',''))

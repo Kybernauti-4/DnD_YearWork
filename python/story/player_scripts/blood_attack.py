@@ -1,4 +1,5 @@
 id = '00ca29e469c434dc'
+name = 'Blood Attack'
 
 fist = {
 	"name": "Fist",
