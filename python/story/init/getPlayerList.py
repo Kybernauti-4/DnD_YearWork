@@ -19,8 +19,8 @@ def getPlayerList(folder):
 		except:
 			pass
 
-	for player in devicesList:
-		comm.sendMessage(player, 'sendpdata')
+	for device in devicesList:
+		comm.sendMessage(device, 'sendpdata')
 		player_data = json.loads(comm.readMessageBlock(player, True))
 		with open(os.path.join(folder, 'temp.json'), 'w') as f:
 			json.dump(player_data, f)

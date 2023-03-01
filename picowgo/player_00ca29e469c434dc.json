@@ -1,0 +1,74 @@
+{
+    "ID": "00ca29e469c434dc",
+    "type": "player",
+    "info": {
+        "name": "Giganto",
+        "age": 149,
+        "gender": "Male",
+        "HP": 300,
+        "MP": 25,
+        "defense": 10,
+        "carry": 100
+    },
+    "equiped": [
+        {
+            "ID": "1",
+            "name": "Sword",
+            "type": "weapon-melee",
+            "damage": 10,
+            "durability": 93,
+            "weight": 10,
+            "usage": {
+                "durability": 1
+            }
+        },
+        {
+            "ID": "2",
+            "name": "Shield",
+            "type": "shield",
+            "defense": 5,
+            "durability": 100,
+            "weight": 15,
+            "usage": {
+                "durability": 2
+            }
+        }
+    ],
+    "inventory": [
+        {
+            "ID": "3",
+            "name": "Bow",
+            "type": "weapon-ranged",
+            "damage": 15,
+            "durability": 50,
+            "weight": 5,
+            "usage": {
+                "durability": 1
+            }
+        },
+        {
+            "ID": "4",
+            "name": "Staff",
+            "type": "weapon-magic",
+            "damage": 30,
+            "durability": 100,
+            "weight": 5,
+            "usage": {
+                "durability": 1,
+                "MP": 5
+            }
+        },
+        {
+            "ID": "5",
+            "name": "Potion",
+            "type": "potion",
+            "effects": {
+                "HP": 50
+            },
+            "weight": 5,
+            "usage": {
+                "durability": 1
+            }
+        }
+    ]
+}

@@ -13,9 +13,12 @@ sleep(2)
 
 led.toggle()
 
-filename = 'player.json'
-
-repair_count = int(fileHandler.readJSON(filename, 'RPC')) if (fileHandler.readJSON(filename, 'RPC') != 'NoFileError') else 0
+filename = 'player_00ca29e469c434dc.json'
+try:
+	repair_count = int(fileHandler.readJSON(filename, 'RPC')) if (fileHandler.readJSON(filename, 'RPC') != 'NoFileError') else 0
+except:
+	repair_count = 0
+	pass
 
 def strBetween(string:str, startStr, endStr):
 	try:
