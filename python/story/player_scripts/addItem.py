@@ -9,14 +9,17 @@ def addItem(path, p1, item_str):
 			with open(file, "r") as f:
 				item_to_add = json.load(f)
 
+
+	print(item_to_add)
+
 	item_ID = 0
-	for item in p1.equipped:
-		if item['ID'] > item_ID:
-			item_ID = item['ID']
+	for item in p1.equiped:
+		if int(item['ID']) > item_ID:
+			item_ID = int(item['ID'])
 	
 	for item in p1.inventory:
-		if item['ID'] > item_ID:
-			item_ID = item['ID']
+		if int(item['ID']) > item_ID:
+			item_ID = int(item['ID'])
 	
 	item_ID += 1
 	item_to_add['ID'] = item_ID

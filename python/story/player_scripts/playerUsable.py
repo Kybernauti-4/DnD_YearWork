@@ -12,7 +12,7 @@ def playerUsable(p):
 		if not script.endswith('.py'):
 			continue
 
-		if script == 'playerUsable.py':
+		if script == __file__:
 			continue
 		
 		sys.path.append('story/player_scripts')
