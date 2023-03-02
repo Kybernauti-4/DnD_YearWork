@@ -154,10 +154,10 @@ if __name__ == "__main__":
 		except:
 			pass
 		#actual events inside the story parts
-		valueStack.setValueByID(5,0)
+		valueStack.setValueByID(4,0)
 		while True:
 			#update event_index
-			event_index = getValue(5)
+			event_index = getValue(4)
 
 			#update events to enable live adding of events
 			story_events = fileHandler.read(os.path.join(story_part,'events.json'))
@@ -177,12 +177,11 @@ if __name__ == "__main__":
 			#magic to get the pure event name without the index
 			event = '_'.join(event.split('_')[:-1])
 
-			print("Handling: {} => {}".format(event, arg))
 			#handle the event
 			handle(event,arg)
 
 			#update event_index
-			valueStack.setValueByID(5,event_index+1)
+			valueStack.setValueByID(4,event_index+1)
 			
 		
 		valueStack.setValueByID(3,story_index+1)

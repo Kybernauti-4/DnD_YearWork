@@ -69,12 +69,14 @@ class Window():
 	
 	def auto_render(self):
 		while self.thread_run:
+			in_val = input()
+			if in_val.casefold().strip() == 'exit':
+				self.stop_auto_render()
+				exit()
 			if self.render_amount > 0:
 			
 				self.format_render()
 				self.render_amount -= 1
-				
-				in_val = input()
 			
 				if self.return_value_set:
 					if in_val != '':
@@ -97,15 +99,15 @@ class Window():
 
 			else:
 				if self.return_value_set:
-					in_val = input()
-					print(f'\u001b[A', end='', flush=True)
 					if in_val != '':
 						self.return_value = in_val
 						self.return_value_set = False
 						self.got_input.set()
+					else:
+						print(f'\u001b[A', end='', flush=True)
 				else:
-					input()
-					print(f'\u001b[A', end='', flush=True)
+					if in_val == '':
+						print(f'\u001b[A', end='', flush=True)
 					continue
 	
 	

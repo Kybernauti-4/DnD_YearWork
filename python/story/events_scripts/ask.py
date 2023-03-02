@@ -15,7 +15,6 @@ def ask(window, question, answers = {}):
 			i += 1
 
 	windowVal = window.get_return_value()
-	window.add_text(windowVal)
 
 	if len(answers) == 0:
 		return windowVal
@@ -24,6 +23,11 @@ def ask(window, question, answers = {}):
 	for answer, value in answers.items():
 		if windowVal.casefold().strip() == answer.casefold().strip():
 			rval = value
+
+	try:
+		rval = int(rval)
+	except:
+		rval = ask(window, question + ' Wrong input, please try again.', answers)
 
 	rvalues = list(answers.values())
 	if rval == '':
