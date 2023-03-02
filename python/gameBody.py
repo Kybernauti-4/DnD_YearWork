@@ -32,7 +32,7 @@ info = {'id':{},'info':{}}
 
 for index,path in scripts_path.items():
 	import_path = os.path.join(os.getcwd(),path)
-	sys.path.append(import_path)
+	sys.path.insert(int(index), import_path)
 	for event in os.listdir(import_path):
 		if os.path.isfile(os.path.join(import_path, event)) and '.py' in event: 
 			event_scripts_list.append(event.replace('.py',''))
@@ -58,8 +58,8 @@ imports = dict(zip(event_scripts_list, import_list))
 #	print("Imported: {} => {}".format(import_key, import_name))
 
 def handle(event_string, arguments):
-	#print("Handling: {} => {}".format(event_string, arguments))
-	#input('Press enter to continue')
+	
+	
 	stack = valueStack.getValue()
 	for arg in arguments:
 		if '&' in str(arg): # check if I am asking for adress
@@ -69,6 +69,9 @@ def handle(event_string, arguments):
 					arguments[arguments.index(arg)] = value[0] # assign that value to replace the adress
 					if int(id) not in info['info']['lock']: # if the value is not locked
 						valueStack.pop(stack.index(value)) # remove it from the stack
+
+	#print("Handling: {} => {}".format(event_string, arguments))
+	#input('Press enter to continue')
 
 	event_string_id = info['id'][event_string] # get the id of the event
 	
@@ -174,6 +177,7 @@ if __name__ == "__main__":
 			#magic to get the pure event name without the index
 			event = '_'.join(event.split('_')[:-1])
 
+			print("Handling: {} => {}".format(event, arg))
 			#handle the event
 			handle(event,arg)
 

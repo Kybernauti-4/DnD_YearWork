@@ -12,7 +12,7 @@ def add_text(path,*args):
 			else:
 				texts.append(arg)
 		except:
-			#texts.append(str(path))
+			texts.append(str(path))
 			texts.append(str(arg))
 
 	for text in texts:
