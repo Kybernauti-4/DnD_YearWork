@@ -6,7 +6,7 @@ def ask(window, question, answers = {}):
 		i = 0
 		answers_list = list(answers.keys())
 		for answer in answers_list:
-			q_str = f"{i+1}: {answer}"
+			q_str = f"{answer}"
 			
 			if answer == answers_list[-1]:
 				window.add_text(q_str + '<r>')
