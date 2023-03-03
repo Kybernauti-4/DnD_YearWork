@@ -1,6 +1,7 @@
-from time import sleep
-from math import ceil
 import threading
+from math import ceil
+from time import sleep
+
 
 class Window():
 
@@ -71,18 +72,18 @@ class Window():
 		while self.thread_run:
 			in_val = input()
 			if in_val.casefold().strip() == 'exit':
-				self.stop_auto_render()
+				#self.stop_auto_render()
 				exit()
 			if self.render_amount > 0:
 			
 				self.format_render()
 				self.render_amount -= 1
 			
-				if self.return_value_set:
-					if in_val != '':
-						self.return_value = in_val
-						self.return_value_set = False
-						self.got_input.set()
+				#if self.return_value_set:
+				#	if in_val != '':
+				#		self.return_value = in_val
+				#		self.return_value_set = False
+				#		self.got_input.set()
 				
 				try:
 					if('<r>' in self.render[-1]):
@@ -90,8 +91,6 @@ class Window():
 						for i in range(len(self.screen)):
 							if self.render[-1] == self.screen[i]:
 								self.screen[i] = self.render[-1].replace('<r>', '')
-					else:
-						self.return_value_set = False
 				except:
 					pass
 
@@ -102,6 +101,10 @@ class Window():
 					if in_val != '':
 						self.return_value = in_val
 						self.return_value_set = False
+
+						self.add_text(in_val)
+						self.format_render()	
+						
 						self.got_input.set()
 					else:
 						print(f'\u001b[A', end='', flush=True)
