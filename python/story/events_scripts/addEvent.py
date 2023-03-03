@@ -1,6 +1,7 @@
 import json
 import os
 
+
 def addEvent(path, event_name, args):
 	if type(event_name) == str:
 		with open(os.path.join(path, 'events.json'), 'r') as file:

@@ -72,8 +72,9 @@ class Window():
 		while self.thread_run:
 			in_val = input()
 			if in_val.casefold().strip() == 'exit':
-				#self.stop_auto_render()
-				exit()
+				self.return_value = 'exit'
+				self.got_input.set()
+				break
 			if self.render_amount > 0:
 			
 				self.format_render()
@@ -112,8 +113,6 @@ class Window():
 					if in_val == '':
 						print(f'\u001b[A', end='', flush=True)
 					continue
-	
-	
 
 	def get_return_value(self):
 		self.got_input.wait()
