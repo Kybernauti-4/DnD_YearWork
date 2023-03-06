@@ -1,10 +1,19 @@
 {
-    "add_text_1": ["&0","&9","&11","txt1.txt","txt2.txt"],
+    "add_text_1": ["&0","&9","&11","txt1.txt"],
     "ask_1": ["&9","Who do you want to fight",
         {
-            "Fight_1": {"addEvent":["&0","add_text", ["&0","&9","&11","fight_1.txt"]]},
-            "Fight_2": {"addEvent":["&0","add_text", ["&0","&9","&11","fight_1.txt"]]},
-            "Fight_3":"combat.json"
+            "one": {
+                "add_text_1":["&0","&9","&11","fight_1.txt"],
+                "self":"true"
+            },
+            "two": {
+                "add_text_1":["&0","&9","&11","fight_2.txt"],
+                "self":"true"
+            },
+            "three":{
+                "putVal":["fight_3.txt"],
+                "combat.json":""
+            }
         }
     ]
 }

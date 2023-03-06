@@ -57,16 +57,25 @@ imports = dict(zip(event_scripts_list, import_list))
 #for import_key,import_name in imports.items():
 #	print("Imported: {} => {}".format(import_key, import_name))
 
-def handle(event_string, arguments):
+def adressReplace(arguments):
 	stack = valueStack.getValue()
 	for arg in arguments:
-		if '&' in str(arg): # check if I am asking for adress
-			id = arg.replace('&','') # get the numeric adress
-			for value in stack: # search stack for that addres which is always at [1] in element
-				if value[1] == int(id): # if found
-					arguments[arguments.index(arg)] = value[0] # assign that value to replace the adress
-					if int(id) not in info['info']['lock']: # if the value is not locked
-						valueStack.pop(stack.index(value)) # remove it from the stack
+		try:
+			if '&' in arg: # check if I am asking for adress
+				id = arg.replace('&','') # get the numeric adress
+				for value in stack: # search stack for that addres which is always at [1] in element
+					if value[1] == int(id): # if found
+						arguments[arguments.index(arg)] = value[0] # assign that value to replace the adress
+						if int(id) not in info['info']['lock']: # if the value is not locked
+							valueStack.pop(stack.index(value)) # remove it from the stack
+		except:
+			pass
+	
+	return arguments
+
+def handle(event_string, arguments):
+
+	arguments = adressReplace(arguments)
 
 	#print("Handling: {} => {}".format(event_string, arguments))
 	#input('Press enter to continue')
@@ -78,12 +87,27 @@ def handle(event_string, arguments):
 		#print(arguments)
 		return_value = function(*arguments) # run the function and unpack the argument list into the arguments
 		if return_value != None:
-			valueStack.append([return_value,event_string_id]) # if the function returns a value, add it to the stack
+			if type(return_value) == dict:
+				for raw_key,raw_val in return_value.items():
+					key = '_'.join(raw_key.split('_')[:-1])
+					val = adressReplace(raw_val)
+					if key in list(imports.keys()):
+						function == getattr(imports['addEvent'], 'addEvent')
+						function(getValue(0), key, val)
+					elif key == 'self' and val == 'true':
+						function == getattr(imports['addEvent'], 'addEvent')
+						function(getValue(0), event_string, arguments)
+					else:
+						valueStack.append([return_value,event_string_id]) # if the function returns a value, add it to the stack
+			else:
+				valueStack.append([return_value,event_string_id])
 
 	elif event_string_id in info['info']['obj']: # if the event is an object
 		obj = getattr(imports[event_string],event_string) # get the object from the file
 		use_obj = obj(*arguments) # create the objeck and unpack the argument list into the constructor arguments
 		valueStack.append([use_obj,event_string_id]) # add the object to the stack
+
+
 
 #* used more or less just for getting values into variables in the main loop
 def getValue(id):

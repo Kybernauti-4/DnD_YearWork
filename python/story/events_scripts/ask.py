@@ -27,11 +27,12 @@ def ask(window, question, answers = {}):
 	for answer, value in answers.items():
 		if windowVal.casefold().strip() == answer.casefold().strip():
 			rval = value
-
-	try:
-		rval = int(rval)
-	except:
-		rval = ask(window, question + ' Wrong input, please try again.', answers)
+			
+	if rval == '':
+		try:
+			windowVal = int(rval)
+		except:
+			rval = ask(window, question + ' Wrong input, please try again.', answers)
 
 	rvalues = list(answers.values())
 	if rval == '':
