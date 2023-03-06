@@ -57,8 +57,9 @@ imports = dict(zip(event_scripts_list, import_list))
 #for import_key,import_name in imports.items():
 #	print("Imported: {} => {}".format(import_key, import_name))
 
-def adressReplace(arguments):
+def adressReplace(arguments_in):
 	stack = valueStack.getValue()
+	arguments = arguments_in.copy()
 	for arg in arguments:
 		try:
 			if '&' in arg: # check if I am asking for adress
@@ -73,9 +74,9 @@ def adressReplace(arguments):
 	
 	return arguments
 
-def handle(event_string, arguments):
+def handle(event_string, arguments_in):
 
-	arguments = adressReplace(arguments)
+	arguments = adressReplace(arguments_in)
 
 	#print("Handling: {} => {}".format(event_string, arguments))
 	#input('Press enter to continue')
@@ -88,15 +89,26 @@ def handle(event_string, arguments):
 		return_value = function(*arguments) # run the function and unpack the argument list into the arguments
 		if return_value != None:
 			if type(return_value) == dict:
-				for raw_key,raw_val in return_value.items():
-					key = '_'.join(raw_key.split('_')[:-1])
-					val = adressReplace(raw_val)
+				for raw_key,val in return_value.items():
+					if '_' in raw_key: 
+						key = '_'.join(raw_key.split('_')[:-1])
+					else:
+						key = raw_key
 					if key in list(imports.keys()):
-						function == getattr(imports['addEvent'], 'addEvent')
+						function = getattr(imports['addEvent'], 'addEvent')
 						function(getValue(0), key, val)
 					elif key == 'self' and val == 'true':
-						function == getattr(imports['addEvent'], 'addEvent')
-						function(getValue(0), event_string, arguments)
+						function = getattr(imports['addEvent'], 'addEvent')
+						function(getValue(0), event_string, arguments_in)
+					elif key.endswith('.json'):
+						events_to_add = fileHandler.read(os.path.join(getValue(0), 'event_collections',  key))
+						for raw_event, args in events_to_add.items():
+							function = getattr(imports['addEvent'], 'addEvent')
+							if '_' in raw_event:
+								event = '_'.join(raw_event.split('_')[:-1])
+							else:
+								event = raw_event
+							function(getValue(0), event, args)
 					else:
 						valueStack.append([return_value,event_string_id]) # if the function returns a value, add it to the stack
 			else:
