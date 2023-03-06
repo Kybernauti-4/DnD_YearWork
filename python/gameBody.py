@@ -1,7 +1,7 @@
 import importlib
 import os
-import re
 import sys
+from time import sleep
 
 import fileHandler
 import stack
@@ -75,11 +75,9 @@ def adressReplace(arguments_in):
 	return arguments
 
 def handle(event_string, arguments_in):
-
-	arguments = adressReplace(arguments_in)
-
 	#print("Handling: {} => {}".format(event_string, arguments))
 	#input('Press enter to continue')
+	arguments = adressReplace(arguments_in)
 
 	event_string_id = info['id'][event_string] # get the id of the event
 	
@@ -181,12 +179,7 @@ if __name__ == "__main__":
 		story_part = storyStack[story_index]
 		valueStack.setValueByID(0,story_part)
 		story_events = fileHandler.read(os.path.join(story_part,'events.json'))
-		try:
-			if story_events['input'] == 'None':
-				#print('Breaking out of main loop')
-				break
-		except:
-			pass
+	
 		#actual events inside the story parts
 		valueStack.setValueByID(4,0)
 		while True:
@@ -209,10 +202,18 @@ if __name__ == "__main__":
 				break
 
 			#magic to get the pure event name without the index
-			event = '_'.join(event.split('_')[:-1])
+			if '_' in event:
+				event = '_'.join(event.split('_')[:-1])
 
 			#handle the event
-			handle(event,arg)
+			if event == 'input' and arg == 'None':
+				#print('Breaking out of main loop')
+				window = getValue(9)
+				window.add_text('The story has ended')
+				window.stop_auto_render()
+				exit()
+			else:
+				handle(event,arg)
 
 			#update event_index
 			valueStack.setValueByID(4,event_index+1)

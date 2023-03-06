@@ -24,6 +24,8 @@ class Window():
 		self.return_value_set = False
 
 		self.got_input = threading.Event()
+
+		self.eofrender = False
 		pass
 
 	def add_text(self, text):
@@ -65,6 +67,8 @@ class Window():
 		self.ar_thread.start()
 
 	def stop_auto_render(self):
+		while self.eofrender == False:
+			sleep(0.01)
 		self.thread_run = False
 		self.ar_thread.join()
 	
@@ -76,7 +80,7 @@ class Window():
 				self.got_input.set()
 				break
 			if self.render_amount > 0:
-			
+				self.eofrender = False
 				self.format_render()
 				self.render_amount -= 1
 			
@@ -106,6 +110,7 @@ class Window():
 					else:
 						print(f'\u001b[A', end='', flush=True)
 				else:
+					self.eofrender = True
 					if in_val == '':
 						print(f'\u001b[A', end='', flush=True)
 					continue
