@@ -102,10 +102,6 @@ class Window():
 					if in_val != '':
 						self.return_value = in_val
 						self.return_value_set = False
-
-						self.add_text(in_val)
-						self.format_render()	
-						
 						self.got_input.set()
 					else:
 						print(f'\u001b[A', end='', flush=True)

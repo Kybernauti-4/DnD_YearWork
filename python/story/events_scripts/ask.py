@@ -15,6 +15,8 @@ def ask(window, question, answers = {}):
 			i += 1
 
 	windowVal = window.get_return_value()
+	window.return_value = None
+	window.add_text(windowVal)
 	
 	if windowVal.casefold().strip() == 'exit':
 		window.stop_auto_render()
