@@ -58,8 +58,6 @@ imports = dict(zip(event_scripts_list, import_list))
 #	print("Imported: {} => {}".format(import_key, import_name))
 
 def handle(event_string, arguments):
-	
-	
 	stack = valueStack.getValue()
 	for arg in arguments:
 		if '&' in str(arg): # check if I am asking for adress

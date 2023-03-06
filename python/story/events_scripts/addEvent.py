@@ -23,7 +23,13 @@ def addEvent(path, event_name, args):
 		events_args[f'{event_name}_{event_num}'] = args
 
 		with open(os.path.join(path, 'events.json'), 'w') as file:
-			json.dump(events_args, file, indent=4)
+			write_data = json.dumps(events_args)
+			write_data = write_data[:1] + '\n\t' + write_data[1:-1] + '\n' + write_data[-1:]
+			for i in range(len(write_data)):
+				if write_data[i] == ']' and write_data[i+1] == ',':
+					write_data = write_data[:i+2] + '\n\t'  + write_data[i+3:]
+
+			file.write(write_data)
 		
 
 	elif type(event_name) == list:
