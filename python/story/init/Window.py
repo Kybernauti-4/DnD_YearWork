@@ -24,8 +24,8 @@ class Window():
 		self.return_value_set = False
 
 		self.got_input = threading.Event()
+		self.eofrender = threading.Event()
 
-		self.eofrender = False
 		pass
 
 	def add_text(self, text):
@@ -67,10 +67,17 @@ class Window():
 		self.ar_thread.start()
 
 	def stop_auto_render(self):
-		while self.eofrender == False:
-			sleep(0.01)
+		self.eofrender.wait()
+		self.eofrender.clear()
 		self.thread_run = False
 		self.ar_thread.join()
+	
+	def get_return_value(self):
+		self.got_input.wait()
+		self.got_input.clear()
+		r = self.return_value
+		self.return_value = None
+		return r
 	
 	def auto_render(self):
 		while self.thread_run:
@@ -80,7 +87,7 @@ class Window():
 				self.got_input.set()
 				break
 			if self.render_amount > 0:
-				self.eofrender = False
+				self.eofrender.clear()
 				self.format_render()
 				self.render_amount -= 1
 			
@@ -110,17 +117,10 @@ class Window():
 					else:
 						print(f'\u001b[A', end='', flush=True)
 				else:
-					self.eofrender = True
+					self.eofrender.set()
 					if in_val == '':
 						print(f'\u001b[A', end='', flush=True)
 					continue
-
-	def get_return_value(self):
-		self.got_input.wait()
-		self.got_input.clear()
-		r = self.return_value
-		self.return_value = None
-		return r
 		
 
 	def format_render(self):
