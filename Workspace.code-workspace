@@ -7,6 +7,10 @@
 		{
 			"name": "picowgo",
 			"path": "picowgo"
+		},
+{
+			"name": "latex",
+			"path": "latex"
 		}
 	],
 	"settings": {
