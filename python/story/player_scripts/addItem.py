@@ -1,5 +1,6 @@
-import os
 import json
+import os
+
 
 def addItem(path, p1, item_str):
 	item_to_add = {}
@@ -14,7 +15,7 @@ def addItem(path, p1, item_str):
 
 	item_ID = 0
 	for item in p1.equiped:
-		if int(item['ID']) > item_ID:
+		if int(item['ID']) > item_ID:s
 			item_ID = int(item['ID'])
 	
 	for item in p1.inventory:
