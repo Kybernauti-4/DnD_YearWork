@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2023.3.7)  7 MAR 2023 21:11
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2023.3.7)  7 MAR 2023 21:32
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -570,11 +570,11 @@ Package fontspec Info: Font family 'LibertinusSerif(1)' created for font
 (fontspec)             <->"[LibertinusSerif-BoldItalic.otf]/OT:script=latn;language=dflt;+smcp;"
 
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/lmr/m/n --> TU/LibertinusSerif(1)/m/n on input line 54.
+(Font)                  OT1/lmr/m/n --> TU/LibertinusSerif(1)/m/n on input line 55.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/lmr/m/it --> TU/LibertinusSerif(1)/m/it on input line 54.
+(Font)                  OT1/lmr/m/it --> TU/LibertinusSerif(1)/m/it on input line 55.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/lmr/bx/n --> TU/LibertinusSerif(1)/b/n on input line 54.
+(Font)                  OT1/lmr/bx/n --> TU/LibertinusSerif(1)/b/n on input line 55.
 
 Package fontspec Info: Font family 'LibertinusMath-Regular.otf(0)' created for
 (fontspec)             font 'LibertinusMath-Regular.otf' with options
@@ -600,13 +600,13 @@ Package fontspec Info: Font family 'LibertinusMath-Regular.otf(1)' created for
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 55.
+(Font)              `operators' in the math version `normal' on input line 56.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/lmr/m/n --> TU/LibertinusMath-Regular.otf(1)/m/n on input line 55.
+(Font)                  OT1/lmr/m/n --> TU/LibertinusMath-Regular.otf(1)/m/n on input line 56.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 55.
+(Font)              `operators' in the math version `bold' on input line 56.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/lmr/bx/n --> TU/LibertinusMath-Regular.otf(1)/b/n on input line 55.
+(Font)                  OT1/lmr/bx/n --> TU/LibertinusMath-Regular.otf(1)/b/n on input line 56.
 
 Package fontspec Info: LibertinusMath-Regular scale = 1.0001.
 
@@ -653,13 +653,13 @@ Package fontspec Info: Font family 'LibertinusMath-Regular.otf(2)' created for
 (fontspec)             =0pt\relax \fontdimen 21\font =0pt\relax 
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 55.
+(Font)              `symbols' in the math version `normal' on input line 56.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
-(Font)                  OMS/lmsy/m/n --> TU/LibertinusMath-Regular.otf(2)/m/n on input line 55.
+(Font)                  OMS/lmsy/m/n --> TU/LibertinusMath-Regular.otf(2)/m/n on input line 56.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 55.
+(Font)              `symbols' in the math version `bold' on input line 56.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
-(Font)                  OMS/lmsy/b/n --> TU/LibertinusMath-Regular.otf(2)/b/n on input line 55.
+(Font)                  OMS/lmsy/b/n --> TU/LibertinusMath-Regular.otf(2)/b/n on input line 56.
 
 Package fontspec Info: LibertinusMath-Regular scale = 0.9999.
 
@@ -694,13 +694,13 @@ Package fontspec Info: Font family 'LibertinusMath-Regular.otf(3)' created for
 (fontspec)             \fontdimen 13\font =0pt\relax 
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `normal' on input line 55.
+(Font)              `largesymbols' in the math version `normal' on input line 56.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
-(Font)                  OMX/lmex/m/n --> TU/LibertinusMath-Regular.otf(3)/m/n on input line 55.
+(Font)                  OMX/lmex/m/n --> TU/LibertinusMath-Regular.otf(3)/m/n on input line 56.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 55.
+(Font)              `largesymbols' in the math version `bold' on input line 56.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
-(Font)                  OMX/lmex/m/n --> TU/LibertinusMath-Regular.otf(3)/b/n on input line 55.
+(Font)                  OMX/lmex/m/n --> TU/LibertinusMath-Regular.otf(3)/b/n on input line 56.
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
@@ -708,26 +708,26 @@ Package csquotes Info: Redefining alias 'default' -> 'czech'.
  (./try.aux)
 \openout1 = `try.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -765,7 +765,7 @@ LaTeX Font Info:    ... okay on input line 59.
 
 Couldn't patch \ttl@straight@ii
 Couldn't patch \ttl@straight@ii
-Package hyperref Info: Link coloring OFF on input line 59.
+Package hyperref Info: Link coloring OFF on input line 60.
 (./try.out) (./try.out)
 \@outlinefile=\write3
 \openout3 = `try.out'.
@@ -775,13 +775,13 @@ Package caption Info: float package is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 59.
+(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 60.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> TU/lmss/b/n on input line 59.
+(Font)                  OT1/lmss/bx/n --> TU/lmss/b/n on input line 60.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 59.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 60.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/b/n on input line 59.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/b/n on input line 60.
 
 
 Package unicode-math Warning: Using \overbracket and \underbracket from
@@ -802,48 +802,48 @@ Package unicode-math Warning: I'm going to overwrite the following commands
 (unicode-math)                inconsistencies.
 
 \c@lstlisting=\count333
-File: mp_titlelist.pdf Graphic file (type pdf)
-<use mp_titlelist.pdf>
-File: mp_titlelist.pdf Graphic file (type pdf)
-<use mp_titlelist.pdf>
-File: mp_titlelist.pdf Graphic file (type pdf)
-<use mp_titlelist.pdf, page 1>
-File: mp_titlelist.pdf Graphic file (type pdf)
-<use mp_titlelist.pdf, page 1>
-File: mp_titlelist.pdf Graphic file (type pdf)
-<use mp_titlelist.pdf, page 1>
-File: mp_titlelist.pdf Graphic file (type pdf)
-<use mp_titlelist.pdf, page 1>
-File: mp_titlelist.pdf Graphic file (type pdf)
-<use mp_titlelist.pdf, page 1>
+File: add_files/mp_titlelist.pdf Graphic file (type pdf)
+<use add_files/mp_titlelist.pdf>
+File: add_files/mp_titlelist.pdf Graphic file (type pdf)
+<use add_files/mp_titlelist.pdf>
+File: add_files/mp_titlelist.pdf Graphic file (type pdf)
+<use add_files/mp_titlelist.pdf, page 1>
+File: add_files/mp_titlelist.pdf Graphic file (type pdf)
+<use add_files/mp_titlelist.pdf, page 1>
+File: add_files/mp_titlelist.pdf Graphic file (type pdf)
+<use add_files/mp_titlelist.pdf, page 1>
+File: add_files/mp_titlelist.pdf Graphic file (type pdf)
+<use add_files/mp_titlelist.pdf, page 1>
+File: add_files/mp_titlelist.pdf Graphic file (type pdf)
+<use add_files/mp_titlelist.pdf, page 1>
 [1
 
 ]
-File: zadanibelike.pdf Graphic file (type pdf)
-<use zadanibelike.pdf>
-File: zadanibelike.pdf Graphic file (type pdf)
-<use zadanibelike.pdf>
-File: zadanibelike.pdf Graphic file (type pdf)
-<use zadanibelike.pdf, page 1>
-File: zadanibelike.pdf Graphic file (type pdf)
-<use zadanibelike.pdf, page 1>
-File: zadanibelike.pdf Graphic file (type pdf)
-<use zadanibelike.pdf, page 1>
-File: zadanibelike.pdf Graphic file (type pdf)
-<use zadanibelike.pdf, page 1>
-File: zadanibelike.pdf Graphic file (type pdf)
-<use zadanibelike.pdf, page 1>
+File: add_files/zadanibelike.pdf Graphic file (type pdf)
+<use add_files/zadanibelike.pdf>
+File: add_files/zadanibelike.pdf Graphic file (type pdf)
+<use add_files/zadanibelike.pdf>
+File: add_files/zadanibelike.pdf Graphic file (type pdf)
+<use add_files/zadanibelike.pdf, page 1>
+File: add_files/zadanibelike.pdf Graphic file (type pdf)
+<use add_files/zadanibelike.pdf, page 1>
+File: add_files/zadanibelike.pdf Graphic file (type pdf)
+<use add_files/zadanibelike.pdf, page 1>
+File: add_files/zadanibelike.pdf Graphic file (type pdf)
+<use add_files/zadanibelike.pdf, page 1>
+File: add_files/zadanibelike.pdf Graphic file (type pdf)
+<use add_files/zadanibelike.pdf, page 1>
  [2] [3] [4] [5] [6] [7] (./try.aux)
 Package rerunfilecheck Info: File `try.out' has not changed.
-(rerunfilecheck)             Checksum: EDD6C7C3D4131E76FE94A8B7E8339C3A;1709.
+(rerunfilecheck)             Checksum: ED24873A2360A9E87D772D52109CD235;1712.
  ) 
 Here is how much of TeX's memory you used:
- 23342 strings out of 476684
- 422221 string characters out of 5807584
- 1851012 words of memory out of 5000000
+ 23343 strings out of 476684
+ 422421 string characters out of 5807584
+ 1853012 words of memory out of 5000000
  43309 multiletter control sequences out of 15000+600000
  513035 words of font info for 53 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 72i,17n,114p,1154b,1150s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,17n,114p,1154b,1162s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on try.pdf (7 pages).

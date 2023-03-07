@@ -29,17 +29,18 @@
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 
 \lstset{
-    language=Python,
-    showstringspaces=false,
-    columns=flexible,
-    basicstyle={\small\ttfamily},
-    numbers=none,
-    numberstyle=\tiny\color{gray},
-    keywordstyle=\color{blue},
-    commentstyle=\color{dkgreen},
-    stringstyle=\color{mauve},
-    breakatwhitespace=true,
-    tabsize=4
+	language=Python,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=4
 }
 
 \setstretch{1.5}
@@ -58,13 +59,13 @@
 
 \begin{document}
 
-\includepdf[pages=-]{mp_titlelist}
-\includepdf[pages=-]{zadanibelike}
+\includepdf[pages=-]{add_files/mp_titlelist}
+\includepdf[pages=-]{add_files/zadanibelike}
 
 \newpage
 
 \section*{Anotace}
-V této maturitní práci se snažím o vytvoření programu který je schopný přednést příběh a předložit hráči možnosti na které příběh bude reagovat. Tímto se docílí interaktivita příběhu. Zároveň vše je děláno systémem scriptů, tudíž je možno hru, při dodržení pravidel pro psaní daných scriptů, měnit pomocí uživatelsky napsaných programů. Projekt také obsahuje metodu se kterou se dá zjednodušeně příběh napsat a použít jednotlivé scripty pro interaktivitu. Poslední část práce je uložení hráče a jeho odpovídajících scriptů na raspberry pi pico a čtení předem zmíněného obsahu ze zařízení. Celá práce je dělaná v programovacím jazyku Micropython.
+V této maturitní práci se snažím o vytvoření programu který je schopný přednést příběh a předložit hráči možnosti na které příběh bude reagovat. Tímto se docílí interaktivita příběhu. Zároveň vše je děláno systémem skriptů, tudíž je možno hru, při dodržení pravidel pro psaní daných skriptů, měnit pomocí uživatelsky napsaných programů. Projekt také obsahuje metodu se kterou se dá zjednodušeně příběh napsat a použít jednotlivé skripty pro interaktivitu. Poslední část práce je uložení hráče a jeho odpovídajících skriptů na raspberry pi pico a čtení předem zmíněného obsahu ze zařízení. Celá práce je dělaná v programovacím jazyku Micropython.
 %\addcontentsline{toc}{Anotace}{Anotace}
 
 
@@ -73,7 +74,7 @@ V této maturitní práci se snažím o vytvoření programu který je schopný 
 „Prohlašuji, že jsem tuto práci vypracoval samostatně a použil(a) literárních pramenů a informací, které cituji a uvádím v seznamu použité literatury a zdrojů informací.“ 
 „Souhlasím s využitím mé práce učiteli VOŠ a SPŠE Plzeň k výuce.“ 
 \begin{flushright}
-    V Plzni dne: …..................... Podpis: …..........................
+	V Plzni dne: …..................... Podpis: …..........................
 \end{flushright} 
 
 \newpage
@@ -85,7 +86,7 @@ Máme dvě komunikační zařízení a potřebujeme vytvořit komunikaci mezi ni
 Hostitelský program je o dost složitější než ten na picu. Hostitel musí zprávu nejdřív převést do kódování utf-8 neboli bytes. To je posláno na sériovou linku comportu, který je zrovna otevřený. Pico má práci velmi jednoduší, neboť micropython je schopný číst sériovou linku pomocí příkazu input(). Následně pico kontroluje jakou zprávu dostal vůči svému slovníku. Pokud zpráva odpovídá nějakému příkazu, tak pico navrátí odpovídající hodnoty, jinak jenom pošle zpět že zprávu zaregistroval. Hostitel nyní musí projít zpětným procesem převádění zpět z bytes na string. Pokud pico pošle víceřádkovou správu, tak samozřejmě musí komunikační program převést celé pole, které přečte z comportu. 
 
 \subsection{Datová struktura}
-Díky způsobu práce s daty na picu (nepracuje s nimi přímo uživatel, vše je ovládáno pomocí programu) tak může být na picu mnohem méně flexibilní struktura souborů. V rootu musí existovat main.py, který se sám spustí, když se pico zapojí. Zároveň musí být v rootu samotný soubor hráče a jakékoli knihovny, které main.py potřebuje. Následně všechny scripty, které jsou specifické vůči hráči, musí být v adresáři player\_scripts.
+Díky způsobu práce s daty na picu (nepracuje s nimi přímo uživatel, vše je ovládáno pomocí programu) tak může být na picu mnohem méně flexibilní struktura souborů. V rootu musí existovat main.py, který se sám spustí, když se pico zapojí. Zároveň musí být v rootu samotný soubor hráče a jakékoli knihovny, které main.py potřebuje. Následně všechny skripty, které jsou specifické vůči hráči, musí být v adresáři player\_scripts.
 
 \newpage
 \section{Hlavní program}
@@ -97,14 +98,14 @@ Jako poslední, hlavní program samozřejmě obsahuje smyčky pro průběh progr
 \subsection{Handler}
 Nejdůležitější součást programu je handler. Tato funkce je schopná vzít script a odpovídající parametry, dosadit hodnoty z paměti, funkci zavolat a uložit její návratovou hodnotu. 
 
-Handler jako funkce má dva svoje parametry. První parametr musí být název skriptu bez koncovky .py (takto jsou uloženy v naimportovaných skriptech). Druhý parametr je pole argumentů, které chceme do funkce poslat. Handler používá rozbalovací znaménko * aby první dimenze pole byla předána funkci jako jednotlivé parametry. Zároveň se v této první dimenzi hledá \& znak, který jsem zvolil jako identifikátor že je třeba vzít hodnoty z paměti. Pokud nějakou najde hodnotu v paměti, nahradí \& znak odpovídající hodnotou.
+Handler jako funkce má dva svoje parametry. První parametr musí být název skriptu bez koncovky .py (takto jsou uloženy v naimportovaných skriptech). Druhý parametr je pole argumentů, které chceme do funkce poslat. Handler používá vybalovací znaménko * aby první dimenze pole byla předána funkci jako jednotlivé parametry. Zároveň se v této první dimenzi hledá \& znak, který jsem zvolil jako identifikátor že je třeba vzít hodnoty z paměti. Pokud nějakou najde hodnotu v paměti, nahradí \& znak odpovídající hodnotou.
 
 Dalším krokem je zavoláním funkce. Hlavní program obsahuje list importovaných funkcí, a protože Handler žije uvnitř hlavního programu, tak může sáhnout do tohoto listu a funkci zavolat. Volání funkce je provedeno přes funkci getattr().
 
 Handler zjišťuje jestli funkce vrátila hodnotu, pokud ano tak ji ukládá do paměti. Je zde ale výjimka, a to u mnou nazvaných logických skriptů. Logické skripty, pokud je jejich návratová hodnota typu slovník, mají schopnost přidávat eventy a tudíž jsou logické skripty schopné vytvářet smyčky. Handler kontroluje jestli jsou funkce importovány, aby nevolal neexistující funkce, a také kontroluje pro stringy s koncovkou .json. Pokud je takový string nalezen, tak Handler z odpovídajícího souboru vezme eventy a přidá je. Handler je ještě schopný nalézt jeden identifikátor, "self". Pokud je "self" nalezen a jeho hodnota je true, tak handler přidá, celý původní script, který byl volán. Toto umožňuje snadno vytvořit nekonečnou smyčku.
 
 \subsubsection{Paměť programu}
-Struktura paměti je takzvaný stack. Pro tento účel jsem vytvořil třídu, abych si mohl dodat manipulační metody, které bych mohl potřebovat. Samotný stack má struktu listu (toto jsem zvolil abych mohl použít indexované hledání, mazání, či přidávání hodnot), kdy hodnotou listu je vždy pole o dvou hodnotách. Na první pozici stojí vlastní hodnota a na druhé stojí id, nebo adresa, funkce či objektu, co tuhle hodnotu vytvořila. Pokud funkce chce pracovat s hodnotami jiných funkcí, tak je pužita první nalezená hodnota "shora" (Pokud bychom se dívali na hodnoty od indexu 0 až do X, tak by to byla první hodnota nalezená od nuly).
+Struktura paměti je takzvaný stack. Pro tento účel jsem vytvořil třídu, abych si mohl dodat manipulační metody, které bych mohl potřebovat. Samotný stack má strukturu listu (toto jsem zvolil abych mohl použít indexované hledání, mazání, či přidávání hodnot), kdy hodnotou listu je vždy pole o dvou hodnotách. Na první pozici stojí vlastní hodnota a na druhé stojí id, nebo adresa, funkce či objektu, co tuhle hodnotu vytvořila. Pokud funkce chce pracovat s hodnotami jiných funkcí, tak je použita první nalezená hodnota "shora" (Pokud bychom se dívali na hodnoty od indexu 0 až do X, tak by to byla první hodnota nalezená od nuly).
 
 Jak jsem již zmiňoval v sekci Handler, pro čtená z paměti jsem vybral znak \&. Inspiroval jsem se z programovacího jazyka C kde \& operátor vrací adresu proměnné. V mém případě je za znakem \& adresa kde se hodnota má nacházet v paměti.
 
@@ -116,7 +117,7 @@ volana_funkce = getattr(importy[funkce],  funkce)
 \end{lstlisting}
 \subsubsection{Komunikace mezi scripty}
 \subsection{Tělo Hry}
-\subsection{Struktura příbehu}
+\subsection{Struktura příběhu}
 \subsection{Eventy}
 \subsubsection{Zápis eventů}
 \subsubsection{Popisové informace}

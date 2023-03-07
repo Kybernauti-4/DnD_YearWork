@@ -1,3 +1,21 @@
 {
-	"cSpell.language": "en,cs"
+	"cSpell.language": "en,cs",
+	"cSpell.words": [
+		"basicstyle",
+		"breakatwhitespace",
+		"breaklines",
+		"comportu",
+		"comporty",
+		"dkgreen",
+		"eventy",
+		"getattr",
+		"keywordstyle",
+		"Micropython",
+		"numberstyle",
+		"rootu",
+		"showstringspaces",
+		"SPŠE",
+		"stringstyle",
+		"tabsize"
+	]
 }
