@@ -1,0 +1,9 @@
+{
+	"stats":{
+		"atk":5,
+		"block":1
+	},
+	"bonus":{
+		"attack":"destroy[0.05]"
+	}
+}
