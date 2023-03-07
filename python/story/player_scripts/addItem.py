@@ -15,7 +15,7 @@ def addItem(path, p1, item_str):
 
 	item_ID = 0
 	for item in p1.equiped:
-		if int(item['ID']) > item_ID:s
+		if int(item['ID']) > item_ID:
 			item_ID = int(item['ID'])
 	
 	for item in p1.inventory:
