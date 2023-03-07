@@ -1,5 +1,6 @@
-import os
 import json
+import os
+
 
 def addItem(path, p1, item_str):
 	item_to_add = {}

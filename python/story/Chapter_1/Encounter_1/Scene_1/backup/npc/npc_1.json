@@ -1,0 +1,12 @@
+{
+	"ID":"npc_1",
+	"type":"villager",
+	"RPC":"0",
+	"npc_info":{
+			"HP":100,
+			"MP":10,
+			"Name":"John",
+			"Age":35,
+			"Gender":"Male"
+		}
+}

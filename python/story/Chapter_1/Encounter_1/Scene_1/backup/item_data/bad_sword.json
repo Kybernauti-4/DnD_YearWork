@@ -1,0 +1,10 @@
+{
+	"name": "Bad Sword",
+	"type": "weapon-melee",
+	"damage": 3,
+	"durability": 10,
+	"weight": 20,
+	"usage": {
+		"durability": 5
+	}
+}
