@@ -4,7 +4,7 @@ import os
 
 def auto(args, path):
 	os.chdir(path)
-	files = [file for file in os.listdir() if os.path.isfile(file) and file != 'info.json']
+	files = [file.replace('.py','') for file in os.listdir() if os.path.isfile(file) and file != 'info.json']
 	print(files)
 	with open('info.json', 'r') as f:
 		info = json.load(f)
@@ -19,10 +19,10 @@ def auto(args, path):
 				if include == 'y':
 					info['id'][file_outside] = id+1
 				
-				for info,field in info['info'].items():
-					include = input('Do you want to the function in ' + info + '? (y/n) :')
-					if include == 'y':
-						field.append(id+1)
+					for setting,field in info['info'].items():
+						include = input('Do you want to the function in ' + setting + '? (y/n) :')
+						if include == 'y':
+							field.append(id+1)
 	
 	with open('info.json', 'w') as f:
 		json.dump(info, f, indent=4)

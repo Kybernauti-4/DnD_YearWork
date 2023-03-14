@@ -1,11 +1,10 @@
 {
-	"id":{
-		"blood_attack":101
-		
-	},
-	"info":{
-		"lock":[],
-		"func":[101],
-		"obj":[]
-	}
+    "id": {
+
+    },
+    "info": {
+        "lock": [],
+        "func": [],
+        "obj": []
+    }
 }
