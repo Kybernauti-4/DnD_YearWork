@@ -1,10 +1,30 @@
 {
     "id": {
-
+        "addItem": 101,
+        "blood_attack": 102,
+        "getEquip": 103,
+        "getInfo": 104,
+        "getInv": 105,
+        "getItemID": 106,
+        "getPID": 107,
+        "playerUsable": 108,
+        "removeItem": 109,
+        "setVar": 110
     },
     "info": {
         "lock": [],
-        "func": [],
+        "func": [
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110
+        ],
         "obj": []
     }
 }

@@ -47,8 +47,11 @@ def update_variable(e, my_variable, context, curr_len):
 	curr_command = ''.join(my_variable).strip().casefold()
 	if curr_command in r_commands.keys():
 		context_menu = r_commands[curr_command][0]
-		if context_menu[0] == '__local_files__':
-			context_menu = [item for item in os.listdir() if os.path.isfile(item)]
+		try:
+			if context_menu[0] == '__local_files__':
+				context_menu = [item for item in os.listdir() if os.path.isfile(item)]
+		except:
+			pass
 		invalid_message = r_commands[curr_command][1]
 		if e.name == 'up' and len(context) == 0:
 			if len(context_menu) == 0:
