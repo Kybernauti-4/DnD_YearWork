@@ -7,7 +7,6 @@ import fileHandler
 import stack
 
 #! Handler is more or less done but a lot still isn't
-#TODO Comment handler (Kill me now)
 
 #! &0 = current path
 #! &1 = storyStack
@@ -57,7 +56,7 @@ imports = dict(zip(event_scripts_list, import_list))
 #for import_key,import_name in imports.items():
 #	print("Imported: {} => {}".format(import_key, import_name))
 
-def adressReplace(arguments_in):
+def addressReplace(arguments_in):
 	stack = valueStack.getValue()
 	arguments = arguments_in.copy()
 	for arg in arguments:
@@ -77,7 +76,7 @@ def adressReplace(arguments_in):
 def handle(event_string, arguments_in):
 	#print("Handling: {} => {}".format(event_string, arguments))
 	#input('Press enter to continue')
-	arguments = adressReplace(arguments_in)
+	arguments = addressReplace(arguments_in)
 
 	event_string_id = info['id'][event_string] # get the id of the event
 	
@@ -114,7 +113,7 @@ def handle(event_string, arguments_in):
 
 	elif event_string_id in info['info']['obj']: # if the event is an object
 		obj = getattr(imports[event_string],event_string) # get the object from the file
-		use_obj = obj(*arguments) # create the objeck and unpack the argument list into the constructor arguments
+		use_obj = obj(*arguments) # create the object and unpack the argument list into the constructor arguments
 		valueStack.append([use_obj,event_string_id]) # add the object to the stack
 
 
