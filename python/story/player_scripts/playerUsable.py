@@ -1,5 +1,5 @@
-import os
 import importlib
+import os
 import sys
 
 id = 'global'
@@ -22,6 +22,3 @@ def playerUsable(p):
 				usable_scripts[script.name] = script
 	
 	return usable_scripts
-
-if __name__ == '__main__':
-	playerUsable(None)

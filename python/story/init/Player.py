@@ -1,6 +1,7 @@
 import json
-import random
 import os
+import random
+
 
 class Player:
 	
@@ -19,7 +20,7 @@ class Player:
 		
 		self.info = PlayerData["info"]
 		self.inventory = PlayerData["inventory"]
-		self.equiped = PlayerData["equiped"]
+		self.equipped = PlayerData["equipped"]
 
 		
 	def getVar(self, var):
@@ -44,21 +45,21 @@ class Player:
 		match type:
 			case 'weapon':
 				try:
-					self.addItem(self.equiped[0])
+					self.addItem(self.equipped[0])
 				except:
 					self.addItem(item)
 					raise 'Cannot unequip item, inventory full'
 
-				self.equiped[0] = item
+				self.equipped[0] = item
 
 			case 'shield':
 				try:
-					self.addItem(self.equiped[1])
+					self.addItem(self.equipped[1])
 				except:
 					self.addItem(item)
 					raise 'Cannot unequip item, inventory full'
 
-				self.equiped[1] = item
+				self.equipped[1] = item
 
 
 	def unequip(self, item):
@@ -66,7 +67,7 @@ class Player:
 		if type != 'weapon' and type != 'shield':
 			raise Exception('Invalid item type to equip')
 		
-		if self.equiped[0] != item and self.equiped[1] != item:
+		if self.equipped[0] != item and self.equipped[1] != item:
 			raise Exception('Item not equipped')
 
 		try:
@@ -76,9 +77,9 @@ class Player:
 		
 		match type:
 			case 'weapon':
-				self.equiped[0] = None
+				self.equipped[0] = None
 			case 'shield':
-				self.equiped[1] = None
+				self.equipped[1] = None
 
 	def addItem(self, item):
 		total_weight = 0
@@ -93,16 +94,16 @@ class Player:
 		self.inventory.remove(item)
 
 	def usedItem(self, item):
-		availible = False
+		available = False
 		for i in self.inventory:
 			if i == item:
-				availible = True
+				available = True
 
-		for i in self.equiped:
+		for i in self.equipped:
 			if i == item:
-				availible = True
+				available = True
 		
-		if not availible:
+		if not available:
 			raise Exception('Item not in inventory')
 
 		item['durability'] -= item['usage']['durability']
@@ -116,7 +117,7 @@ class Player:
 		PlayerData["ID"] = self.pid
 		PlayerData["type"] = "player"
 		PlayerData["info"] = self.info
-		PlayerData["equiped"] = self.equiped
+		PlayerData["equipped"] = self.equipped
 		PlayerData["inventory"] = self.inventory
 		
 		with open(os.path.join('story', 'players', f'player_{self.pid}.json'), 'w') as f:

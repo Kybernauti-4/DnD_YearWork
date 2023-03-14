@@ -1,3 +1,6 @@
+id = 'global'
+name = ''
+
 def removeItem(player, item_ID):
 	item_to_remove = {}
 	for item in player.inventory:

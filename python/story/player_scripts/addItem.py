@@ -1,6 +1,8 @@
 import json
 import os
 
+id = 'global'
+name = ''
 
 def addItem(path, p1, item_str):
 	item_to_add = {}

@@ -1,5 +1,5 @@
 id = 'global'
-name = 'Get Player ID'
+name = ''
 
 def getPID(p):
 	return p.pid
