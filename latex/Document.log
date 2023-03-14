@@ -1,10 +1,10 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2023.3.7)  7 MAR 2023 22:23
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2023.3.7)  14 MAR 2023 17:47
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**c:/VSC/DnD_YearWork/latex/try
-(c:/VSC/DnD_YearWork/latex/try.tex
+**c:/VSC/DnD_YearWork/latex/Document
+(c:/VSC/DnD_YearWork/latex/Document.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2023-02-22> (c:/texlive/2022/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
@@ -701,8 +701,8 @@ Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'czech'.
- (./try.aux)
-\openout1 = `try.aux'.
+ (./Document.aux)
+\openout1 = `Document.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 60.
 LaTeX Font Info:    ... okay on input line 60.
@@ -762,9 +762,9 @@ LaTeX Font Info:    ... okay on input line 60.
 Couldn't patch \ttl@straight@ii
 Couldn't patch \ttl@straight@ii
 Package hyperref Info: Link coloring OFF on input line 60.
-(./try.out) (./try.out)
+(./Document.out) (./Document.out)
 \@outlinefile=\write3
-\openout3 = `try.out'.
+\openout3 = `Document.out'.
 
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
@@ -829,17 +829,17 @@ File: add_files/zadanibelike.pdf Graphic file (type pdf)
 <use add_files/zadanibelike.pdf, page 1>
 File: add_files/zadanibelike.pdf Graphic file (type pdf)
 <use add_files/zadanibelike.pdf, page 1>
- [2] [3] [4] [5] [6] [7] (./try.aux)
-Package rerunfilecheck Info: File `try.out' has not changed.
+ [2] [3] [4] [5] [6] [7] (./Document.aux)
+Package rerunfilecheck Info: File `Document.out' has not changed.
 (rerunfilecheck)             Checksum: ED24873A2360A9E87D772D52109CD235;1712.
  ) 
 Here is how much of TeX's memory you used:
  23245 strings out of 476684
- 420921 string characters out of 5807584
+ 421006 string characters out of 5807584
  1853012 words of memory out of 5000000
  43214 multiletter control sequences out of 15000+600000
  513035 words of font info for 53 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 72i,17n,114p,1154b,1162s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,17n,114p,1159b,1162s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on try.pdf (7 pages).
+Output written on Document.pdf (7 pages).
