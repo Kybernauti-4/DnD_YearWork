@@ -8,6 +8,9 @@ fist = {
 }
 
 def blood_attack(p1, p2):
+	global id
+	if p1.pid != id:
+		raise Exception('Not usable by player')
 	global fist
 	# p1 is the attacker
 	weapon = fist
