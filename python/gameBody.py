@@ -252,7 +252,6 @@ if __name__ == "__main__":
 		story_part = storyStack[story_index]
 		#overwrite the story_path value in the stack to the actual story part
 		valueStack.setValueByID(0,story_part)
-		story_events = fileHandler.read(os.path.join(story_part,'events.json'))
 	
 		#actual events loop inside the story parts
 		valueStack.setValueByID(4,0)
@@ -281,7 +280,7 @@ if __name__ == "__main__":
 				event = '_'.join(event.split('_')[:-1])
 
 			#handle the event
-			if event == 'input' and arg == 'None': # input:none is returned by storyHandler when he cannot find the correct file
+			if event == 'input' and arg == 'None' and len(storyStack) <= story_index+1: # input:none is returned by storyHandler when he cannot find the correct file
 				#print('Breaking out of main loop')
 				window = getValue(9)
 				window.add_text('The story has ended')
