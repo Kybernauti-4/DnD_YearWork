@@ -89,12 +89,24 @@ Hostitelský program je o dost složitější než ten na picu. Hostitel musí z
 Díky způsobu práce s daty na picu (nepracuje s nimi přímo uživatel, vše je ovládáno pomocí programu) tak může být na picu mnohem méně flexibilní struktura souborů. V rootu musí existovat main.py, který se sám spustí, když se pico zapojí. Zároveň musí být v rootu samotný soubor hráče a jakékoli knihovny, které main.py potřebuje. Následně všechny skripty, které jsou specifické vůči hráči, musí být v adresáři player\_scripts.
 
 \newpage
+\section{Struktura souborů}
+
+\begin{itemize}
+	\item main.py
+	\item player.json
+	\item player\_scripts
+	\begin{itemize}
+		\item player\_script.py
+	\end{itemize}
+\end{itemize}
+
 \section{Hlavní program}
 Vše je psáno pomocí programovacího jazyka Python, přičemž velmi využívám datového souboru typu json pro ukládání rozmanitých dat.
 
 Hlavní program nastaví všechny iniciální hodnoty, provede inicializační sekvenci, najde místo příběhu a najde všechny eventy, které se budou muset stát. Všechny eventy mají své odpovídající skripty a hlavní program samozřejmě provede jejich import. Zároveň vytvoří list importovaných funkcí aby s nimi metody a funkce mohli pracovat.
 
 Jako poslední, hlavní program samozřejmě obsahuje smyčky pro průběh programu.
+
 \subsection{Handler}
 Nejdůležitější součást programu je handler. Tato funkce je schopná vzít script a odpovídající parametry, dosadit hodnoty z paměti, funkci zavolat a uložit její návratovou hodnotu. 
 
@@ -116,9 +128,8 @@ pravidlo, které se musí dodržovat. Script vždy musí obsahovat stejnojmennou
 volana_funkce = getattr(importy[funkce],  funkce) 
 \end{lstlisting}
 
-
 \subsubsection{Komunikace mezi scripty}
-	Pomocí použití návratových hodnot.
+Pomocí použití návratových hodnot. Handler, jak už zmíněno, je schopen číst a předávat hodnoty z paměti.
 \subsection{Tělo Hry}
 \subsection{Struktura příběhu}
 \subsection{Eventy}
