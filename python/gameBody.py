@@ -31,11 +31,11 @@ i = 1 # used if there are multiple stories
 for root, directories, files in os.walk(os.getcwd()):
 	for filename in files:
 		if filename == '_story.txt':
-			if root_story_path == '':
-				root_story_path[i] = root
-				i += 1
+			root_story_path[i] = root
+			i += 1
 
 # let the user choose if there are multiple stories
+# print(root_story_path)
 if len(root_story_path) > 1:
 	print('Multiple stories found, please choose one:')
 	for index, path in root_story_path.items():
@@ -198,19 +198,20 @@ def getValue(id):
 
 #* Garbage collector
 def garbageCollector():
+	"""Used only to clean up the stack, it removes all values that are not locked, should be used at the end of story part
+	"""
 	stack = valueStack.getValue()
 	for value in stack:
 		if int(value[1]) not in info['info']['lock']:
 			valueStack.pop(stack.index(value))
 #* End of garbage collector
+
 #* The main loop
 if __name__ == "__main__":
-	#include globals
-	#* First we go through init events and then we go through the story
-	story_path = os.path.join(os.getcwd(), 'story')
-	valueStack.append([story_path,0])
-	init_events = fileHandler.read(os.path.join(os.getcwd(),'story','init.json'))
+	valueStack.append([root_story_path,0])
+	init_events = fileHandler.read(os.path.join(root_story_path,'init.json')) # read the init file
 
+	#handle all init events
 	for event,args in init_events.items():
 		try:
 			#print("Handling: {} => {}".format(event, args))
@@ -218,7 +219,8 @@ if __name__ == "__main__":
 		except Exception as e:
 			#print("Error in init event: {} => {}".format(event, e))
 			pass
-	
+
+	#get the runtime vars for use in the main loop
 	playerlist = getValue(7)
 	storyStack = getValue(10)
 	event_index = 0
@@ -227,30 +229,35 @@ if __name__ == "__main__":
 	#print('Playerlist: {}'.format(playerlist))
 
 	#create list of defaults the defaults with correct values
+	#the 0 index is reserved for story_path
 	default_values = {
 		1:storyStack,
 		2:playerlist,
 		3:story_index,
 		4:event_index,
+		5:root_story_path
 	}
 
 
-	#After init, upload runtine vars to the value stack
+	# upload runtime vars to the value stack
 	for index,default in default_values.items():
 		valueStack.append([default,index])
 			
-	#print(storyStack)
+
 	#now we have the actual paths for the story parts so we can go to main loop
 	while True:
+		#update runtime vars, this allows for live changes to the events
 		story_index = getValue(3)
 		storyStack = getValue(1)
 		story_part = storyStack[story_index]
+		#overwrite the story_path value in the stack to the actual story part
 		valueStack.setValueByID(0,story_part)
 		story_events = fileHandler.read(os.path.join(story_part,'events.json'))
 	
-		#actual events inside the story parts
+		#actual events loop inside the story parts
 		valueStack.setValueByID(4,0)
 		while True:
+			#again, this loop is made to allow for dynamic changes to the events
 			#update event_index
 			event_index = getValue(4)
 
@@ -274,7 +281,7 @@ if __name__ == "__main__":
 				event = '_'.join(event.split('_')[:-1])
 
 			#handle the event
-			if event == 'input' and arg == 'None':
+			if event == 'input' and arg == 'None': # input:none is returned by storyHandler when he cannot find the correct file
 				#print('Breaking out of main loop')
 				window = getValue(9)
 				window.add_text('The story has ended')

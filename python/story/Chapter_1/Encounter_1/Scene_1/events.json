@@ -4,5 +4,22 @@
         "&9",
         "&11",
         "txt1.txt"
+    ],
+    "ask_1":[
+        "&9",
+        "Where do you want to go?",
+        {
+            "The forest":1,
+            "The beach":2,
+            "The mountains":3,
+            "The city":"None"
+        }
+    ],
+    "addSP_1": [
+        "&0",
+        "&5",
+        "&1",
+        "&3",
+        "&20"
     ]
 }

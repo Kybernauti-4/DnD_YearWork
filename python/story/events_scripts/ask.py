@@ -32,9 +32,12 @@ def ask(window, question, answers = {}):
 			
 	if rval == '':
 		try:
-			windowVal = int(rval)
+			rval = int(windowVal)
 		except:
-			rval = ask(window, question + ' Wrong input, please try again.', answers)
+			if ' Wrong input, please try again.' in question:
+				rval = ask(window, question, answers)
+			else:
+				rval = ask(window, question + ' Wrong input, please try again.', answers)
 
 	rvalues = list(answers.values())
 	if rval == '':
