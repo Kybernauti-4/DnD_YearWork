@@ -79,26 +79,41 @@ V této maturitní práci se snažím o vytvoření programu který je schopný 
 
 \newpage
 \section{Fyzický klíč}
-Raspberry pi pico, dále pico, bude sloužit pro ukládání dat hráče.
+Pro komunikaci jsem vytvořil design vlastní desky, založené na čipu RP2040. Tato deska je schopná zobrazit informace ohledně hráče, pokud daná informace má min a max. 
+
+Zobrazování je provedeno pomocí 8 LED na každé straně, které jsou ovládaný přes 8 bitový posuvný registr v časovém multiplexu pro ovládání dvou stran zároveň. Tento časový multiplex běží rychlostí 2kHz aby každá strana běžela na rychlosti 1kHz. Zvolená rychlost byla ze dvou důvodů. První byl, že při takové rychlosti by oko nemělo být schopné zaznamenat jak strany blikají. Druhý důvod souvisí s frekvencí na které často běží PWM. Díky těmto vlastnostem jsem schopný ovládat LED buď aby jenom blikali, nebo abych ovládal jejich jas pomocí simulovaného PWM.  
 \subsection{Komunikace}
 Máme dvě komunikační zařízení a potřebujeme vytvořit komunikaci mezi nimi. Komunikace je řešena přes comporty. Hostitel, v tomto případě počítač, na kterém běží hlavní program, si nechá pomocí nástrojů knihovny serial vypsat všechny rozpoznané comporty. Následně se pokusí otevřít comport a poslat mu příkaz. Pokud se mu nepovede otevřít comport, víme že je to nechtěné zařízení. Když se otevření povede, pošle mu příkaz "type". Pokud je na druhé straně správné zařízení neboli pico se správným nahraným programem, tak zpátky odešle zprávu "player". Jenom tehdy je zařízení dáno do listů zařízení, se kterým potom program pracuje dál.
 
 Hostitelský program je o dost složitější než ten na picu. Hostitel musí zprávu nejdřív převést do kódování utf-8 neboli bytes. To je posláno na sériovou linku comportu, který je zrovna otevřený. Pico má práci velmi jednoduší, neboť micropython je schopný číst sériovou linku pomocí příkazu input(). Následně pico kontroluje jakou zprávu dostal vůči svému slovníku. Pokud zpráva odpovídá nějakému příkazu, tak pico navrátí odpovídající hodnoty, jinak jenom pošle zpět že zprávu zaregistroval. Hostitel nyní musí projít zpětným procesem převádění zpět z bytes na string. Pokud pico pošle víceřádkovou správu, tak samozřejmě musí komunikační program převést celé pole, které přečte z comportu. 
 
 \subsection{Datová struktura}
-Díky způsobu práce s daty na picu (nepracuje s nimi přímo uživatel, vše je ovládáno pomocí programu) tak může být na picu mnohem méně flexibilní struktura souborů. V rootu musí existovat main.py, který se sám spustí, když se pico zapojí. Zároveň musí být v rootu samotný soubor hráče a jakékoli knihovny, které main.py potřebuje. Následně všechny skripty, které jsou specifické vůči hráči, musí být v adresáři player\_scripts.
+Díky způsobu práce s daty na klíči (nepracuje s nimi přímo uživatel, vše je ovládáno pomocí programu) tak zde může existovat velmi neflexibilní struktura souborů. V rootu musí existovat main.py, který se sám spustí, když se pico zapojí. Zároveň musí být v rootu samotný soubor hráče a jakékoli knihovny, které main.py potřebuje. Následně všechny skripty, které jsou specifické vůči hráči, musí být v adresáři player\_scripts.
 
 \newpage
-\section{Struktura souborů}
+\section{Struktura adresářů a souborů}
+Během tvorby programu byl kladen důraz na co nejméně vynucené struktury ze strany uživatele. Hodně problémů jsem tudíž vyřešil pomocí tvorby souborů se specifickými názvy, pro které se program dívá a vytvoří si strukturu cest, se kterou pracuje a podává do dalších funkcí. Je zde ale určitá kultura, kterou bych doporučil při tvoření souborů.
 
+Hlavní adresář příběhu
 \begin{itemize}
-	\item main.py
-	\item player.json
+	\item Soubor s názvem "\_story.txt"
+	\item Adresář s inicializačními skripty
+	\item Adresář se skripty eventů
+	\item Adresář s hráči (může být prázdný, pokud je použit klíč)
+	\item Adresář se skripty hráčů 
 	\item player\_scripts
-	\begin{itemize}
-		\item player\_script.py
-	\end{itemize}
+	\item další adresáře, které už tvoří vlastní strukturu příběhu
 \end{itemize}
+
+Všechny adresáře, které obsahují skripty, musí obsahovat soubor "\_scripts.txt" a "info.json". První soubor je hledán aby program věděl kde má skripty uložené a druhý soubor obsahuje informace pro program jak se jednotlivé skripty chovají.
+
+Jednotlivé části příběhu, se kterými chceme aby program pracoval, jsou určeny soubory "storypart.json". Tento soubor obsahuje jednu informaci pro program, "include" určující obsáhnutí při prvotním načtení, a dále jakékoli další informace, se kterými chce následně uživatel pracovat ve svých skriptech.
+
+Kolem souboru "storypart.json" už není další struktura velmi flexibilní. Na této úrovni očekává program nutné informace pro podávání informací. 
+\begin{description}
+	\item[Adresář texts] Pokud uživatel nechce do argumentů eventů vypisovat celý příběh, tak by zde měl existovat adresář texts, ve kterém jsou jednotlivé soubory .txt, které následně je schopen program číst.
+\end{description}
+
 
 \section{Hlavní program}
 Vše je psáno pomocí programovacího jazyka Python, přičemž velmi využívám datového souboru typu json pro ukládání rozmanitých dat.
@@ -114,7 +129,11 @@ Handler jako funkce má dva svoje parametry. První parametr musí být název s
 
 Dalším krokem je zavoláním funkce. Hlavní program obsahuje list importovaných funkcí, a protože Handler žije uvnitř hlavního programu, tak může sáhnout do tohoto listu a funkci zavolat. Volání funkce je provedeno přes funkci getattr().
 
-Handler zjišťuje jestli funkce vrátila hodnotu, pokud ano tak ji ukládá do paměti. Je zde ale výjimka, a to u mnou nazvaných logických skriptů. Logické skripty, pokud je jejich návratová hodnota typu slovník, mají schopnost přidávat eventy a tudíž jsou logické skripty schopné vytvářet smyčky. Handler kontroluje jestli jsou funkce importovány, aby nevolal neexistující funkce, a také kontroluje pro stringy s koncovkou .json. Pokud je takový string nalezen, tak Handler z odpovídajícího souboru vezme eventy a přidá je. Handler je ještě schopný nalézt jeden identifikátor, "self". Pokud je "self" nalezen a jeho hodnota je true, tak handler přidá, celý původní script, který byl volán. Toto umožňuje snadno vytvořit nekonečnou smyčku.
+Zpracování návratových hodnot vyžaduje správné zapsaní informací v "info.json" souborech, které si program načte do paměti. Tyto soubory mají strukturu slovníku a obsahují dvě sekce. První sekcí, jménem id, je soupis názvů skriptů a jejich id. Druhá sekce, jménem info, je určená jak pro důležité programové informace tak pro uživatelské. Dva programové listy které se zde nacházejí jsou pod klíči "func" a "obj". Každá funkce se musí nacházet v jedné z nich a ne v obou zároveň. Handler zjišťuje jestli funkce vrátila hodnotu, pokud ano tak ji ukládá do paměti. Pokud ale skript neobsahuje funkci, obsahuje objekt, tak handler zavolal konstruktor a musí se tudíž celý objekt uložit do paměti.
+
+Mezi další, již nepovinné, informace patří například listy pod klíči "lock" a "logic". První pole říká handlerovi aby hodnotu, kterou načetl z paměti nezahazoval a ponechal ji v paměti. Tato možnost by měla být použita pouze pro skripty u kterých víme že nebudou volány více než jednou. Nebo pokud víme že následně v eventech budou hodnoty násilně požrány. 
+
+Druhý list určuje takzvané logické skripty. Pokud je jejich návratová hodnota typu slovník, mají schopnost přidávat eventy a tudíž jsou logické skripty schopné vytvářet smyčky. Kromě návratových hodnot typu slovník handler také u rozpoznává stringy s koncovkou .json. Pokud je takový string nalezen, tak Handler z odpovídajícího souboru vezme eventy a přidá je. Handler je ještě schopný nalézt jeden identifikátor, "self". Pokud je "self" nalezen a jeho hodnota je true, tak handler přidá, celý původní script, který byl volán. Toto umožňuje snadno vytvořit nekonečnou smyčku.
 
 \subsubsection{Paměť programu}
 Struktura paměti je takzvaný stack. Pro tento účel jsem vytvořil třídu, abych si mohl dodat manipulační metody, které bych mohl potřebovat. Samotný stack má strukturu listu (toto jsem zvolil abych mohl použít indexované hledání, mazání, či přidávání hodnot), kdy hodnotou listu je vždy pole o dvou hodnotách. Na první pozici stojí vlastní hodnota a na druhé stojí id, nebo adresa, funkce či objektu, co tuhle hodnotu vytvořila. Pokud funkce chce pracovat s hodnotami jiných funkcí, tak je použita první nalezená hodnota "shora" (Pokud bychom se dívali na hodnoty od indexu 0 až do X, tak by to byla první hodnota nalezená od nuly).
