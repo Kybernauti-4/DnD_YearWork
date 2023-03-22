@@ -58,9 +58,7 @@ if fresh_start:
 	for root, directories, files in os.walk(root_story_path):
 		for directory in directories:
 			if directory == '.orig':
-				src = os.path.join(root, directory)
-				dst = root
-				fileHandler.loadSave(src, dst)
+				fileHandler.loadSave(root)
 
 # then find the scripts
 i = 1 # the index of the script location, recreating original file structure which was {1:'script_location_1', 2:'script_location_2', ...}
@@ -265,9 +263,7 @@ if __name__ == "__main__":
 		#overwrite the story_path value in the stack to the actual story part
 		valueStack.setValueByID(0,story_part)
 
-		dst = story_part
-		src = os.path.join(dst, '.orig')
-		fileHandler.loadSave(src, dst)
+		fileHandler.loadSave(story_part)
 
 		#actual events loop inside the story parts
 		valueStack.setValueByID(4,0)
