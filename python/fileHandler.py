@@ -68,8 +68,9 @@ def getFolder(path, folder):
 	return os.path.join(path, folder)
 
 def loadSave(src, dst):
+	if __name__ == '__main__':
+		print("It's happening, let us pray brothers and sisters")
 	for root, dirs, files in os.walk(dst):
-		
 		for filename in files:
 			if (os.path.dirname(os.path.join(root, filename))).split(os.path.sep)[-1].startswith('.'):continue
 			os.remove(os.path.join(root, filename))
@@ -79,5 +80,6 @@ def loadSave(src, dst):
 			_writeRaw(os.path.join(dst,filename),_readRaw(os.path.join(src,filename)))
 
 
-if __name__ == 'main':
+if __name__ == "__main__":
 	loadSave('story\\Chapter_1\\Encounter_1\\Scene_1\\.orig','story\\Chapter_1\\Encounter_1\\Scene_1')
+	print('Done')
