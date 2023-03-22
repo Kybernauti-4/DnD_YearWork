@@ -81,5 +81,5 @@ def loadSave(src, dst):
 
 
 if __name__ == "__main__":
-	loadSave('story\\Chapter_1\\Encounter_1\\Scene_1\\.orig','story\\Chapter_1\\Encounter_1\\Scene_1')
+	loadSave('D:\\DnD_YearWork\\python\\story\\Chapter_1\\Encounter_1\\Scene_1\\.orig','D:\\DnD_YearWork\\python\\story\\Chapter_1\\Encounter_1\\Scene_1')
 	print('Done')
