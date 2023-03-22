@@ -18,6 +18,16 @@ def read(filename):
 		file.close()
 		return data
 
+def _readRaw(filename):
+	try:
+		file = open(filename, 'r')
+		data = file.read()
+		file.close()
+		return data
+	except:
+		#print("file doesn't exist")
+		return None
+
 def readJSON(filename,field):
 	if '.json' in filename:
 		try:
@@ -36,6 +46,10 @@ def write(filename, strToWrite):
 		else:
 			file.write(str(strToWrite))
 
+def _writeRaw(filename, data):
+	with open(filename, 'w') as file:
+		file.write(data)
+
 
 def append(filename, strToAppend):
 	with open(filename, 'a') as file:
@@ -52,3 +66,18 @@ def rewriteJSON(filename, field, strToReplace, newStr):
 
 def getFolder(path, folder):
 	return os.path.join(path, folder)
+
+def loadSave(src, dst):
+	for root, dirs, files in os.walk(dst):
+		
+		for filename in files:
+			if (os.path.dirname(os.path.join(root, filename))).split(os.path.sep)[-1].startswith('.'):continue
+			os.remove(os.path.join(root, filename))
+		
+	for root,dirs,files in os.walk(src):
+		for filename in files:
+			_writeRaw(os.path.join(dst,filename),_readRaw(os.path.join(src,filename)))
+
+
+if __name__ == 'main':
+	print('help')

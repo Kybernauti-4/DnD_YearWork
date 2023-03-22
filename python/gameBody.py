@@ -50,6 +50,17 @@ if len(root_story_path) > 1:
 else:
 	root_story_path = root_story_path[1]
 
+fresh_start = True if input('Do you want to start a new game? (y/n): ').casefold().strip() == 'y' else False
+
+if fresh_start:
+	for root, directories, files in os.walk(root_story_path):
+		for directory in directories:
+			if directory == '.orig':
+				src = os.path.join(root, directory)
+				dst = root
+				
+
+exit()
 # then find the scripts
 i = 1 # the index of the script location, recreating original file structure which was {1:'script_location_1', 2:'script_location_2', ...}
 for root, directories, files in os.walk(root_story_path):

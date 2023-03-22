@@ -109,10 +109,7 @@ Všechny adresáře, které obsahují skripty, musí obsahovat soubor "\_scripts
 
 Jednotlivé části příběhu, se kterými chceme aby program pracoval, jsou určeny soubory "storypart.json". Tento soubor obsahuje jednu informaci pro program, "include" určující obsáhnutí při prvotním načtení, a dále jakékoli další informace, se kterými chce následně uživatel pracovat ve svých skriptech.
 
-Kolem souboru "storypart.json" už není další struktura velmi flexibilní. Na této úrovni očekává program nutné informace pro podávání informací. 
-\begin{description}
-	\item[Adresář texts] Pokud uživatel nechce do argumentů eventů vypisovat celý příběh, tak by zde měl existovat adresář texts, ve kterém jsou jednotlivé soubory .txt, které následně je schopen program číst.
-\end{description}
+Jedno místo kde program nehledá pro "storypart.json" jsou soubory, které začínají tečkou. Doporučuji u každého "storypart.json" vytvořit adresář .orig, který obsahuje původní stav celého adresáře. Logické skripty, které vysvětlím později, mají schopnost měnit soubory přímo a nelze je vrátit na původní stav, pokud uživatel nezná původní stav.
 
 
 \section{Hlavní program}
@@ -131,12 +128,14 @@ Dalším krokem je zavoláním funkce. Hlavní program obsahuje list importovan�
 
 Zpracování návratových hodnot vyžaduje správné zapsaní informací v "info.json" souborech, které si program načte do paměti. Tyto soubory mají strukturu slovníku a obsahují dvě sekce. První sekcí, jménem id, je soupis názvů skriptů a jejich id. Druhá sekce, jménem info, je určená jak pro důležité programové informace tak pro uživatelské. Dva programové listy které se zde nacházejí jsou pod klíči "func" a "obj". Každá funkce se musí nacházet v jedné z nich a ne v obou zároveň. Handler zjišťuje jestli funkce vrátila hodnotu, pokud ano tak ji ukládá do paměti. Pokud ale skript neobsahuje funkci, obsahuje objekt, tak handler zavolal konstruktor a musí se tudíž celý objekt uložit do paměti.
 
-Mezi další, již nepovinné, informace patří například listy pod klíči "lock" a "logic". První pole říká handlerovi aby hodnotu, kterou načetl z paměti nezahazoval a ponechal ji v paměti. Tato možnost by měla být použita pouze pro skripty u kterých víme že nebudou volány více než jednou. Nebo pokud víme že následně v eventech budou hodnoty násilně požrány. 
+Mezi další, již nepovinné, informace patří například listy pod klíči "lock" a "logic". První pole říká handlerovi aby hodnotu, kterou načetl z paměti nezahazoval a ponechal ji v paměti. Jsou to tudíž "zamčené" hodnoty. Tato možnost by měla být použita pouze pro skripty u kterých víme že nebudou volány více než jednou. Nebo pokud víme že následně v eventech budou hodnoty násilně požrány. 
 
 Druhý list určuje takzvané logické skripty. Pokud je jejich návratová hodnota typu slovník, mají schopnost přidávat eventy a tudíž jsou logické skripty schopné vytvářet smyčky. Kromě návratových hodnot typu slovník handler také u rozpoznává stringy s koncovkou .json. Pokud je takový string nalezen, tak Handler z odpovídajícího souboru vezme eventy a přidá je. Handler je ještě schopný nalézt jeden identifikátor, "self". Pokud je "self" nalezen a jeho hodnota je true, tak handler přidá, celý původní script, který byl volán. Toto umožňuje snadno vytvořit nekonečnou smyčku.
 
 \subsubsection{Paměť programu}
-Struktura paměti je takzvaný stack. Pro tento účel jsem vytvořil třídu, abych si mohl dodat manipulační metody, které bych mohl potřebovat. Samotný stack má strukturu listu (toto jsem zvolil abych mohl použít indexované hledání, mazání, či přidávání hodnot), kdy hodnotou listu je vždy pole o dvou hodnotách. Na první pozici stojí vlastní hodnota a na druhé stojí id, nebo adresa, funkce či objektu, co tuhle hodnotu vytvořila. Pokud funkce chce pracovat s hodnotami jiných funkcí, tak je použita první nalezená hodnota "shora" (Pokud bychom se dívali na hodnoty od indexu 0 až do X, tak by to byla první hodnota nalezená od nuly).
+Struktura paměti je takzvaný stack. Pro tento účel jsem vytvořil třídu, abych si mohl dodat manipulační metody, které bych mohl potřebovat. Samotný stack má strukturu listu (toto jsem zvolil abych mohl použít indexované hledání, mazání, či přidávání hodnot), kdy hodnotou listu je vždy list o dvou hodnotách. Na první pozici stojí vlastní hodnota a na druhé stojí id, neboli adresa, funkce či objektu, co tuhle hodnotu vytvořila. Pokud funkce chce pracovat s hodnotami jiných funkcí, tak je použita první nalezená hodnota "shora" (Pokud bychom se dívali na hodnoty od indexu 0 až do X, tak by to byla první hodnota nalezená od nuly).
+
+Pro manipulaci hodnot jsem vytvořil také dva skripty, které může uživatel používat a to je putVal, pushVal a eatVal. PutVal jednoduše přidá hodnotu do stacku pod svojí vlastní ID. PushVal je schopný posunout hodnotu na na další místo ve stacku za nejbližší hodnotu se stejnou adresou. EatVal požere hodnotu ze stacku i za možnosti že je to "uzamčená" hodnota.
 
 Jak jsem již zmiňoval v sekci Handler, pro čtená z paměti jsem vybral znak \&. Inspiroval jsem se z programovacího jazyka C kde \& operátor vrací adresu proměnné. V mém případě je za znakem \& adresa kde se hodnota má nacházet v paměti.
 
@@ -146,10 +145,8 @@ pravidlo, které se musí dodržovat. Script vždy musí obsahovat stejnojmennou
 \begin{lstlisting}[language=Python] 
 volana_funkce = getattr(importy[funkce],  funkce) 
 \end{lstlisting}
-
-\subsubsection{Komunikace mezi scripty}
-Pomocí použití návratových hodnot. Handler, jak už zmíněno, je schopen číst a předávat hodnoty z paměti.
 \subsection{Tělo Hry}
+Zde 
 \subsection{Struktura příběhu}
 \subsection{Eventy}
 \subsubsection{Zápis eventů}
