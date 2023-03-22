@@ -80,4 +80,4 @@ def loadSave(src, dst):
 
 
 if __name__ == 'main':
-	print('help')
+	loadSave('story\\Chapter_1\\Encounter_1\\Scene_1\\.orig','story\\Chapter_1\\Encounter_1\\Scene_1')
