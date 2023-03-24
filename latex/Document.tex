@@ -131,22 +131,23 @@ Zpracování návratových hodnot vyžaduje správné zapsaní informací v "inf
 Mezi další, již nepovinné, informace patří například listy pod klíči "lock" a "logic". První pole říká handlerovi aby hodnotu, kterou načetl z paměti nezahazoval a ponechal ji v paměti. Jsou to tudíž "zamčené" hodnoty. Tato možnost by měla být použita pouze pro skripty u kterých víme že nebudou volány více než jednou. Nebo pokud víme že následně v eventech budou hodnoty násilně požrány. 
 
 Druhý list určuje takzvané logické skripty. Pokud je jejich návratová hodnota typu slovník, mají schopnost přidávat eventy a tudíž jsou logické skripty schopné vytvářet smyčky. Kromě návratových hodnot typu slovník handler také u rozpoznává stringy s koncovkou .json. Pokud je takový string nalezen, tak Handler z odpovídajícího souboru vezme eventy a přidá je. Handler je ještě schopný nalézt jeden identifikátor, "self". Pokud je "self" nalezen a jeho hodnota je true, tak handler přidá, celý původní script, který byl volán. Toto umožňuje snadno vytvořit nekonečnou smyčku.
-
 \subsubsection{Paměť programu}
 Struktura paměti je takzvaný stack. Pro tento účel jsem vytvořil třídu, abych si mohl dodat manipulační metody, které bych mohl potřebovat. Samotný stack má strukturu listu (toto jsem zvolil abych mohl použít indexované hledání, mazání, či přidávání hodnot), kdy hodnotou listu je vždy list o dvou hodnotách. Na první pozici stojí vlastní hodnota a na druhé stojí id, neboli adresa, funkce či objektu, co tuhle hodnotu vytvořila. Pokud funkce chce pracovat s hodnotami jiných funkcí, tak je použita první nalezená hodnota "shora" (Pokud bychom se dívali na hodnoty od indexu 0 až do X, tak by to byla první hodnota nalezená od nuly).
 
 Pro manipulaci hodnot jsem vytvořil také dva skripty, které může uživatel používat a to je putVal, pushVal a eatVal. PutVal jednoduše přidá hodnotu do stacku pod svojí vlastní ID. PushVal je schopný posunout hodnotu na na další místo ve stacku za nejbližší hodnotu se stejnou adresou. EatVal požere hodnotu ze stacku i za možnosti že je to "uzamčená" hodnota.
 
 Jak jsem již zmiňoval v sekci Handler, pro čtená z paměti jsem vybral znak \&. Inspiroval jsem se z programovacího jazyka C kde \& operátor vrací adresu proměnné. V mém případě je za znakem \& adresa kde se hodnota má nacházet v paměti.
-
 \subsubsection{Struktura Scriptu}
 Kvůli použití funkce getattr() ve funkci Handler, a zjednodušení programu, má script jedno nutné
 pravidlo, které se musí dodržovat. Script vždy musí obsahovat stejnojmennou funkci jako soubor, ve kterém je obsáhlá. Na první pohled se toto zdá jako divné pravidlo a vytvoří to velmi elegantní zápis: 
 \begin{lstlisting}[language=Python] 
 volana_funkce = getattr(importy[funkce],  funkce) 
 \end{lstlisting}
+\subsection{Okno Hry}
+\subsubsection{Formátování}
+\subsubsection{Vytváření a práce s oknem}
 \subsection{Tělo Hry}
-Zde 
+Tělem hry je zde míněno celková struktura, která tvoří herní zážitek.
 \subsection{Struktura příběhu}
 \subsection{Eventy}
 \subsubsection{Zápis eventů}
