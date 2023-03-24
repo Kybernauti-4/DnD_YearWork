@@ -292,7 +292,7 @@ if __name__ == "__main__":
 				event = '_'.join(event.split('_')[:-1])
 
 			#handle the event
-			if event == 'input' and arg == 'None' and len(storyStack) <= story_index+1: # input:none is returned by storyHandler when he cannot find the correct file
+			if event == 'input' and arg == 'None': # input:none is returned by storyHandler when he cannot find the correct file
 				#print('Breaking out of main loop')
 				window = getValue(9)
 				window.add_text('The story has ended')

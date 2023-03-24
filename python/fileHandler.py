@@ -69,6 +69,8 @@ def getFolder(path, folder):
 
 def loadSave(path):
 	src = os.path.join(path,'.orig')
+	if not os.path.exists(src):
+		return 'NoSaveError'
 	if __name__ == '__main__':
 		print("It's happening, let us pray brothers and sisters")
 	for root, dirs, files in os.walk(path):
