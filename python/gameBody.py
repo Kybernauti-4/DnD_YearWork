@@ -304,7 +304,7 @@ if __name__ == "__main__":
 			#update event_index
 			valueStack.setValueByID(4,event_index+1)
 		
-		with open(os.path.join(story_part,'storypart.json'),'w') as f:
+		with open(os.path.join(story_part,'storypart.json'),'r') as f:
 			json_data = json.load(f)
 		if json_data['include'] == True:
 			json_data['include'] = False
