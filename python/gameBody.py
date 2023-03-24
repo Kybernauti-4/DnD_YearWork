@@ -263,7 +263,7 @@ if __name__ == "__main__":
 		#overwrite the story_path value in the stack to the actual story part
 		valueStack.setValueByID(0,story_part)
 
-		fileHandler.loadSave(story_part)
+		save = fileHandler.loadSave(story_part)
 
 		#actual events loop inside the story parts
 		valueStack.setValueByID(4,0)
@@ -304,12 +304,13 @@ if __name__ == "__main__":
 			#update event_index
 			valueStack.setValueByID(4,event_index+1)
 		
+		
 		with open(os.path.join(story_part,'storypart.json'),'r') as f:
 			json_data = json.load(f)
 		if json_data['include'] == True:
 			json_data['include'] = False
 		with open(os.path.join(story_part,'storypart.json'),'w') as f:
-			json.dump(json_data,f)
+			json.dump(json_data,f, indent = 4)
 		
 		valueStack.setValueByID(3,story_index+1)
 		#garbageCollector()
