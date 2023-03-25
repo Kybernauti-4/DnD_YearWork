@@ -21,8 +21,14 @@
 \usepackage{titlesec}
 \usepackage{float}
 
+\usepackage{tocloft}
+
 \usepackage{listings}
 \usepackage{color}
+
+% Add dots for sections and subsections in the table of contents
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}} % for sections
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}} % for subsections
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -78,6 +84,8 @@ V této maturitní práci se snažím o vytvoření programu který je schopný 
 \end{flushright} 
 
 \newpage
+\tableofcontents
+\newpage
 \section{Fyzický klíč}
 Pro komunikaci jsem vytvořil design vlastní desky, založené na čipu RP2040. Tato deska je schopná zobrazit informace ohledně hráče, pokud daná informace má min a max. 
 
@@ -88,7 +96,7 @@ Máme dvě komunikační zařízení a potřebujeme vytvořit komunikaci mezi ni
 Hostitelský program je o dost složitější než ten na picu. Hostitel musí zprávu nejdřív převést do kódování utf-8 neboli bytes. To je posláno na sériovou linku comportu, který je zrovna otevřený. Pico má práci velmi jednoduší, neboť micropython je schopný číst sériovou linku pomocí příkazu input(). Následně pico kontroluje jakou zprávu dostal vůči svému slovníku. Pokud zpráva odpovídá nějakému příkazu, tak pico navrátí odpovídající hodnoty, jinak jenom pošle zpět že zprávu zaregistroval. Hostitel nyní musí projít zpětným procesem převádění zpět z bytes na string. Pokud pico pošle víceřádkovou správu, tak samozřejmě musí komunikační program převést celé pole, které přečte z comportu. 
 
 \subsection{Datová struktura}
-Díky způsobu práce s daty na klíči (nepracuje s nimi přímo uživatel, vše je ovládáno pomocí programu) tak zde může existovat velmi neflexibilní struktura souborů. V rootu musí existovat main.py, který se sám spustí, když se pico zapojí. Zároveň musí být v rootu samotný soubor hráče a jakékoli knihovny, které main.py potřebuje. Následně všechny skripty, které jsou specifické vůči hráči, musí být v adresáři player\_scripts.
+Díky způsobu práce s daty na klíči (nepracuje s nimi přímo uživatel, vše je ovládáno pomocí programu) tak zde může existovat velmi neflexibilní struktura souborů. V rootu musí existovat main.py, který se sám spustí, když se pico zapojí. Zároveň musí být v rootu samotný soubor hráče a jakékoli knihovny, které \textit{main.py} potřebuje. Následně všechny skripty, které jsou specifické vůči hráči, musí být v adresáři player\_scripts.
 
 \newpage
 \section{Struktura adresářů a souborů}
@@ -96,7 +104,7 @@ Během tvorby programu byl kladen důraz na co nejméně vynucené struktury ze 
 
 Hlavní adresář příběhu
 \begin{itemize}
-	\item Soubor s názvem "\_story.txt"
+	\item Soubor s názvem \textit{\_story.txt}
 	\item Adresář s inicializačními skripty
 	\item Adresář se skripty eventů
 	\item Adresář s hráči (může být prázdný, pokud je použit klíč)
@@ -105,11 +113,11 @@ Hlavní adresář příběhu
 	\item další adresáře, které už tvoří vlastní strukturu příběhu
 \end{itemize}
 
-Všechny adresáře, které obsahují skripty, musí obsahovat soubor "\_scripts.txt" a "info.json". První soubor je hledán aby program věděl kde má skripty uložené a druhý soubor obsahuje informace pro program jak se jednotlivé skripty chovají.
+Všechny adresáře, které obsahují skripty, musí obsahovat soubor \textit{\_scripts.txt} a \textit{info.json}. První soubor je hledán aby program věděl kde má skripty uložené a druhý soubor obsahuje informace pro program jak se jednotlivé skripty chovají.
 
-Jednotlivé části příběhu, se kterými chceme aby program pracoval, jsou určeny soubory "storypart.json". Tento soubor obsahuje jednu informaci pro program, "include" určující obsáhnutí při prvotním načtení, a dále jakékoli další informace, se kterými chce následně uživatel pracovat ve svých skriptech.
+Jednotlivé části příběhu, se kterými chceme aby program pracoval, jsou určeny soubory \textit{storypart.json}. Tento soubor obsahuje jednu informaci pro program, "include" určující obsáhnutí při prvotním načtení, a dále jakékoli další informace, se kterými chce následně uživatel pracovat ve svých skriptech.
 
-Jedno místo kde program nehledá pro "storypart.json" jsou soubory, které začínají tečkou. Doporučuji u každého "storypart.json" vytvořit adresář .orig, který obsahuje původní stav celého adresáře. Logické skripty, které vysvětlím později, mají schopnost měnit soubory přímo a nelze je vrátit na původní stav, pokud uživatel nezná původní stav.
+Jedno místo kde program nehledá pro \textit{storypart.json} jsou soubory, které začínají tečkou. Jedno fixní pravidlo s mou verzí programu je, že u každého souboru \textit{storypart.json} musí být .orig adresář. V tomto adresáři musí být původní verze mateřského adresáře. Logické skripty přepisují soubory destruktivně (bez možnosti vrácení změn), proto zde adresáře .orig musí být. I kdyby uživatel vytvořil příběh bez logických skriptů, tak po splnění všech eventů v rámci jedné příběhové části přepíše klíč "include" v \textit{storypart.json} na "false". Toto je moje metoda jak vytvořit pseudo uložení hry. Má to ale stejný problém jako logické skripty, jedná se o destruktivní změny.
 
 
 \section{Hlavní program}
@@ -126,7 +134,7 @@ Handler jako funkce má dva svoje parametry. První parametr musí být název s
 
 Dalším krokem je zavoláním funkce. Hlavní program obsahuje list importovaných funkcí, a protože Handler žije uvnitř hlavního programu, tak může sáhnout do tohoto listu a funkci zavolat. Volání funkce je provedeno přes funkci getattr().
 
-Zpracování návratových hodnot vyžaduje správné zapsaní informací v "info.json" souborech, které si program načte do paměti. Tyto soubory mají strukturu slovníku a obsahují dvě sekce. První sekcí, jménem id, je soupis názvů skriptů a jejich id. Druhá sekce, jménem info, je určená jak pro důležité programové informace tak pro uživatelské. Dva programové listy které se zde nacházejí jsou pod klíči "func" a "obj". Každá funkce se musí nacházet v jedné z nich a ne v obou zároveň. Handler zjišťuje jestli funkce vrátila hodnotu, pokud ano tak ji ukládá do paměti. Pokud ale skript neobsahuje funkci, obsahuje objekt, tak handler zavolal konstruktor a musí se tudíž celý objekt uložit do paměti.
+Zpracování návratových hodnot vyžaduje správné zapsaní informací v \textit{info.json} souborech, které si program načte do paměti. Tyto soubory mají strukturu slovníku a obsahují dvě sekce. První sekcí, jménem id, je soupis názvů skriptů a jejich id. Druhá sekce, jménem info, je určená jak pro důležité programové informace tak pro uživatelské. Dva programové listy které se zde nacházejí jsou pod klíči "func" a "obj". Každá funkce se musí nacházet v jedné z nich a ne v obou zároveň. Handler zjišťuje jestli funkce vrátila hodnotu, pokud ano tak ji ukládá do paměti. Pokud ale skript neobsahuje funkci, obsahuje objekt, tak handler zavolal konstruktor a musí se tudíž celý objekt uložit do paměti.
 
 Mezi další, již nepovinné, informace patří například listy pod klíči "lock" a "logic". První pole říká handlerovi aby hodnotu, kterou načetl z paměti nezahazoval a ponechal ji v paměti. Jsou to tudíž "zamčené" hodnoty. Tato možnost by měla být použita pouze pro skripty u kterých víme že nebudou volány více než jednou. Nebo pokud víme že následně v eventech budou hodnoty násilně požrány. 
 
@@ -145,8 +153,24 @@ volana_funkce = getattr(importy[funkce],  funkce)
 \end{lstlisting}
 \subsection{Okno Hry}
 Zobrazování hry jsem se rozhodl použít příkazový řádek. Avšak oproti normálnímu příkazovému řádku, je tento schopný dodržet šířku a výšku okna, udanou v počtu vykreslených znaků. V rámci těchto limitů respektuje slova, tudíž se nikdy nestane, že by bylo slovo odříznuto, nebo vykreslena neúplná věta.
+
+Další funkčnost, kterou toto provedení okna obsahuje je pomalý a rychlý výpis. Celé okno je po každém kliknutí enter překresleno. Informace, které již na obrazovce byly, jsou vykresleny rychle (po slovech) a informace, které jsou nové, jsou vykresleny pomalu(znak po znaku). Konečný efekt, pokud je počítač dostatečně rychlý, vypadá jako kdyby se pouze poslední řádka překreslovala. 
+
+Zde bych rád zmínil, pokud bych další pokračování mé práce zaměřil čistě na grafickou složku, tak bych byl schopný odstranit momentální problém s cenou na výkonu. V této práci jsem toho nebyl schopný, protože s mými znalostmi, v rámci této práce, bych při vytvoření takového okna byl nucen použít velký počet proměnných, které by mi dávali informace o momentálním stavu okna. Řádná optimalizace by vyžadovala mnohem složitější funkci a nebo bych přešel na systém vytvoření okna, které by simulovalo chování příkazového řádku. V případě nového okna by optimalizace byla zajištěna grafickým enginem, který bych používal pouze k vykreslování textu.
+\subsubsection{Logické provedení}
+První co se musí provést, z kterékoli části programu, je metoda add\_text. Ta je schopná přijmout dva možné vstupy. Buď přes list, pole, nebo jiné iterovatelné objekty, nebo přes string. Pokud je přijat iterovatelný objekt, tak je každá hodnota braná jako string a přidaná do paměti okna, pokud je přijat string tak je přidán do paměti rovnou. Než ale se cokoliv přidá, tak projde kontrolou, jestli je možno takovou větu vykreslit. Pokud řádka projde skrz kontroly, tak je přičtena jednička k proměnné, která řídí postupné vykreslování.
+
+Ve skriptech jsem vytvořil ještě jeden, rozšířující, skript. Je stejnojmenný jako metoda okna pro přidání textu, ale je schopný vzít txt soubory. Skripty mají přístup k adrese, pokud si ji vyžádají, kde momentálně mají pracovat. Při použití tohoto skriptu je důležité brát na vědomí, že skript pro textové soubory hledá v adresáři \textit{texts}, v pracovní cestě.
+
+Vykreslování samotné je tvořené přes dvě metody. Jedna metoda jenom připravuje pole, které vykreslovací metoda dá do okna. Vykreslovací metoda neobsahuje žádnou logiku jestli může nebo nemůže vykreslit něco na obrazovku, vše zařizuje formátovací metoda.
+Formátovací metoda pomalu postupuje skrz paměťový list a prochází skrz něj odshora dolů.
 \subsubsection{Formátování}
+Jak jsem již zmínil tak formátování je schopné dodržovat velikost okna. Kromě toho ale umí pracovat i se speciálními znaky. Momentálně implementované znaky jsou <h>, <un> a <r>. Syntax těchto znaků je převzatý z tagů v HTML. <h> a <un> jsou znaky, které jsou "hookovací", což zde znamená že jsou schopné připnout řádku k vrchu formátovaného okna. Připnuté řádky budou připnuté tak dlouho dokud se přímo pod nimi neobjeví řádka s <un> znakem. Takto se dá připnout kolik řádek je potřeba, ale program nepustí text do paměti, pokud by připnuté řádky zaplnili okno úplně. 
+
+Řádky v paměti nejsou rozřezány podle šířky okna takže se musí se zalomením textu počítat při formátování. Jako správné chování programu jsem uznal, že pokud je textu enter, tak ho to vykreslí. Samozřejmě při přidávání textu do paměti se kontroluje aby vůbec řádka bylo možno ji celou dostat na obrazovku. Formátovaní slov na kraji obrazovky jsem vyřešil tak že jsou posunuty na další řádek.
 \subsubsection{Vytváření a práce s oknem}
+Okno se vytvoří přes event, kdy parametry eventu jsou šířka a výška okna. Jak jsem již zmiňoval v Handlerovi tak okno je uloženo do paměti, jako objekt, protože Handler zavolá konstruktor. U okna silně doporučuji hodnotu dát mezi "uzamčené" hodnoty, aby po každém podání okna eventu, nebylo zničeno. 
+\subsubsection{I/O}
 \subsection{Tělo Hry}
 Tělem hry je zde míněno celková struktura, která tvoří herní zážitek.
 \subsection{Struktura příběhu}

@@ -21,5 +21,7 @@
 		"stacku",
 		"stringstyle",
 		"tabsize"
-	]
+	],
+	"editor.wordWrap": "bounded",
+	"editor.wordWrapColumn": 130
 }
