@@ -73,6 +73,8 @@ class Window():
 		self.ar_thread.join()
 	
 	def get_return_value(self):
+		self.return_value = None
+		self.return_value_set = False
 		self.got_input.wait()
 		self.got_input.clear()
 		r = self.return_value

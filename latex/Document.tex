@@ -165,12 +165,24 @@ Ve skriptech jsem vytvořil ještě jeden, rozšířující, skript. Je stejnojm
 Vykreslování samotné je tvořené přes dvě metody. Jedna metoda jenom připravuje pole, které vykreslovací metoda dá do okna. Vykreslovací metoda neobsahuje žádnou logiku jestli může nebo nemůže vykreslit něco na obrazovku, vše zařizuje formátovací metoda.
 Formátovací metoda pomalu postupuje skrz paměťový list a prochází skrz něj odshora dolů.
 \subsubsection{Formátování}
-Jak jsem již zmínil tak formátování je schopné dodržovat velikost okna. Kromě toho ale umí pracovat i se speciálními znaky. Momentálně implementované znaky jsou <h>, <un> a <r>. Syntax těchto znaků je převzatý z tagů v HTML. <h> a <un> jsou znaky, které jsou "hookovací", což zde znamená že jsou schopné připnout řádku k vrchu formátovaného okna. Připnuté řádky budou připnuté tak dlouho dokud se přímo pod nimi neobjeví řádka s <un> znakem. Takto se dá připnout kolik řádek je potřeba, ale program nepustí text do paměti, pokud by připnuté řádky zaplnili okno úplně. 
+Jak jsem již zmínil tak formátování je schopné dodržovat velikost okna. Kromě toho ale umí pracovat i se speciálními znaky. Momentálně implementované znaky jsou <h>, <un> a <r>. Syntax těchto znaků je převzatý z tagů v HTML. <h> a <un> jsou znaky, které jsou "hookovací", což zde znamená že jsou schopné připnout řádku k vrchu formátovaného okna. Připnuté řádky budou připnuté tak dlouho dokud se přímo pod nimi neobjeví řádka s <un> znakem. Takto se dá připnout kolik řádek je potřeba, ale program nepustí text do paměti, pokud by připnuté řádky zaplnili okno úplně. Poslední znak <r> je určený pro započetí čtení z příkazového řádku.
 
 Řádky v paměti nejsou rozřezány podle šířky okna takže se musí se zalomením textu počítat při formátování. Jako správné chování programu jsem uznal, že pokud je textu enter, tak ho to vykreslí. Samozřejmě při přidávání textu do paměti se kontroluje aby vůbec řádka bylo možno ji celou dostat na obrazovku. Formátovaní slov na kraji obrazovky jsem vyřešil tak že jsou posunuty na další řádek.
 \subsubsection{Vytváření a práce s oknem}
-Okno se vytvoří přes event, kdy parametry eventu jsou šířka a výška okna. Jak jsem již zmiňoval v Handlerovi tak okno je uloženo do paměti, jako objekt, protože Handler zavolá konstruktor. U okna silně doporučuji hodnotu dát mezi "uzamčené" hodnoty, aby po každém podání okna eventu, nebylo zničeno. 
-\subsubsection{I/O}
+Okno se vytvoří přes event, kdy parametry eventu jsou šířka a výška okna. Jak jsem již zmiňoval v Handlerovi tak okno je uloženo do paměti, jako objekt, protože Handler zavolá konstruktor. U okna silně doporučuji hodnotu dát mezi "uzamčené" hodnoty, aby po každém podání okna eventu, nebylo zničeno.
+
+Jak už jsem zmínil v sekci logické provedení, tak pro přidání textu do okna se dá použít buď přímo metoda objektu, nebo stejnojmenný skript. Pokud je skriptu povolen přístup k objektu, tak je teoreticky schopný ovládat rendrování do okna přímo. Jedna z hlavních věcí co ale okno umí je zapnout automatický render. Opět se dá spustit přes metodu nebo přes skript. Objekt má metodu jak pro zapnutí tak pro vypnutí, ale skript přepíná mezi zapnutým auto renderem a vypnutým. 
+
+Auto render má ještě jednu hlavní vlastnost a to že spustí vykreslování okna na jiném vlákně než hlavní smyčka. Umožňuje to přidávat text a procházet neblokující eventy i když uživatel nic nedělá, ale vytvořilo to lehké potíže při tvoření čtení dat.
+
+\subsubsection{Input}
+Jak již bylo zmíněno, tak okno je schopno rozpoznat tag <r> a započne čtení. Teoreticky by toto čtená neměl vůbec být problém, ale kvůli použití vláknění to nebylo triviální. Na první pohle by se zdálo že jsem měl použít knihovnu \textit{Asyncio} ale našel jsem, podle mě, lepší řešení. Knihovna \textit{Threading} je schopná tvořit asynchroní input a output, a to díky tomu že sdílí primitivní typ \textit{Future} (V Threading se jmenuje Event). Tento typ funguje tak že po jeho nastavení jsem schopný z různých míst programů "sepnout" tento typ nebo ho "vypnout". Následně je ve funkci možno nastavit aby funkce asynchroně čekala na "sepnutí".
+
+Tuto teorii jsem zkonstruoval na got\_input, což je \textit{Future}, a metoda \textit{get\_return\_value()}, která získává hodnotu z příkazového řádku. Pokud kterýkoliv skript zavolá metodu pro získání hodnoty, tak v ten moment začne čekat dokud uživatel něco nezadá. Okno ale bude čekat než se dostane na řádek s tagem <r>.
+
+Kvůli mému provedení nedoporučuji dávat čtecí tag přímo do textu. Vytvořil jsem skript \textit{ask}, který je schopný nejen získat input, ale je zároveň schopný poslat otázku do okna, přidat k ní možnosti, pokud je uživatel zadá, a dodat nutný čtecí tag. Možnosti, které může uživatel poskytnout eventu \textit{ask}, jsou typu slovník (dict). Klíče jsou nahrány do okna. Hodnoty, potom co si uživatel vybere možnost, jsou vráceny do paměti programu. Tudíž může uživatel pracovat s daty, které se nebudou uživateli zobrazovat. Pokud uživatel zadal hodnotu, na kterou se nikdo neptal, tak \textit{ask} vypíše do okna, že uživatel zadal neplatnou možnost, a zopakuje otázku.
+
+
 \subsection{Tělo Hry}
 Tělem hry je zde míněno celková struktura, která tvoří herní zážitek.
 \subsection{Struktura příběhu}
