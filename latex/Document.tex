@@ -97,8 +97,6 @@ Hostitelský program je o dost složitější než ten na picu. Hostitel musí z
 
 \subsection{Datová struktura}
 Díky způsobu práce s daty na klíči (nepracuje s nimi přímo uživatel, vše je ovládáno pomocí programu) tak zde může existovat velmi neflexibilní struktura souborů. V rootu musí existovat main.py, který se sám spustí, když se pico zapojí. Zároveň musí být v rootu samotný soubor hráče a jakékoli knihovny, které \textit{main.py} potřebuje. Následně všechny skripty, které jsou specifické vůči hráči, musí být v adresáři player\_scripts.
-
-\newpage
 \section{Struktura adresářů a souborů}
 Během tvorby programu byl kladen důraz na co nejméně vynucené struktury ze strany uživatele. Hodně problémů jsem tudíž vyřešil pomocí tvorby souborů se specifickými názvy, pro které se program dívá a vytvoří si strukturu cest, se kterou pracuje a podává do dalších funkcí. Je zde ale určitá kultura, kterou bych doporučil při tvoření souborů.
 
@@ -182,15 +180,18 @@ Tuto teorii jsem zkonstruoval na got\_input, což je \textit{Future}, a metoda \
 
 Kvůli mému provedení nedoporučuji dávat čtecí tag přímo do textu. Vytvořil jsem skript \textit{ask}, který je schopný nejen získat input, ale je zároveň schopný poslat otázku do okna, přidat k ní možnosti, pokud je uživatel zadá, a dodat nutný čtecí tag. Možnosti, které může uživatel poskytnout eventu \textit{ask}, jsou typu slovník (dict). Klíče jsou nahrány do okna. Hodnoty, potom co si uživatel vybere možnost, jsou vráceny do paměti programu. Tudíž může uživatel pracovat s daty, které se nebudou uživateli zobrazovat. Pokud uživatel zadal hodnotu, na kterou se nikdo neptal, tak \textit{ask} vypíše do okna, že uživatel zadal neplatnou možnost, a zopakuje otázku.
 
-
-\subsection{Tělo Hry}
-Tělem hry je zde míněno celková struktura, která tvoří herní zážitek.
-\subsection{Struktura příběhu}
 \subsection{Eventy}
-\subsubsection{Zápis eventů}
-\subsubsection{Popisové informace}
+Během předchozích textů jsem zaměňoval slova event a skript. Event je přepis pro hlavní program aby byl schopný pustit skript. Skript je podprogram, který hlavní program používá pro své akce. Přepis jednotlivých eventů je v souboru \textit{event.json}, který se musí nacházet na úrovni \textit{storypart.json}.
 
+Samotný zápis je syntax json slovníku. Klíčem je název skriptu, který chce uživatel použít, plus \_X, kde X je pořadí eventu v momentálním souboru. Část \_X je zde jenom kvůli tomu, že klíče nemohou být stejné. Hodnotou ke klíči je vždy pole argumentů, které Handler podá skriptu. Zde se píší již zmiňované znaky \& aby byla umožněna komunikace mezi skripty.
 
+\section{Skriptovací nástroj}
+Když si shrneme co by vše uživatel musel umět aby si příběh napsal, tak by to znamenalo, že je nejspíš programátor a může si tudíž klidně naprogramovat vlastní hru. Tudíž jsem se rozhodl udělat nástroj, který by byl schopný pomoct uživateli a dát mu inteligentní předpovídání při psaní eventů a jiných souborů. Stejně jako hlavní program, tak skriptovací nástroj obsahuje vlastní verzi Handlera, díky které se opět stává kompletně rozšiřitelný. Bohužel ale není naprosto kompletní, nepatří mezi hlavní části mé práce, ale i tak mi přišlo ho do určité míry připravit.
 
+Nástroj je opět v příkazovém řádku ale oproti Hlavnímu programu je jeho výpisová schopnost vyšší. Má sice jeden zásadní problém ale k němu se vyjádřím později.
 
+\subsection{Handler}
+Podobně jako Handler v hlavním programu, je tento Handler schopný volat skripty a podávat jim argumenty. Má ale mnohé změny. Prví nastanme rovnou přímo při importování programu. Skriptovací nástroj má fixní strukturu souborů. Což v tomto případě znamená, že všechny skripty musí existovat na úrovni \textit{main.py}. 
+
+První změna je celkem regresivní, další byly podle mě vylepšení oproti Handlerovi hlavního programu. V každém skriptu musí existovat funkce get\_attr(), která vrací informace pro Handler. Návratová hodnota je slovník, kerý v klíčích obsahuje názvy funkcí, které skript obsahuje. Jako hodnoty jsou zde nápisy, které by měl nástroj předložit uživateli jako možnosti. 
 \end{document}
