@@ -190,8 +190,20 @@ Když si shrneme co by vše uživatel musel umět aby si příběh napsal, tak b
 
 Nástroj je opět v příkazovém řádku ale oproti Hlavnímu programu je jeho výpisová schopnost vyšší. Má sice jeden zásadní problém ale k němu se vyjádřím později.
 
+\subsection{Forma}
+Tento nástroj jsem chtěl zpracovat jako můj vlastní příkazový řádek, s možností do něj přidávat nástroje. Samozřejmě byl zamýšlený k práci se hrou, ale teoreticky nic nebrání tomu, aby kdokoli použil tento řádek na cokoliv jiného. 
+
+Když jsem začal nástroj dělat, tak jsem uměl víc pracovat s řádkem než když jsem začal dělat původní hru. Tudíž jsem byl při tvoření vytváření vykreslování odvážnější a umožnil jsem jiné další věci, které hra vůbec neumí. Jednou z nich je nabídka možností uživateli co doplnit za název skriptu. Aktivuje se zmáčknutím klávesy šipka nahoru. Handler zařídí aby program věděl jaké věci navrhnout. Následně může uživatel šipkami vlevo a vpravo navolit, kterou možnost chce použít. Klávesou TAB se možnost vepíše do řádku. Pokud by uživatel chtěl volbu zrušit, tak může pomocí šipky dolů. Nabídka slov se ještě navíc ukazuje v modrém.
+
+Řádka má dva příkazy vestavěné do programu. První je \textit{cd} a druhý je \textit{cls}. Tyto příkazy kopírují funkce klasického příkazového řádku windows, tudíž \textit{cd} umožňuje uživateli přepínat mezi adresáři a \textit{cls} vrátí příkazový řádek do původního stavu. Další příkazy, které jsou všestranné, jsou příkazy ze skriptu \textit{list\_all}. Tento soubor obsahuje příkazy \textit{ls, ld, lf, list\_all, list\_dir, list\_files}. \textit{List\_all} a jeho krátká verze by měla napovědět její funkci. Vypíše vše co obsahuje adresář. Další dvě možnosti příkazů vypíšou pouze adresáře nebo pouze soubory. Adresáře jsou zabarveny modře a soubory červeně. U souborů je ještě za svislou čárou napsaná jejich velikost.
 \subsection{Handler}
 Podobně jako Handler v hlavním programu, je tento Handler schopný volat skripty a podávat jim argumenty. Má ale mnohé změny. Prví nastanme rovnou přímo při importování programu. Skriptovací nástroj má fixní strukturu souborů. Což v tomto případě znamená, že všechny skripty musí existovat na úrovni \textit{main.py}. 
 
-První změna je celkem regresivní, další byly podle mě vylepšení oproti Handlerovi hlavního programu. V každém skriptu musí existovat funkce get\_attr(), která vrací informace pro Handler. Návratová hodnota je slovník, kerý v klíčích obsahuje názvy funkcí, které skript obsahuje. Jako hodnoty jsou zde nápisy, které by měl nástroj předložit uživateli jako možnosti. 
+První změna je celkem regresivní, další byly podle mě vylepšení oproti Handlerovi hlavního programu. V každém skriptu musí existovat funkce get\_attr(), která vrací informace pro Handler. Návratová hodnota je slovník, kerý v klíčích obsahuje názvy funkcí, které skript obsahuje. V hodnotě se nachází list, který obsahuje list a string. V listu jsou možnosti, které může nástroj předložit uživateli jako možnosti, a které následně podá funkci zpět. String je zde pro případy jako  \textit{\_\_local\_files\_\_}, pokud by nebylo možno napsat možnosti. Víceméně chybová zpráva. Pokud by script potřeboval uživateli předložit soubory v aktuálním adresáři, tak stačí do návratové hodnoty vložit již zmíněné \textit{\_\_local\_files\_\_}.
+
+\subsection{Nástroj edit a create}
+\subsection{Nástroj auto\_script}
+\section{Závěr}
+\subsection{Problémy}
+\subsection{Budoucí řešení}
 \end{document}
