@@ -90,9 +90,9 @@ V této maturitní práci se snažím o vytvoření programu který je schopný 
 \addcontentsline{toc}{section}{Úvod}
 \section*{Úvod}
 \section{Fyzický klíč}
-Pro komunikaci jsem vytvořil design vlastní desky, založené na čipu RP2040. Tato deska je schopná zobrazit informace ohledně hráče, pokud daná informace má min a max. 
+Pro komunikaci jsem vytvořil design vlastní desky, založené na čipu RP2040. Tato deska je schopná zobrazit informace ohledně hráče, pokud daná informace má min a max. Další schopnost je komunikace, přes můj vlastní program, který umožňuje ukládání některých souborů na paměť desky.
 
-Zobrazování je provedeno pomocí 8 LED na každé straně, které jsou ovládaný přes 8 bitový posuvný registr v časovém multiplexu pro ovládání dvou stran zároveň. Tento časový multiplex běží rychlostí 2kHz aby každá strana běžela na rychlosti 1kHz. Zvolená rychlost byla ze dvou důvodů. První byl, že při takové rychlosti by oko nemělo být schopné zaznamenat jak strany blikají. Druhý důvod souvisí s frekvencí na které často běží PWM. Díky těmto vlastnostem jsem schopný ovládat LED buď aby jenom blikali, nebo abych ovládal jejich jas pomocí simulovaného PWM.  
+Zobrazování je provedeno pomocí 8 LED na každé straně, které jsou ovládaný přes 8 bitový posuvný registr v časovém multiplexu pro ovládání dvou stran zároveň. Tento časový multiplex běží rychlostí 2kHz aby každá strana běžela na rychlosti 1kHz. Zvolená rychlost byla ze dvou důvodů. První byl, že při takové rychlosti by oko nemělo být schopné zaznamenat jak strany blikají. Druhý důvod souvisí s frekvencí na které často běží PWM. Díky těmto vlastnostem jsem schopný ovládat LED buď aby jenom blikali, nebo abych ovládal jejich jas pomocí simulovaného PWM.
 \subsection{Komunikace}
 Máme dvě komunikační zařízení a potřebujeme vytvořit komunikaci mezi nimi. Komunikace je řešena přes comporty. Hostitel, v tomto případě počítač, na kterém běží hlavní program, si nechá pomocí nástrojů knihovny serial vypsat všechny rozpoznané comporty. Následně se pokusí otevřít comport a poslat mu příkaz. Pokud se mu nepovede otevřít comport, víme že je to nechtěné zařízení. Když se otevření povede, pošle mu příkaz "type". Pokud je na druhé straně správné zařízení neboli pico se správným nahraným programem, tak zpátky odešle zprávu "player". Jenom tehdy je zařízení dáno do listů zařízení, se kterým potom program pracuje dál.
 
@@ -182,6 +182,8 @@ Jak již bylo zmíněno, tak okno je schopno rozpoznat tag <r> a započne čten�
 Tuto teorii jsem zkonstruoval na got\_input, což je \textit{Future}, a metoda \textit{get\_return\_value()}, která získává hodnotu z příkazového řádku. Pokud kterýkoliv skript zavolá metodu pro získání hodnoty, tak v ten moment začne čekat dokud uživatel něco nezadá. Okno ale bude čekat než se dostane na řádek s tagem <r>.
 
 Kvůli mému provedení nedoporučuji dávat čtecí tag přímo do textu. Vytvořil jsem skript \textit{ask}, který je schopný nejen získat input, ale je zároveň schopný poslat otázku do okna, přidat k ní možnosti, pokud je uživatel zadá, a dodat nutný čtecí tag. Možnosti, které může uživatel poskytnout eventu \textit{ask}, jsou typu slovník (dict). Klíče jsou nahrány do okna. Hodnoty, potom co si uživatel vybere možnost, jsou vráceny do paměti programu. Tudíž může uživatel pracovat s daty, které se nebudou uživateli zobrazovat. Pokud uživatel zadal hodnotu, na kterou se nikdo neptal, tak \textit{ask} vypíše do okna, že uživatel zadal neplatnou možnost, a zopakuje otázku.
+\subsection{Hráč}
+Další důležitou částí programu je uložení hráče a představení hráče v programu. Hráč je uložen v \textit{json} souboru a v programu je představen pomocí objektu. Samotný hráč má spoustu parametrů a pár důležitých zmíním. Každý hráč má svoje vlastní identifikační číslo, což je 32 znaků dlouhý text. 
 
 \subsection{Eventy}
 Během předchozích textů jsem zaměňoval slova event a skript. Event je přepis pro hlavní program aby byl schopný pustit skript. Skript je podprogram, který hlavní program používá pro své akce. Přepis jednotlivých eventů je v souboru \textit{event.json}, který se musí nacházet na úrovni \textit{storypart.json}.
@@ -223,9 +225,19 @@ Jedna z chytrých věcí co jsem sem přidal je, že skript najde největší mo
 
 
 \section{Závěr}
-\subsection{Problémy}
-\subsection{Budoucí řešení}
-\subsubsection{Hlavní program}
-\subsubsection{Skriptovací nástroj}
+Během práce jsem narazil na mnohé problémy a komplikace. Během řešení jsem se naučil mnohé věci a nyní si uvědomuji mnohé nedostatky mé práce. V rámci zadání jsem práci podle mě splnil, ale sám vím že jsou místa, kde by si program zasloužil vylepšení. Mé řešení problému má podle mě dobrý základ a chci s ním dál pokračovat.
+
+Největším momentálním problémem je bohužel použití jazyka Python. Tento jazyk je velmi flexibilní a pomohl při zpracování dat a vypisování dat na obrazovku. Problém ale je jeho optimalizace. Na problémy s rychlostí jsem narazil z jedné části, protože nepíši absolutně optimalizovaný kód, a z druhé. Ta druhá je, že je jazyk Python interpretovaný, ne compilovaný. Toto má i druhý nešťastný efekt, a to je že program lze spustit u uživatele jenom tehdy, má li nainstalovaný Python a jeho knihovny.
+
+Do budoucna počítám že celý program přenesu na jazyk, který má přímo compiler nebo JIT. Musím se přesunout k mnohem méně dynamickému typování, protože to vytvořilo mnoho chyb. Musím také do programu vnést víc asynchronního chování a lepší souborovou strukturu. Chci zanechat dynamické hledání věcí ale co nejvíc věcí, které se dají vypočítat předem, tak by měli být uloženy do souborů s nějakou fixní adresou. Dynamické hledání je příjemné pro tvůrce, ale zpomaluje program. Tudíž by měli existovat adresáře a soubory, se kterými tvůrce nemá pracovat a ve kterých jsou uloženy výsledky výpočtů.
+
+Vykreslovací okno bylo vytvořeno během raných začátků programu. Tudíž je velmi náročné na procesor, nemá dobré schopnosti s grafikou a jeho jediná opravdová schopnost je vykreslovat rychle a pomalu. Vykreslování ve skriptovacím nástroji je lepší, ale stálo to ještě víc výkonu než původní okno. Obojí je potřeba předělat, a to nejlépe do grafického enginu, který bude optimalizovaný pro práci s textem a vstupní příkazovou řádkou. Musí také obsahovat lepší rozpoznání šířky okna a práci s řádky. Momentálně se všechny moje funkce rozpadnou v moment co je okno menší, než skripty očekávají. Líbí se mi že je program v rámci příkazového řádku, a budu se toto i nadále snažit ponechat, potřebuji ale více logiky a optimalizace. Také by engine měl obsahovat schopný text parser, aby vstupy uživatele mohly být volnější a negenerovali tolik chyb.
+
+Struktura skriptů musí též dostat předělání. V rámci programu musí být lepší nahrávání informací ohledně skriptů a musí být podporována volnější struktura vnitřního vzhledu skriptu. Ve skriptovacím nástroji jsem byl schopný některé tyto problémy vyřešit, ale pořád to není dostatečné. 
+
+%\subsection{Problémy}
+%\subsection{Budoucí řešení}
+%\subsubsection{Hlavní program}
+%\subsubsection{Skriptovací nástroj}
 \section{Zdroje}
 \end{document}

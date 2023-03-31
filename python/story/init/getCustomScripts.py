@@ -1,6 +1,8 @@
+import json
+
 import comm
 import deviceHandler
-import json
+
 
 def getCustomScripts():
 	try:
