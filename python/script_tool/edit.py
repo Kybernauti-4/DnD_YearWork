@@ -38,12 +38,20 @@ def update_menu(line, horizontal, initial_cmlen, path, my_f_type, context_menu, 
 				else:
 					print(f"python not found in {path}")
 				
-				with open(os.path.join(new_path, 'scriptlocation.json'), 'r') as f:
-					script_location = json.load(f)
-				
-					for s in script_location:
-						for script in [file for file in os.listdir(os.path.join(new_path, script_location[s])) if file.endswith('.py')]:
-							extra_items.append(script.replace('.py', ''))
+				for root, dirs, files in os.walk(new_path):
+					for filename in files:
+						if filename == "_story.txt":
+							story_path = root
+
+				script_location = []
+				for root, dirs, files in os.walk(story_path):
+					for filename in files:
+						if filename == "_script.txt":
+							script_location.append(root)
+
+				for s in script_location:
+					for script in [file for file in os.listdir(os.path.join(new_path, script_location[s])) if file.endswith('.py')]:
+						extra_items.append(script.replace('.py', ''))
 				
 				for item in extra_items:
 					item_num = 1

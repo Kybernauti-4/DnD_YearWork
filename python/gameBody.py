@@ -1,7 +1,7 @@
 import importlib
+import json
 import os
 import sys
-import json
 from time import sleep
 
 import fileHandler
