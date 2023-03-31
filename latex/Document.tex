@@ -9,7 +9,7 @@
 \usepackage{amssymb} % some funky math symbols like \trinangleq
 \usepackage[left=4cm,right=1.5cm,top=3cm,bottom=3cm]{geometry} % set smaller page borders 
 \usepackage[indent=0pt]{parskip} % spaces between paragraphs, indents sets indent of the first line in paragraph
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage{pdflscape}
 \usepackage{enumitem}
 \usepackage{caption}
@@ -86,6 +86,9 @@ V této maturitní práci se snažím o vytvoření programu který je schopný 
 \newpage
 \tableofcontents
 \newpage
+
+\addcontentsline{toc}{section}{Úvod}
+\section*{Úvod}
 \section{Fyzický klíč}
 Pro komunikaci jsem vytvořil design vlastní desky, založené na čipu RP2040. Tato deska je schopná zobrazit informace ohledně hráče, pokud daná informace má min a max. 
 
