@@ -185,7 +185,7 @@ Kvůli mému provedení nedoporučuji dávat čtecí tag přímo do textu. Vytvo
 \subsection{Hráč}
 Další důležitou částí programu je uložení hráče a představení hráče v programu. Hráč je uložen v \textit{json} souboru a v programu je představen pomocí objektu. Samotný hráč má spoustu parametrů a pár důležitých zmíním. Každý hráč má svoje vlastní identifikační číslo, což je 32 znaků dlouhý hexadecimální text. Pomocí tohoto náhodného identifikačního klíče jsou možné dvě stejně pojmenované postavy, které se ale chovají naprosto jinak. Další místo kde je tento klíč užitečný, je ve skriptech, specifických pro nějakou postavu.
 
-Všechny postavy mají skripty, které jsou jim přístupné. Jsou to skripty jako přidání věcí do inventáře nebo odebrání věcí z inventáře. Takové skripty jsou nutné aby existovali pro všechny. Pokud ale bude jedna z postav třeba Berserk a má mít schopnost tak silného úderu, že zároveň zraní sám sebe, tak je to možné vytvořit pře ID. 
+Všechny postavy mají skripty, které jsou jim přístupné. Jsou to skripty jako přidání věcí do inventáře nebo odebrání věcí z inventáře. Takové skripty jsou nutné aby existovali pro všechny. Pokud ale bude jedna z postav třeba Berserk a má mít schopnost tak silného úderu, že zároveň zraní sám sebe, tak je to možné vytvořit přes ID. 
 
 \subsection{Eventy}
 Během předchozích textů jsem zaměňoval slova event a skript. Event je přepis pro hlavní program aby byl schopný pustit skript. Skript je podprogram, který hlavní program používá pro své akce. Přepis jednotlivých eventů je v souboru \textit{event.json}, který se musí nacházet na úrovni \textit{storypart.json}.
