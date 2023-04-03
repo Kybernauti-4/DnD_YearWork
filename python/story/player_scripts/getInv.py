@@ -1,5 +1,5 @@
 id = 'global'
-name = 'Get Inventory'
+name = 'Show Inventory'
 
 def getInv(p, return_type='list'):
 	if return_type == 'list':

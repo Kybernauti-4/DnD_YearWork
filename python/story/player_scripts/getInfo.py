@@ -1,5 +1,5 @@
 id = 'global'
-name = 'Get Information'
+name = 'Show Information'
 
 def getInfo(p, info_id = None):
 	if info_id == None:

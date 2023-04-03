@@ -2,15 +2,17 @@
     "ID": "723fad5158658785",
     "type": "player",
     "info": {
+        "status": "alive",
         "name": "Giganta",
         "age": 137,
         "gender": "Female",
         "HP": 230,
+        "MAXHP": 230,
         "MP": 75,
         "defense": 5,
         "carry": 75
     },
-    "equiped": [
+    "equipped": [
         {
             "ID": "4",
             "name": "Staff",

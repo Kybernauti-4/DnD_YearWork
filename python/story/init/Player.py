@@ -31,6 +31,11 @@ class Player:
 	
 	def getHit(self, damage):
 		self.info["HP"] -= damage
+		if self.info["HP"] <= 0:
+			self.info["HP"] = 0
+			self.info['status'] = 'dead'
+		if self.info["HP"] > self.info["MAXHP"]:
+			self.info["HP"] = self.info["MAXHP"]
 
 	def equip(self, item):
 		type = item['type'].split('-')[0]

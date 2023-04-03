@@ -1,7 +1,7 @@
 id = 'global'
-name = 'Get Equipment'
+name = 'Show Equipment'
 
-def getEquip(p, return_type='list'):
+def getEquip(p, return_type='dict'):
 	if return_type == 'list':
 		equip_list = []
 		for item in p.equipped:
@@ -12,6 +12,6 @@ def getEquip(p, return_type='list'):
 	elif return_type == 'dict':
 		equip_dict = {}
 		for item in p.equipped:
-			equip_dict.append(item['name'])
+			equip_dict.append({item['name']: item})
 
 		return equip_dict

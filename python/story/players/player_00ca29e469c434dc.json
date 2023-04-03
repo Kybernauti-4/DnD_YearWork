@@ -2,15 +2,17 @@
     "ID": "00ca29e469c434dc",
     "type": "player",
     "info": {
+        "status": "alive",
         "MP": 25,
         "carry": 100,
         "name": "Giganto",
         "gender": "Male",
         "HP": 300,
+        "MAXHP": 300,
         "age": 149,
         "defense": 10
     },
-    "equiped": [
+    "equipped": [
         {
             "ID": "1",
             "usage": {

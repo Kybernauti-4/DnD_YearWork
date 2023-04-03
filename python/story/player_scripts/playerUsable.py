@@ -8,6 +8,9 @@ name = ''
 def playerUsable(p):
 	usable_scripts = {}
 
+	if p.info['status'] == 'dead':
+		return {'Dead': None}
+
 	for script in os.listdir('story/player_scripts'):
 		if not script.endswith('.py'):
 			continue

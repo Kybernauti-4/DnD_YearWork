@@ -5,6 +5,9 @@ fist = {
 }
 
 def attack(p1, p2):
+	if p1.info['status'] == 'dead':
+		return
+
 	global fist
 	# p1 is the attacker
 	weapon = fist
