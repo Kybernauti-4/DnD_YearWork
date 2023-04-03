@@ -3,11 +3,19 @@
         "ask":20,
         "add_text":21,
         "addEvent":22,
-        "addSP":23
+        "addSP":23,
+        "getVarFromList":24,
+        "heal":25,
+        "listToDict":26,
+        "match":27,
+        "removeSP":28,
+        "usePot":29,
+        "compare":30,
+        "logic":31
     },
     "info":{
-        "func":[20,21, 22, 23],
+        "func":[20,21, 22, 23, 24, 25, 26, 27, 28, 29,30,31],
         "obj":[],
-        "logic":[20]
+        "logic":[20,31]
     }
 }

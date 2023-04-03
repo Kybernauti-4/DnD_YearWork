@@ -8,13 +8,11 @@ import fileHandler
 import stack
 
 #! Handler is more or less done but a lot still isn't
-
-#! &0 = current path
-#! &1 = storyStack
-#! &2 = playerlist
-#! &3 = story_index
-#! &4 = duunno for now
-#! &5 = event_index 
+#1:storyStack,
+#2:playerlist,
+#3:story_index,
+#4:event_index,
+#5:root_story_path
 
 npc_list = []
 item_list = []

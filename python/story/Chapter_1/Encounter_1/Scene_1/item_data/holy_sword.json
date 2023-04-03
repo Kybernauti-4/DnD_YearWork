@@ -1,0 +1,10 @@
+{
+	"name": "Holy Sword",
+	"type": "weapon-melee",
+	"damage": 35,
+	"durability": 250,
+	"weight": 15,
+	"usage": {
+		"durability": 3
+	}
+}

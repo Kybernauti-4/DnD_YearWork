@@ -1,0 +1,31 @@
+{
+	"ask_1":[
+		"&9",
+		"What do you want to do?",
+		{
+			"Check HP":{
+				"getPDict_1":["&2"],
+				"ask_1":[
+					"&9",
+					"Whose HP do you want to check.",
+					"&111"
+				],
+				"getVarFromList_1":["&2","20"],
+				"self":"true"
+
+			},
+			"Check MP":{
+
+			},
+			"Use Pot":{
+
+			},
+			"Check Inventory":{
+
+			},
+			"Check Equipment":{
+
+			}
+		}
+	]
+}

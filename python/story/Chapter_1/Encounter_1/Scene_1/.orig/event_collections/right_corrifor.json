@@ -1,0 +1,35 @@
+{
+	"add_text_1":[
+		"&0",
+		"&9",
+		"&11",
+		"right_corridor_1.txt"
+	],
+	"getPDict_1":[
+		"&2"
+	],
+	"ask_1":[
+		"&9",
+		"Which one shall attack first?",
+		"&111"
+	],
+	"ask_2":[
+		"&9",
+		"Do you want to pick it up?",
+		{
+			"yes":{
+				"addItem_1":["&0","&20","holy_sword"]
+			},
+			"no":"None"
+		}
+
+	],
+	"ask_3":[
+		"&9",
+		"Do you want to check out the other side?",
+		{
+			"yes":"right_corridor.json",
+			"no":"None"
+		}
+	]
+}

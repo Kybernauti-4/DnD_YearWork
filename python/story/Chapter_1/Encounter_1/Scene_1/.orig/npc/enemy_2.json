@@ -1,0 +1,39 @@
+{
+    "ID": "1",
+    "type": "enemy",
+    "info": {
+        "MP": 25,
+        "carry": 100,
+        "name": "Jeff",
+        "gender": "No",
+        "HP": 140,
+        "MAXHP": 140,
+        "age": 42069,
+        "defense": 2
+    },
+    "equipped": [
+        {
+            "ID": "1",
+            "usage": {
+                "durability": 1
+            },
+            "name": "Sword",
+            "durability": 50,
+            "type": "weapon-melee",
+            "damage": 15,
+            "weight": 10
+        },
+        {
+            "ID": "2",
+            "usage": {
+                "durability": 2
+            },
+            "name": "Shield",
+            "durability": 20,
+            "type": "shield",
+            "weight": 15,
+            "defense": 5
+        }
+    ],
+    "inventory": []
+}

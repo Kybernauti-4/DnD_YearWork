@@ -9,7 +9,10 @@
         "getPID": 107,
         "playerUsable": 108,
         "removeItem": 109,
-        "setVar": 110
+        "setVar": 110,
+        "getPDict": 111,
+        "attack": 112,
+        "getEnemy": 113
     },
     "info": {
         "lock": [],
@@ -23,7 +26,10 @@
             107,
             108,
             109,
-            110
+            110,
+            111,
+            112,
+            113
         ],
         "obj": []
     }

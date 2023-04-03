@@ -1,41 +1,38 @@
 {
-	"add_text_1":["&0","&9","&11","&12"],
-	"ask_1":["&9", "Do you want to break the loop?",{
-		"yes":{
-			"self":"false"
-		},
-		"no":{
-			"ask_1": [
-				"&9",
-				"Who do you want to fight",
-				{
-					"one": {
-						"add_text_1": [
-							"&0",
-							"&9",
-							"&11",
-							"fight_1.txt"
-						],
-						"self": "true"
-					},
-					"two": {
-						"add_text_1": [
-							"&0",
-							"&9",
-							"&11",
-							"fight_2.txt"
-						],
-						"self": "true"
-					},
-					"three": {
-						"putVal": [
-							"fight_3.txt"
-						],
-						"combat.json": ""
-					}
-				}
-			]
+	"ask_1":[
+		"&9",
+		"Do you want to enter the menu?",
+		{
+			"yes":"combat_menu.json",
+			"no":"None"
 		}
-	}]
+	],
 	
+	"ask_2":[
+		"&9",
+		"Which one shall attack?",
+		"&111"
+	],
+	"getEnemy_1":[
+		"&0"
+	],
+	"ask_3":[
+		"&9",
+		"Who do you want to attack?",
+		"&113"
+	],
+	"attack_1":[
+		"&20",
+		"&20"
+	],
+
+	"getEnemy_2":[
+		"&0"
+	],
+	"getVarFromList_2":["&113", 1],
+	"getVarFromList_1":["&2", 1],
+	"attack_2":[
+		"&24",
+		"&24"
+	]
 }
