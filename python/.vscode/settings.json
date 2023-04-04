@@ -1,5 +1,7 @@
 {
 	"cSpell.words": [
 		"playerlist"
-	]
+	],
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false
 }
