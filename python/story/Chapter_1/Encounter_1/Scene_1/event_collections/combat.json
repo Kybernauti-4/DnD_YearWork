@@ -29,8 +29,8 @@
 	"getEnemy_2":[
 		"&0"
 	],
-	"getVarFromList_2":["&113", 1],
-	"getVarFromList_1":["&2", 1],
+	"getVarFromList_1":["&113", 1],
+	"getVarFromList_2":["&2", 1],
 	"attack_2":[
 		"&24",
 		"&24"
