@@ -5,30 +5,20 @@
 		"&11",
 		"right_corridor_1.txt"
 	],
-	"getPDict_1":[
-		"&2"
-	],
 	"ask_1":[
 		"&9",
-		"Which one shall attack first?",
-		"&111"
-	],
-	"ask_2":[
-		"&9",
-		"Do you want to pick it up?",
+		"Do you wish to fight or run?",
 		{
-			"yes":{
-				"addItem_1":["&0","&20","holy_sword"]
-			},
-			"no":"None"
+			"fight":"combat.json",
+			"run":"None"
 		}
-
 	],
-	"ask_3":[
+	
+	"ask":[
 		"&9",
 		"Do you want to check out the other side?",
 		{
-			"yes":"right_corridor.json",
+			"yes":"left_corridor.json",
 			"no":"None"
 		}
 	]

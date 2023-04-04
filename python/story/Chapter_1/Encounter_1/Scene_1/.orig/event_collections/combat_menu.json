@@ -1,0 +1,82 @@
+{
+	"ask_1":[
+		"&9",
+		"What do you want to do?",
+		{
+			"Check HP":{
+				"getPDict_1":["&2"],
+				"ask_1":[
+					"&9",
+					"Whose HP do you want to check.",
+					"&111"
+				],
+				"getInfo_1":["&20","HP"],
+				"add_text_1":["&0","&9", "&11,", "&104"],
+				"self":"true"
+			},
+			"Check MP":{
+				"getPDict_1":["&2"],
+				"ask_1":[
+					"&9",
+					"Whose MP do you want to check.",
+					"&111"
+				],
+				"getInfo_1":["&20","MP"],
+				"add_text_1":["&0","&9", "&11,", "&104"],
+				"self":"true"
+			},
+			"Use Pot":{
+				"getPDict_1":["&2"],
+				"ask_1":[
+					"&9",
+					"Who wants top use a pot.",
+					"&111"
+				],
+				"getInv_1":["&20","dict"],
+				"ask_2":[
+					"&9",
+					"Which pot do you want to use.",
+					"&105"
+				],
+				"getPDict_2":["&2"],
+				"ask_3":[
+					"&9",
+					"On who do you want use the pot?",
+					"&111"
+				],
+				"usePot_1":[
+					"&20",
+					"&20"
+				],
+				"self":"true"
+
+			},
+			"Check Inventory":{
+				"getPDict_1":["&2"],
+				"ask_1":[
+					"&9",
+					"Whose invetory do you want to see?",
+					"111"
+				],
+				"getInv_1":["&20","list"],
+				"add_text_1":[
+					"&0","&9","&11,","&105"
+				],
+				"self":"true"
+			},
+			"Check Equipment":{
+				"getPDict_1":["&2"],
+				"ask_1":[
+					"&9",
+					"Whose eqippment do you want to see?",
+					"111"
+				],
+				"getEquip_1":["&20","list"],
+				"add_text_1":[
+					"&0","&9","&11,","&103"
+				],
+				"self":"true"
+			}
+		}
+	]
+}
