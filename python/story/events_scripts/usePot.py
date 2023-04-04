@@ -1,6 +1,4 @@
-def usePot(player, pot):
-	if pot not in player.inventory:
-		raise Exception('Item not in inventory')
+def usePot(pot,player):
 	try:
 		effects = pot['effects']
 	except:
