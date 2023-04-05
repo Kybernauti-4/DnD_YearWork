@@ -34,5 +34,18 @@
 	"attack_2":[
 		"&24",
 		"&24"
-	]
+	],
+
+	"getPAlive_1":[
+		"&2"
+	],
+	"getVarFromList_3":["&115", 1],
+	"getEnemy_3":[
+		"&0"
+	],
+
+	"getEnemyAlive_1":[
+		"&113"
+	],
+	"getVarFromList_4":["&115", 1]
 }

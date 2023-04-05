@@ -12,7 +12,9 @@
         "setVar": 110,
         "getPDict": 111,
         "attack": 112,
-        "getEnemy": 113
+        "getEnemy": 113,
+		"getEnemyAlive": 114,
+		"getPAlive": 115
     },
     "info": {
         "lock": [],
@@ -29,7 +31,9 @@
             110,
             111,
             112,
-            113
+            113,
+			114,
+			115
         ],
         "obj": []
     }
