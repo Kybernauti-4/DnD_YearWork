@@ -1,7 +1,7 @@
 from machine import Pin
 from utime import sleep, time_ns
 
-import uasyncio as asyncio
+import _thread
 import json
 import os
 
@@ -84,36 +84,64 @@ def clear():
 	print("\x1B\x5B2J", end="")
 	print("\x1B\x5BH", end="")
 
-
-async def get_input():
-	return input()
-
-loop = asyncio.get_event_loop()
-input_task = loop.create_task(get_input)
-recv_msg = ''
 now = time_ns()
-while True:
-	if input_task.done():
-		recv_msg = input_task.result()
-		input_task = loop.create_task(get_input)
-		clear()
-	#blink LED code
-	if recv_msg == '':
+def LED_blink():
+	global curr_side
+	global data_right
+	global data_left
+	global ttl_blue
+	global ttl_red
+	global now
+	while True:
 		if later:=time_ns() - now > 500000:
-			turn_ttl_off()
-			now = later
-			if curr_side == 'left':
-				shift_out(data_left)
-				curr_side = 'right'
-				ttl_blue.value(1)
-			else:
-				shift_out(data_right)
-				curr_side = 'left'
-				ttl_red.value(1)
+				turn_ttl_off()
+				now = later
+				if curr_side == 'left':
+					shift_out(data_left)
+					curr_side = 'right'
+					ttl_blue.value(1)
+				else:
+					shift_out(data_right)
+					curr_side = 'left'
+					ttl_red.value(1)
 
+def read_data():
+	global data_left
+	global data_right
+	global data_left_key
+	global data_right_key
+	global player_file
+	data = {}
+	while True:
+		try:
+			with open(player_file, 'r') as f:
+				data = json.load(f)
+		except:
+			pass #will fail when the file is being written to
 
+		#data handling
+		if data == {}:
+			continue
+		else:
+			curr_left = data[data_left_key]
+			curr_right = data[data_right_key]
+			max_left = data['max_'+data_left_key]
+			max_right = data['max_'+data_right_key]
+
+			left_num_led = int(curr_left/max_left*8)
+			right_num_led = int(curr_right/max_right*8)
+
+			data_left = [1 if i < left_num_led else 0 for i in range(8)]
+			data_right = [1 if i < right_num_led else 0 for i in range(8)]
+
+#LED_thread = _thread.start_new_thread(LED_blink, ())
+DATA_thread = _thread.start_new_thread(read_data, ())
+
+while True:
+	recv_msg = input()
+	#blink LED code
 	#Everything else
-	elif compareCaseIns(recv_msg, 'ID'):
+	if compareCaseIns(recv_msg, 'ID'):
 		data = fileHandler.read(player_file)
 		ID = data["ID"]
 		print(ID)
@@ -173,7 +201,27 @@ while True:
 		script_name = '_'.join(recv_msg.split("_")[1:])
 		data = fileHandler.read(f'custom_scripts/{script_name}')
 		print(data)
+	
+	elif compareCaseIns(recv_msg, 'recvFile'):
+		file_name = input()
+		while True:
+			try:
+				file = open(file_name, 'w')
+				break
+			except:
+				pass
 
+		data = ''
+		while True:
+			line = input()
+			if line == '}':
+				data += line
+				break
+			data += line + '\n'
+
+		file.write(data)
+		file.close()
+		print('File Recieved')
 
 	else:
 		print (recv_msg + " -ack")
