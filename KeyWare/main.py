@@ -23,9 +23,16 @@ r_clk.value(0)
 mr.value(1)
 dsb.value(0)
 dsa.value(0)
-data_left = [1,0,0,0,0,0,0,0]
-data_right = [1,0,0,0,0,0,0,0]
 curr_side = 'left'
+
+left_num_led = 6
+right_num_led = 3
+
+data_left = [i if i < left_num_led else 0 for i in range(8)]
+data_right = [i if i < right_num_led else 0 for i in range(8)]
+
+left_duty = 0.1
+right_duty = 0.5
 
 #Data to show
 with open('config.json', 'r') as f:
@@ -85,6 +92,7 @@ def clear():
 	print("\x1B\x5BH", end="")
 
 now = ticks_ms()
+duty_now = ticks_ms()
 def LED_blink():
 	global curr_side
 	global data_right
@@ -92,18 +100,49 @@ def LED_blink():
 	global ttl_blue
 	global ttl_red
 	global now
+	global duty_now
+
+	append = False
+
 	while True:
-		if later:=ticks_ms() - now > 100:
-				turn_ttl_off()
-				now = later
-				if curr_side == 'left':
-					shift_out(data_left)
-					curr_side = 'right'
-					ttl_blue.value(1)
+		if curr_side == 'left':
+			if ticks_ms() - duty_now > 100*left_duty:
+				ttl_red.value(0)
+				if append:
+					shift_out([i if left_num_led else 0 for i in range(8)])
+					append = False
 				else:
-					shift_out(data_right)
-					curr_side = 'left'
-					ttl_red.value(1)
+					shift_out([i if left_num_led+1 else 0 for i in range(8)])
+					append = True
+				duty_now = ticks_ms()
+				ttl_red.value(1)
+
+		if curr_side == 'right':
+			if ticks_ms() - duty_now > 100*right_duty:
+				ttl_blue.value(0)
+				if append:
+					shift_out([i if right_num_led else 0 for i in range(8)])
+					append = False
+				else:
+					shift_out([i if right_num_led+1 else 0 for i in range(8)])
+					append = True
+				duty_now = ticks_ms()
+				ttl_blue.value(1)				
+
+		if later:=ticks_ms() - now > 100:
+			turn_ttl_off()
+			now = later
+			if curr_side == 'left':
+				append = False
+				shift_out(data_right)
+				curr_side = 'right'
+				ttl_blue.value(1)
+
+			else:
+				append = False
+				shift_out(data_left)
+				curr_side = 'left'
+				ttl_red.value(1)
 
 def read_data():
 	global data_left
@@ -111,6 +150,10 @@ def read_data():
 	global data_left_key
 	global data_right_key
 	global player_file
+	global left_duty
+	global right_duty
+	global left_num_led
+	global right_num_led
 	
 	try:
 		with open(player_file, 'r') as f:
@@ -129,6 +172,11 @@ def read_data():
 
 	data_left = [1 if i < left_num_led else 0 for i in range(8)]
 	data_right = [1 if i < right_num_led else 0 for i in range(8)]
+
+	left_duty = round(curr_left/max_left*8 - left_num_led, 1)
+	right_duty = round(curr_right/max_right*8 - right_num_led, 1)
+
+
 
 LED_thread = _thread.start_new_thread(LED_blink, ())
 
