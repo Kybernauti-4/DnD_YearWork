@@ -5,16 +5,16 @@
 			"path": "python"
 		},
 		{
-			"name": "picowgo",
-			"path": "picowgo"
-		},
-		{
 			"name": "latex",
 			"path": "latex"
 		},
 		{
 			"name": "KeyWare",
 			"path": "KeyWare"
+		},
+		{
+			"name": "serial:/COM5",
+			"uri": "serial://com5/"
 		}
 	],
 	"settings": {

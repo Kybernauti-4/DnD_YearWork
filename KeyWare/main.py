@@ -1,5 +1,5 @@
 from machine import Pin
-from utime import sleep, time_ns
+from utime import sleep, ticks_ms
 
 import _thread
 import json
@@ -84,7 +84,7 @@ def clear():
 	print("\x1B\x5B2J", end="")
 	print("\x1B\x5BH", end="")
 
-now = time_ns()
+now = ticks_ms()
 def LED_blink():
 	global curr_side
 	global data_right
@@ -93,7 +93,7 @@ def LED_blink():
 	global ttl_red
 	global now
 	while True:
-		if later:=time_ns() - now > 500000:
+		if later:=ticks_ms() - now > 100:
 				turn_ttl_off()
 				now = later
 				if curr_side == 'left':
@@ -111,28 +111,24 @@ def read_data():
 	global data_left_key
 	global data_right_key
 	global player_file
-	data = {}
-	while True:
-		try:
-			with open(player_file, 'r') as f:
-				data = json.load(f)
-		except:
-			pass #will fail when the file is being written to
+	
+	try:
+		with open(player_file, 'r') as f:
+			data = json.load(f)
+	except:
+		pass #will fail when the file is being written to
 
-		#data handling
-		if data == {}:
-			continue
-		else:
-			curr_left = data[data_left_key]
-			curr_right = data[data_right_key]
-			max_left = data['max_'+data_left_key]
-			max_right = data['max_'+data_right_key]
+	#data handling
+	curr_left = data[data_left_key]
+	curr_right = data[data_right_key]
+	max_left = data['max_'+data_left_key]
+	max_right = data['max_'+data_right_key]
 
-			left_num_led = int(curr_left/max_left*8)
-			right_num_led = int(curr_right/max_right*8)
+	left_num_led = int(curr_left/max_left*8)
+	right_num_led = int(curr_right/max_right*8)
 
-			data_left = [1 if i < left_num_led else 0 for i in range(8)]
-			data_right = [1 if i < right_num_led else 0 for i in range(8)]
+	data_left = [1 if i < left_num_led else 0 for i in range(8)]
+	data_right = [1 if i < right_num_led else 0 for i in range(8)]
 
 LED_thread = _thread.start_new_thread(LED_blink, ())
 
