@@ -89,26 +89,17 @@ V této maturitní práci se snažím o vytvoření programu který je schopný 
 
 \addcontentsline{toc}{section}{Úvod}
 \section*{Úvod}
-\section{Fyzický klíč}
-Pro komunikaci jsem vytvořil design vlastní desky, založené na čipu RP2040. Tato deska je schopná zobrazit informace ohledně hráče, pokud daná informace má min a max. Další schopnost je komunikace, přes můj vlastní program, který umožňuje ukládání některých souborů na paměť desky.
+Jako první bych rád vysvětlil pojem DnD, abychom dál věděli k čemu jsem se snažil dostat. 
 
-Zobrazování je provedeno pomocí 8 LED na každé straně, které jsou ovládaný přes 8 bitový posuvný registr v časovém multiplexu pro ovládání dvou stran zároveň. Tento časový multiplex běží rychlostí 2kHz aby každá strana běžela na rychlosti 1kHz.
+DnD je stolní skupinová hra. Skupinová pouze proto, protože v jednom se tomu říká psaní knihy. Mezi hráči je jeden vypravěč a standardně více hráčů. Vypravěč si připraví příběh a svět, který svým hráčům bude přednášet a ve kterém je bude provádět. Když začne hrát tak se v určitých momentech ptá hráčů jak se chtějí zachovat, či co chtějí dělat. Po tom co hráči zvolí, tak si hodí kostkou aby zjistili jestli se jim daná akce povedla. Na základě tohoto výsledku vypravěč improvizací vytvoří novou část příběhu. Takto se celý příběh rozvíjí až snad někdy skončí.
 
-Schéma je v Přiloze 1. 
+Improvizace je ve světe DnD jedna z nejdůležitějších schopností. Bohužel počítače nejsou dobré v kreativitě. Tudíž, pokud jako programátoři chceme vytvořit hry s námětem DnD, musíme se velmi snažit. Já jsem rozhodl pro textově založenou hru, neboť má relativně jednoduché prostředí. Vím že nejsem výborný programátor a proto jsem věděl že tvorba takové hry pro mne bude obtížná. Nakonec jsem se ustálil s tím, že vytvořím hru, která bude lehká hrát pro hráče a bude mít nástroje pro lehké tvoření příběhu pro vypravěče. Není to přesné vytvoření DnD, ale je to dobrý začátek, ze kterého se dá posunout dál.
 
-\subsection{Problém}
-Pro vytvoření desky jsem využil program KiCAD. Během tvorby jsem používal pro součástky kombinaci obecných pouzder a specifických (Ty jsem nalezl většinou na stránkách mouser). Bohužel program KiCAD nemá všechny obecné pouzder udělané podle výrobních konvencí. Pro tranzistor jsem použil pouzdro SOT-23 a program přiřadil na piny popořadě kolektor, báze, emitor. Výrobní konvence ale přiřazují, ve stejném pořadí, bázi, emitor, kolektor. Tudíž jsem byl nucen odletovat smd tranzistory a otočil jsem je o přibližně 135 stupňů.
+Aby šel příběh psát jednoduše a aby mohly příběhy být rozmanité, tak jsem se rozhodl pro hru, která bude možná rozšířit pomocí skriptů. Aby vypravěč nemusel umět programovat, tak jsem také chtěl udělat zjednodušený zápis pro program, víceméně DSL. Další část byla nějak vytvořit určitou nutnost socializace mezi hráči. Jinak řečeno, chtěl jsem aby se hráči scházeli, aby nemohli hru hrát online. Proto jsem musel vytvořit nějakou fyzickou část, která by toto vyvolala. Napadl mě fyzický klíč, ke kterému se blíž vyjádřím v jeho odpovídající sekci.
 
-\subsection{Komunikace}
-Máme dvě komunikační zařízení a potřebujeme vytvořit komunikaci mezi nimi. Komunikace je řešena přes comporty. Hostitel, v tomto případě počítač, na kterém běží hlavní program, si nechá pomocí nástrojů knihovny serial vypsat všechny rozpoznané comporty. Následně se pokusí otevřít comport a poslat mu příkaz. Pokud se mu nepovede otevřít comport, víme že je to nechtěné zařízení. Když se otevření povede, pošle mu příkaz "type". Pokud je na druhé straně správné zařízení neboli klíč se správným nahraným programem, tak zpátky odešle zprávu "player". Jenom tehdy je zařízení dáno do listů zařízení, se kterým potom program pracuje dál.
-
-Hostitelský program je o dost složitější než ten na klíči. Hostitel musí zprávu nejdřív převést do kódování utf-8 neboli bytes. To je posláno na sériovou linku comportu, který je zrovna otevřený. Pico má práci velmi jednoduší, neboť micropython je schopný číst sériovou linku pomocí příkazu input(). Následně pico kontroluje jakou zprávu dostal vůči svému slovníku. Pokud zpráva odpovídá nějakému příkazu, tak pico navrátí odpovídající hodnoty, jinak jenom pošle zpět že zprávu zaregistroval. Hostitel nyní musí projít zpětným procesem převádění zpět z bytes na string. Pokud pico pošle víceřádkovou správu, tak samozřejmě musí komunikační program převést celé pole, které přečte z comportu. 
-
-\subsection{Datová struktura}
-Díky způsobu práce s daty na klíči (nepracuje s nimi přímo uživatel, vše je ovládáno pomocí programu) tak zde může existovat velmi neflexibilní struktura souborů. V rootu musí existovat main.py, který se sám spustí, když se pico zapojí. Zároveň musí být v rootu samotný soubor hráče a jakékoli knihovny, které \textit{main.py} potřebuje. Následně všechny skripty, které jsou specifické vůči hráči, musí být v adresáři player\_scripts. Také zde existuje \textit{config.json} na kterém jsou momentálně uloženy informace o datech, které by se měli ukazovat na klíči. Tyto informace musí mít svůj název a maximální hodnoty, kde syntax maximální hodnoty musí být \textbf{max}\textit{VlastníNázev}.
-
+\newpage
 \section{Struktura adresářů a souborů}
-Během tvorby programu byl kladen důraz na co nejméně vynucené struktury ze strany uživatele. Hodně problémů jsem tudíž vyřešil pomocí tvorby souborů se specifickými názvy, pro které se program dívá a vytvoří si strukturu cest, se kterou pracuje a podává do dalších funkcí. Je zde ale určitá kultura, kterou bych doporučil při tvoření souborů.
+Během tvorby programu byl kladen důraz na co nejméně vynucené struktury ze strany vypravěče. Hodně problémů jsem tudíž vyřešil pomocí tvorby souborů se specifickými názvy, pro které se program dívá a vytvoří si strukturu cest, se kterou pracuje a podává do dalších funkcí. Je zde ale určitá kultura, kterou bych doporučil při tvoření souborů.
 
 Hlavní adresář příběhu
 \begin{itemize}
@@ -123,9 +114,33 @@ Hlavní adresář příběhu
 
 Všechny adresáře, které obsahují skripty, musí obsahovat soubor \textit{\_scripts.txt} a \textit{info.json}. První soubor je hledán aby program věděl kde má skripty uložené a druhý soubor obsahuje informace pro program jak se jednotlivé skripty chovají.
 
-Jednotlivé části příběhu, se kterými chceme aby program pracoval, jsou určeny soubory \textit{storypart.json}. Tento soubor obsahuje jednu informaci pro program, "include" určující obsáhnutí při prvotním načtení, a dále jakékoli další informace, se kterými chce následně uživatel pracovat ve svých skriptech.
+Jednotlivé části příběhu, se kterými chceme aby program pracoval, jsou určeny soubory \textit{storypart.json}. Tento soubor obsahuje jednu informaci pro program, "include" určující obsáhnutí při prvotním načtení, a dále jakékoli další informace, se kterými chce následně vypravěč pracovat ve svých skriptech.
 
-Jedno místo kde program nehledá pro \textit{storypart.json} jsou soubory, které začínají tečkou. Jedno fixní pravidlo s mou verzí programu je, že u každého souboru \textit{storypart.json} musí být .orig adresář. V tomto adresáři musí být původní verze mateřského adresáře. Logické skripty přepisují soubory destruktivně (bez možnosti vrácení změn), proto zde adresáře .orig musí být. I kdyby uživatel vytvořil příběh bez logických skriptů, tak po splnění všech eventů v rámci jedné příběhové části přepíše klíč "include" v \textit{storypart.json} na "false". Toto je moje metoda jak vytvořit pseudo uložení hry. Má to ale stejný problém jako logické skripty, jedná se o destruktivní změny.
+Jedno místo kde program nehledá pro \textit{storypart.json} jsou soubory, které začínají tečkou. Jedno fixní pravidlo s mou verzí programu je, že u každého souboru \textit{storypart.json} musí být .orig adresář. V tomto adresáři musí být původní verze mateřského adresáře. Logické skripty přepisují soubory destruktivně (bez možnosti vrácení změn), proto zde adresáře .orig musí být. I kdyby uživatel vytvořil příběh bez logických skriptů, tak po splnění všech eventů v rámci jedné příběhové části přepíše hodnotu na klíči "include" v \textit{storypart.json} na "false". Toto je moje metoda jak vytvořit pseudo uložení hry. Má to ale stejný problém jako logické skripty, jedná se o destruktivní změny.
+\section{Fyzický klíč}
+Při prvotním plánu práce jsem chtěl přidat určitou interaktivitu k hlavnímu programu z nějakého zařízení. Napadly mě dvě myšlenky, které jsem spojil dohromady. První byla že pokud bude hlavní program hra, kde mohou hráči prozkoumávat různé podzemní komnaty, tak by mohlo zařízení být nějaký klíč. Druhá myšlenka byla, aby hráči mohli jednoduše přenášet postavy a neměli strach že se jim smažou v rukou vypravěče, tak bych mohl utvořit něco co by fungovalo jako úložné zařízení.
+
+Nakonec jsem se rozhodl pro desku založenou na čipu RP2040, protože existuje docela dobrá dokumentace k tvorbě vlastních desek. Samotná dokumentace k čipu je velmi hustá a technická a pro moje účely zbytečně složitá. Druhý důvod proč zvolit čip RP2040 bylo, že je na desce Raspberry Pi Pico a Pico W. Tyto dvě desky jsem používal pro programování čipu v jazyce Micropython a vytváření velké čísti programu dřív než jsem dokončil vlastní PCB. Třetí důvod, který není tak důležitý, je že tento čip je relativně silný v rámci výpočetní schopnosti a tudíž jsem nemusel řešit hlubokou optimalizaci. Když jsem zjistil jak velká porce mé práce byl hlavní program, tak jsem za tyto vlastnosti byl velmi vděčný.
+
+Nakonec zvolenou interaktivitou bylo, že klíč bude schopen zobrazit nějaké informace ohledně hráče. Zobrazovací metodu jsem vybral řady osmi LED. Nechtěl jsem ale aby zabrali 16 pinů na čipu a tudíž mě napadlo řešení přes registry. Tím bych byl schopen snížit počet pinů na 8. Avšak učitel mě navedl na ještě úspornější cestu. Nakonec jsem použil jenom jeden registr připojený k oběma řadám. Každá řada má tranzistor s otevřeným kolektorem, tudíž uzemňuje. Aby obě řady svítily stejně, tak je následně
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth-3 cm]{pictures/register_LED.png}
+    \caption{Registr a LED řady [vlastní]}
+\end{figure}
+
+Schéma je v Přiloze 1. 
+
+\subsection{Problém}
+Pro vytvoření desky jsem využil program KiCAD. Během tvorby jsem používal pro součástky kombinaci obecných pouzder a specifických (Ty jsem nalezl většinou na stránkách mouser). Bohužel program KiCAD nemá všechny obecné pouzder udělané podle výrobních konvencí. Pro tranzistor jsem použil pouzdro SOT-23 a program přiřadil na piny popořadě kolektor, báze, emitor. Výrobní konvence ale přiřazují, ve stejném pořadí, bázi, emitor, kolektor. Tudíž jsem byl nucen odletovat smd tranzistory a otočil jsem je o přibližně 135 stupňů.
+
+\subsection{Komunikace}
+Máme dvě komunikační zařízení a potřebujeme vytvořit komunikaci mezi nimi. Komunikace je řešena přes comporty. Hostitel, v tomto případě počítač, na kterém běží hlavní program, si nechá pomocí nástrojů knihovny serial vypsat všechny rozpoznané comporty. Následně se pokusí otevřít comport a poslat mu příkaz. Pokud se mu nepovede otevřít comport, víme že je to nechtěné zařízení. Když se otevření povede, pošle mu příkaz "type". Pokud je na druhé straně správné zařízení neboli klíč se správným nahraným programem, tak zpátky odešle zprávu "player". Jenom tehdy je zařízení dáno do listů zařízení, se kterým potom program pracuje dál.
+
+Hostitelský program je o dost složitější než ten na klíči. Hostitel musí zprávu nejdřív převést do kódování utf-8 neboli bytes. To je posláno na sériovou linku comportu, který je zrovna otevřený. Pico má práci velmi jednoduší, neboť micropython je schopný číst sériovou linku pomocí příkazu input(). Následně pico kontroluje jakou zprávu dostal vůči svému slovníku. Pokud zpráva odpovídá nějakému příkazu, tak pico navrátí odpovídající hodnoty, jinak jenom pošle zpět že zprávu zaregistroval. Hostitel nyní musí projít zpětným procesem převádění zpět z bytes na string. Pokud pico pošle víceřádkovou správu, tak samozřejmě musí komunikační program převést celé pole, které přečte z comportu. 
+
+\subsection{Datová struktura}
+Díky způsobu práce s daty na klíči (nepracuje s nimi přímo uživatel, vše je ovládáno pomocí programu) tak zde může existovat velmi neflexibilní struktura souborů. V rootu musí existovat main.py, který se sám spustí, když se pico zapojí. Zároveň musí být v rootu samotný soubor hráče a jakékoli knihovny, které \textit{main.py} potřebuje. Následně všechny skripty, které jsou specifické vůči hráči, musí být v adresáři player\_scripts. Také zde existuje \textit{config.json} na kterém jsou momentálně uloženy informace o datech, které by se měli ukazovat na klíči. Tyto informace musí mít svůj název a maximální hodnoty, kde syntax maximální hodnoty musí být \textbf{max}\textit{VlastníNázev}.
 
 
 \section{Hlavní program}
@@ -200,22 +215,6 @@ V rámci věcí co jsou nutné mít v každém hráči, je to pouze ID a type. V
 Během předchozích textů jsem zaměňoval slova event a skript. Event je přepis pro hlavní program aby byl schopný pustit skript. Skript je podprogram, který hlavní program používá pro své akce. Přepis jednotlivých eventů je v souboru \textit{event.json}, který se musí nacházet na úrovni \textit{storypart.json}.
 
 Samotný zápis je syntax json slovníku. Klíčem je název skriptu, který chce uživatel použít, plus \_X, kde X je pořadí eventu v momentálním souboru. Část \_X je zde jenom kvůli tomu, že klíče nemohou být stejné. Hodnotou ke klíči je vždy pole argumentů, které Handler podá skriptu. Zde se píší již zmiňované znaky \& aby byla umožněna komunikace mezi skripty.
-
-\subsection{Vlastní skripty}
-Zde bych rád uvedl skripty, které jsem vytvořil a nějaký krátký popis, k čemu jsou určené.
-
-\begin{description}
-	\item[auto\_render] Tento skript ulehčuje a automatizuje práci s automatickým renderováním, které jsem popsal v sekci Okno Hry
-	\item[comm] Toto nepovažuji úplně za skript, spíše za knihovnu pro všechny skripty, které vyžadují komunikaci s klíčem. V knihovně jsou vytvořené funkce, které umožňují různé čtení dat ze sériové linky a psaní dat na ní.
-	\item[deviceHandler] Vyhledává všechny zařízení a jeho návratová hodnota je slovník zařízení, kde klíčem je hráčovo ID a hodnotou je sériová linka pro komunikaci.
-	\item[eatVal] Odstaní hodnotu v argumentu ze stack paměti.
-	\item[getCustomScripts] Hledá u zařízení skripty a ukládá je to adresáře player\_scripts
-	\item[getPlayerList] Tento skript najde buď v klíčích nebo v adresáři players všechny hráče a pokusí se vytvořit jejich odpovídající objekty. Všechny podařené vrátí v listu.
-	\item[Player] Toto je skript určený pro vytvoření objektu hráče. Při tvorbě bere jako argument název souboru s cestou kudy se tam dostat.
-	\item[putVal] Vloží hodnotu poslanou po argumentu do stack paměti
-	\item[storyHandler] Vyhledá všechny části příběhu, které mají být zprvu ukázány a vrátí list odpovídajících cest k nim.
-	\item[Window] Popsáno v sekci okno hry.    
-\end{description}
 \section{Skriptovací nástroj}
 Když si shrneme co by vše uživatel musel umět aby si příběh napsal, tak by to znamenalo, že je nejspíš programátor a může si tudíž klidně naprogramovat vlastní hru. Tudíž jsem se rozhodl udělat nástroj, který by byl schopný pomoct uživateli a dát mu inteligentní předpovídání při psaní eventů a jiných souborů. Stejně jako hlavní program, tak skriptovací nástroj obsahuje vlastní verzi Handlera, díky které se opět stává kompletně rozšiřitelný. Bohužel ale není naprosto kompletní, nepatří mezi hlavní části mé práce, ale i tak mi přišlo ho do určité míry připravit.
 
@@ -251,7 +250,7 @@ Jedna z chytrých věcí co jsem sem přidal je, že skript najde největší mo
 
 
 \section{Závěr}
-Během práce jsem narazil na mnohé problémy a komplikace. Během řešení jsem se naučil mnohé věci a nyní si uvědomuji mnohé nedostatky mé práce. V rámci zadání jsem práci podle mě splnil, ale sám vím že jsou místa, kde by si program zasloužil vylepšení. Mé řešení problému má podle mě dobrý základ a chci s ním dál pokračovat.
+Během práce jsem narazil na mnohé problémy a komplikace. Během řešení jsem se naučil mnohé věci a nyní si uvědomuji mnohé nedostatky mé práce. V rámci zadání jsem práci podle mě splnil, ale sám vím že jsou místa, kde by si program zasloužil vylepšení. Mé řešení problému má podle mě dobrý základ a chci s ním dál pokračovat. Jednu věc co jsem v tomto rámci také poznal je, že buď budu pokračovat ve tvorbě klíče, nebo ve tvorbě hry. Tvorba obou zároveň ranila kvalitu obou. Také jsem pro příště poučen a pokud se pustím do tvorby her, tak musím práci více rozkouskovat. Kvůli mé relativní nezkušenosti na začátku jsem si ani neuvědomoval kolik práce zabere postavit hru od začátku až do konce, a natož ještě hru, která je skriptovatelná.
 
 Největším momentálním problémem je bohužel použití jazyka Python. Tento jazyk je velmi flexibilní a pomohl při zpracování dat a vypisování dat na obrazovku. Problém ale je jeho optimalizace. Na problémy s rychlostí jsem narazil z jedné části, protože nepíši absolutně optimalizovaný kód, a z druhé. Ta druhá je, že je jazyk Python interpretovaný, ne compilovaný. Toto má i druhý nešťastný efekt, a to je že program lze spustit u uživatele jenom tehdy, má li nainstalovaný Python a jeho knihovny.
 
