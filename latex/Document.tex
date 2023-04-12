@@ -123,16 +123,32 @@ Při prvotním plánu práce jsem chtěl přidat určitou interaktivitu k hlavn�
 Nakonec jsem se rozhodl pro desku založenou na čipu RP2040, protože existuje docela dobrá dokumentace k tvorbě vlastních desek. Samotná dokumentace k čipu je velmi hustá a technická a pro moje účely zbytečně složitá. Druhý důvod proč zvolit čip RP2040 bylo, že je na desce Raspberry Pi Pico a Pico W. Tyto dvě desky jsem používal pro programování čipu v jazyce Micropython a vytváření velké čísti programu dřív než jsem dokončil vlastní PCB. Třetí důvod, který není tak důležitý, je že tento čip je relativně silný v rámci výpočetní schopnosti a tudíž jsem nemusel řešit hlubokou optimalizaci. Když jsem zjistil jak velká porce mé práce byl hlavní program, tak jsem za tyto vlastnosti byl velmi vděčný.
 
 Nakonec zvolenou interaktivitou bylo, že klíč bude schopen zobrazit nějaké informace ohledně hráče. Zobrazovací metodu jsem vybral řady osmi LED. Nechtěl jsem ale aby zabrali 16 pinů na čipu a tudíž mě napadlo řešení přes registry. Tím bych byl schopen snížit počet pinů na 8. Avšak učitel mě navedl na ještě úspornější cestu. Nakonec jsem použil jenom jeden registr připojený k oběma řadám. Každá řada má tranzistor s otevřeným kolektorem, tudíž uzemňuje. Aby obě řady svítily stejně, tak je následně přepíná s intervalem 100 milisekund. Tímto se vytvořil časový multiplex.
+
+Diody jsou napájeny přímo z registru, který je napájen z usb neboli 5 volty. Elektronické zapojení je vidět na Obrázku 1. Hodnoty rezistorů závisí na napětí zvolených LED a ty které jsem zvolil vyžadovali tyto rezistory. Celé schéma zapojení je následně v Příloze 1.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth-3 cm]{pictures/register_LED.png}
     \caption{Registr a LED řady [vlastní]}
 \end{figure}
 
-Schéma je v Přiloze 1. 
-
 \subsection{Problém}
 Pro vytvoření desky jsem využil program KiCAD. Během tvorby jsem používal pro součástky kombinaci obecných pouzder a specifických (Ty jsem nalezl většinou na stránkách mouser). Bohužel program KiCAD nemá všechny obecné pouzder udělané podle výrobních konvencí. Pro tranzistor jsem použil pouzdro SOT-23 a program přiřadil na piny popořadě kolektor, báze, emitor. Výrobní konvence ale přiřazují, ve stejném pořadí, bázi, emitor, kolektor. Tudíž jsem byl nucen odletovat smd tranzistory a otočil jsem je o přibližně 135 stupňů.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.49\textwidth}
+	  \includegraphics[width=\textwidth]{pictures/wrong_npn.png}
+	  \vspace{\fill}
+	\end{subfigure}
+	\centering
+	\hfill
+	\begin{subfigure}[b]{0.49\textwidth}
+	  \includegraphics[width=\textwidth]{pictures/right_npn.png}
+	  \vspace{\fill}
+	\end{subfigure}
+	\caption{Špatný a správný tranzistor [vlastní]}
+  \end{figure}
 
 \subsection{Komunikace}
 Máme dvě komunikační zařízení a potřebujeme vytvořit komunikaci mezi nimi. Komunikace je řešena přes comporty. Hostitel, v tomto případě počítač, na kterém běží hlavní program, si nechá pomocí nástrojů knihovny serial vypsat všechny rozpoznané comporty. Následně se pokusí otevřít comport a poslat mu příkaz. Pokud se mu nepovede otevřít comport, víme že je to nechtěné zařízení. Když se otevření povede, pošle mu příkaz "type". Pokud je na druhé straně správné zařízení neboli klíč se správným nahraným programem, tak zpátky odešle zprávu "player". Jenom tehdy je zařízení dáno do listů zařízení, se kterým potom program pracuje dál.
