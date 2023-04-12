@@ -92,7 +92,7 @@ V této maturitní práci se snažím o vytvoření programu který je schopný 
 \section{Fyzický klíč}
 Pro komunikaci jsem vytvořil design vlastní desky, založené na čipu RP2040. Tato deska je schopná zobrazit informace ohledně hráče, pokud daná informace má min a max. Další schopnost je komunikace, přes můj vlastní program, který umožňuje ukládání některých souborů na paměť desky.
 
-Zobrazování je provedeno pomocí 8 LED na každé straně, které jsou ovládaný přes 8 bitový posuvný registr v časovém multiplexu pro ovládání dvou stran zároveň. Tento časový multiplex běží rychlostí 2kHz aby každá strana běžela na rychlosti 1kHz. Zvolená rychlost byla ze dvou důvodů. První byl, že při takové rychlosti by oko nemělo být schopné zaznamenat jak strany blikají. Druhý důvod souvisí s frekvencí na které často běží PWM. Díky těmto vlastnostem jsem schopný ovládat LED buď aby jenom blikali, nebo abych ovládal jejich jas pomocí simulovaného PWM.
+Zobrazování je provedeno pomocí 8 LED na každé straně, které jsou ovládaný přes 8 bitový posuvný registr v časovém multiplexu pro ovládání dvou stran zároveň. Tento časový multiplex běží rychlostí 2kHz aby každá strana běžela na rychlosti 1kHz.
 
 Schéma je v Přiloze 1. 
 
@@ -100,14 +100,13 @@ Schéma je v Přiloze 1.
 Pro vytvoření desky jsem využil program KiCAD. Během tvorby jsem používal pro součástky kombinaci obecných pouzder a specifických (Ty jsem nalezl většinou na stránkách mouser). Bohužel program KiCAD nemá všechny obecné pouzder udělané podle výrobních konvencí. Pro tranzistor jsem použil pouzdro SOT-23 a program přiřadil na piny popořadě kolektor, báze, emitor. Výrobní konvence ale přiřazují, ve stejném pořadí, bázi, emitor, kolektor. Tudíž jsem byl nucen odletovat smd tranzistory a otočil jsem je o přibližně 135 stupňů.
 
 \subsection{Komunikace}
-Máme dvě komunikační zařízení a potřebujeme vytvořit komunikaci mezi nimi. Komunikace je řešena přes comporty. Hostitel, v tomto případě počítač, na kterém běží hlavní program, si nechá pomocí nástrojů knihovny serial vypsat všechny rozpoznané comporty. Následně se pokusí otevřít comport a poslat mu příkaz. Pokud se mu nepovede otevřít comport, víme že je to nechtěné zařízení. Když se otevření povede, pošle mu příkaz "type". Pokud je na druhé straně správné zařízení neboli pico se správným nahraným programem, tak zpátky odešle zprávu "player". Jenom tehdy je zařízení dáno do listů zařízení, se kterým potom program pracuje dál.
+Máme dvě komunikační zařízení a potřebujeme vytvořit komunikaci mezi nimi. Komunikace je řešena přes comporty. Hostitel, v tomto případě počítač, na kterém běží hlavní program, si nechá pomocí nástrojů knihovny serial vypsat všechny rozpoznané comporty. Následně se pokusí otevřít comport a poslat mu příkaz. Pokud se mu nepovede otevřít comport, víme že je to nechtěné zařízení. Když se otevření povede, pošle mu příkaz "type". Pokud je na druhé straně správné zařízení neboli klíč se správným nahraným programem, tak zpátky odešle zprávu "player". Jenom tehdy je zařízení dáno do listů zařízení, se kterým potom program pracuje dál.
 
-Hostitelský program je o dost složitější než ten na picu. Hostitel musí zprávu nejdřív převést do kódování utf-8 neboli bytes. To je posláno na sériovou linku comportu, který je zrovna otevřený. Pico má práci velmi jednoduší, neboť micropython je schopný číst sériovou linku pomocí příkazu input(). Následně pico kontroluje jakou zprávu dostal vůči svému slovníku. Pokud zpráva odpovídá nějakému příkazu, tak pico navrátí odpovídající hodnoty, jinak jenom pošle zpět že zprávu zaregistroval. Hostitel nyní musí projít zpětným procesem převádění zpět z bytes na string. Pokud pico pošle víceřádkovou správu, tak samozřejmě musí komunikační program převést celé pole, které přečte z comportu. 
+Hostitelský program je o dost složitější než ten na klíči. Hostitel musí zprávu nejdřív převést do kódování utf-8 neboli bytes. To je posláno na sériovou linku comportu, který je zrovna otevřený. Pico má práci velmi jednoduší, neboť micropython je schopný číst sériovou linku pomocí příkazu input(). Následně pico kontroluje jakou zprávu dostal vůči svému slovníku. Pokud zpráva odpovídá nějakému příkazu, tak pico navrátí odpovídající hodnoty, jinak jenom pošle zpět že zprávu zaregistroval. Hostitel nyní musí projít zpětným procesem převádění zpět z bytes na string. Pokud pico pošle víceřádkovou správu, tak samozřejmě musí komunikační program převést celé pole, které přečte z comportu. 
 
 \subsection{Datová struktura}
-Díky způsobu práce s daty na klíči (nepracuje s nimi přímo uživatel, vše je ovládáno pomocí programu) tak zde může existovat velmi neflexibilní struktura souborů. V rootu musí existovat main.py, který se sám spustí, když se pico zapojí. Zároveň musí být v rootu samotný soubor hráče a jakékoli knihovny, které \textit{main.py} potřebuje. Následně všechny skripty, které jsou specifické vůči hráči, musí být v adresáři player\_scripts.
+Díky způsobu práce s daty na klíči (nepracuje s nimi přímo uživatel, vše je ovládáno pomocí programu) tak zde může existovat velmi neflexibilní struktura souborů. V rootu musí existovat main.py, který se sám spustí, když se pico zapojí. Zároveň musí být v rootu samotný soubor hráče a jakékoli knihovny, které \textit{main.py} potřebuje. Následně všechny skripty, které jsou specifické vůči hráči, musí být v adresáři player\_scripts. Také zde existuje \textit{config.json} na kterém jsou momentálně uloženy informace o datech, které by se měli ukazovat na klíči. Tyto informace musí mít svůj název a maximální hodnoty, kde syntax maximální hodnoty musí být \textbf{max}\textit{VlastníNázev}.
 
-\subsection{Provedení čtení dat a jejich zobrazení}
 \section{Struktura adresářů a souborů}
 Během tvorby programu byl kladen důraz na co nejméně vynucené struktury ze strany uživatele. Hodně problémů jsem tudíž vyřešil pomocí tvorby souborů se specifickými názvy, pro které se program dívá a vytvoří si strukturu cest, se kterou pracuje a podává do dalších funkcí. Je zde ale určitá kultura, kterou bych doporučil při tvoření souborů.
 
@@ -202,6 +201,21 @@ Během předchozích textů jsem zaměňoval slova event a skript. Event je pře
 
 Samotný zápis je syntax json slovníku. Klíčem je název skriptu, který chce uživatel použít, plus \_X, kde X je pořadí eventu v momentálním souboru. Část \_X je zde jenom kvůli tomu, že klíče nemohou být stejné. Hodnotou ke klíči je vždy pole argumentů, které Handler podá skriptu. Zde se píší již zmiňované znaky \& aby byla umožněna komunikace mezi skripty.
 
+\subsection{Vlastní skripty}
+Zde bych rád uvedl skripty, které jsem vytvořil a nějaký krátký popis, k čemu jsou určené.
+
+\begin{description}
+	\item[auto\_render] Tento skript ulehčuje a automatizuje práci s automatickým renderováním, které jsem popsal v sekci Okno Hry
+	\item[comm] Toto nepovažuji úplně za skript, spíše za knihovnu pro všechny skripty, které vyžadují komunikaci s klíčem. V knihovně jsou vytvořené funkce, které umožňují různé čtení dat ze sériové linky a psaní dat na ní.
+	\item[deviceHandler] Vyhledává všechny zařízení a jeho návratová hodnota je slovník zařízení, kde klíčem je hráčovo ID a hodnotou je sériová linka pro komunikaci.
+	\item[eatVal] Odstaní hodnotu v argumentu ze stack paměti.
+	\item[getCustomScripts] Hledá u zařízení skripty a ukládá je to adresáře player\_scripts
+	\item[getPlayerList] Tento skript najde buď v klíčích nebo v adresáři players všechny hráče a pokusí se vytvořit jejich odpovídající objekty. Všechny podařené vrátí v listu.
+	\item[Player] Toto je skript určený pro vytvoření objektu hráče. Při tvorbě bere jako argument název souboru s cestou kudy se tam dostat.
+	\item[putVal] Vloží hodnotu poslanou po argumentu do stack paměti
+	\item[storyHandler] Vyhledá všechny části příběhu, které mají být zprvu ukázány a vrátí list odpovídajících cest k nim.
+	\item[Window] Popsáno v sekci okno hry.    
+\end{description}
 \section{Skriptovací nástroj}
 Když si shrneme co by vše uživatel musel umět aby si příběh napsal, tak by to znamenalo, že je nejspíš programátor a může si tudíž klidně naprogramovat vlastní hru. Tudíž jsem se rozhodl udělat nástroj, který by byl schopný pomoct uživateli a dát mu inteligentní předpovídání při psaní eventů a jiných souborů. Stejně jako hlavní program, tak skriptovací nástroj obsahuje vlastní verzi Handlera, díky které se opět stává kompletně rozšiřitelný. Bohužel ale není naprosto kompletní, nepatří mezi hlavní části mé práce, ale i tak mi přišlo ho do určité míry připravit.
 
@@ -245,9 +259,11 @@ Do budoucna počítám že celý program přenesu na jazyk, který má přímo c
 
 Vykreslovací okno bylo vytvořeno během raných začátků programu. Tudíž je velmi náročné na procesor, nemá dobré schopnosti s grafikou a jeho jediná opravdová schopnost je vykreslovat rychle a pomalu. Vykreslování ve skriptovacím nástroji je lepší, ale stálo to ještě víc výkonu než původní okno. Obojí je potřeba předělat, a to nejlépe do grafického enginu, který bude optimalizovaný pro práci s textem a vstupní příkazovou řádkou. Musí také obsahovat lepší rozpoznání šířky okna a práci s řádky. Momentálně se všechny moje funkce rozpadnou v moment co je okno menší, než skripty očekávají. Líbí se mi že je program v rámci příkazového řádku, a budu se toto i nadále snažit ponechat, potřebuji ale více logiky a optimalizace. Také by engine měl obsahovat schopný text parser, aby vstupy uživatele mohly být volnější a negenerovali tolik chyb.
 
-Struktura skriptů musí též dostat předělání. V rámci programu musí být lepší nahrávání informací ohledně skriptů a musí být podporována volnější struktura vnitřního vzhledu skriptu. Ve skriptovacím nástroji jsem byl schopný některé tyto problémy vyřešit, ale pořád to není dostatečné. 
+Struktura skriptů musí též dostat předělání. V rámci programu musí být lepší nahrávání informací ohledně skriptů a musí být podporována volnější struktura vnitřního vzhledu skriptu. Ve skriptovacím nástroji jsem byl schopný některé tyto problémy vyřešit, ale pořád to není dostatečné.
 
-Během pracování s deskou jsem narazil na problém. Kvůli časovému multiplexu jsou LED schopné svítit pouze na 50~\% což není ideální při přihlédnutí k velikosti a svítivosti LED. Během přemýšlení o tomto problému mě napadlo lepší řešení při použití stejného počtu pinů a to za použití dvou paralelních registrů.
+Dynamičnost programu na klíči se také musí zlepšit. Momentálně je program a hlavně slovník naprogramovaný tvrdě. Toto není podle mě dobré řešení a bylo by lepší abych vytvořil podobný systém jako na počítači pro jednoduché rozšiřování slovníku.
+
+Během pracování s deskou jsem narazil na problém. Kvůli časovému multiplexu jsou LED schopné svítit pouze na 50~\% což není ideální při přihlédnutí k velikosti a svítivosti LED. Během přemýšlení o tomto problému mě napadlo lepší řešení při použití stejného počtu pinů a to za použití dvou paralelních registrů. Díky těmto dvěma registrům můžu posílat nové informace na LED pouze když se změní. Toto by LEDkám umožnilo svítit na 100~\%. Toto řešení má jednu nevýhodu a to je že má vyšší počet součástek.
 
 %\subsection{Problémy}
 %\subsection{Budoucí řešení}

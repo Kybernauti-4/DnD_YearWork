@@ -134,8 +134,7 @@ def read_data():
 			data_left = [1 if i < left_num_led else 0 for i in range(8)]
 			data_right = [1 if i < right_num_led else 0 for i in range(8)]
 
-#LED_thread = _thread.start_new_thread(LED_blink, ())
-DATA_thread = _thread.start_new_thread(read_data, ())
+LED_thread = _thread.start_new_thread(LED_blink, ())
 
 while True:
 	recv_msg = input()
@@ -220,8 +219,12 @@ while True:
 			data += line + '\n'
 
 		file.write(data)
+		try:
+			json.loads(data)
+		except:
+			pass #not a json file
 		file.close()
-		print('File Recieved')
+		read_data()
 
 	else:
 		print (recv_msg + " -ack")

@@ -1,0 +1,1 @@
+def combatState(playerList, enemyList):
