@@ -199,6 +199,12 @@ Zde bych rád zmínil, pokud bych další pokračování mé práce zaměřil č
 \subsubsection{Logické provedení}
 První co se musí provést, z kterékoli části programu, je metoda add\_text. Ta je schopná přijmout dva možné vstupy. Buď přes list, pole, nebo jiné iterovatelné objekty, nebo přes string. Pokud je přijat iterovatelný objekt, tak je každá hodnota braná jako string a přidaná do paměti okna, pokud je přijat string tak je přidán do paměti rovnou. Než ale se cokoliv přidá, tak projde kontrolou, jestli je možno takovou větu vykreslit. Pokud řádka projde skrz kontroly, tak je přičtena jednička k proměnné, která řídí postupné vykreslování.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth-3 cm]{pictures/}
+    \caption{Diagram přidání dat do okna[vlastní]}
+\end{figure}
+
 Ve skriptech jsem vytvořil ještě jeden, rozšířující, skript. Je stejnojmenný jako metoda okna pro přidání textu, ale je schopný vzít txt soubory. Skripty mají přístup k adrese, pokud si ji vyžádají, kde momentálně mají pracovat. Při použití tohoto skriptu je důležité brát na vědomí, že skript pro textové soubory hledá v adresáři \textit{texts}, v pracovní cestě.
 
 Vykreslování samotné je tvořené přes dvě metody. Jedna metoda jenom připravuje pole, které vykreslovací metoda dá do okna. Vykreslovací metoda neobsahuje žádnou logiku jestli může nebo nemůže vykreslit něco na obrazovku, vše zařizuje formátovací metoda.
@@ -231,6 +237,12 @@ V rámci věcí co jsou nutné mít v každém hráči, je to pouze ID a type. V
 Během předchozích textů jsem zaměňoval slova event a skript. Event je přepis pro hlavní program aby byl schopný pustit skript. Skript je podprogram, který hlavní program používá pro své akce. Přepis jednotlivých eventů je v souboru \textit{event.json}, který se musí nacházet na úrovni \textit{storypart.json}.
 
 Samotný zápis je syntax json slovníku. Klíčem je název skriptu, který chce uživatel použít, plus \_X, kde X je pořadí eventu v momentálním souboru. Část \_X je zde jenom kvůli tomu, že klíče nemohou být stejné. Hodnotou ke klíči je vždy pole argumentů, které Handler podá skriptu. Zde se píší již zmiňované znaky \& aby byla umožněna komunikace mezi skripty.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth-3 cm]{pictures/event.png}
+    \caption{Ukázka zápisu eventu [vlastní]}
+\end{figure}
 \section{Skriptovací nástroj}
 Když si shrneme co by vše uživatel musel umět aby si příběh napsal, tak by to znamenalo, že je nejspíš programátor a může si tudíž klidně naprogramovat vlastní hru. Tudíž jsem se rozhodl udělat nástroj, který by byl schopný pomoct uživateli a dát mu inteligentní předpovídání při psaní eventů a jiných souborů. Stejně jako hlavní program, tak skriptovací nástroj obsahuje vlastní verzi Handlera, díky které se opět stává kompletně rozšiřitelný. Bohužel ale není naprosto kompletní, nepatří mezi hlavní části mé práce, ale i tak mi přišlo ho do určité míry připravit.
 
