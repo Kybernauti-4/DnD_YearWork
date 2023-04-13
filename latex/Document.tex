@@ -306,6 +306,19 @@ Dynamičnost programu na klíči se také musí zlepšit. Momentálně je progra
 
 Během pracování s deskou jsem narazil na problém. Kvůli časovému multiplexu jsou LED schopné svítit pouze na 50~\% což není ideální při přihlédnutí k velikosti a svítivosti LED. Během přemýšlení o tomto problému mě napadlo lepší řešení při použití stejného počtu pinů a to za použití dvou paralelních registrů. Díky těmto dvěma registrům můžu posílat nové informace na LED pouze když se změní. Toto by LEDkám umožnilo svítit na 100~\%. Toto řešení má jednu nevýhodu a to je že má vyšší počet součástek.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth-3 cm]{pictures/register_better.png}
+    \caption{Lepší zapojení sériového registru [vlastní]}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth-3 cm]{pictures/led_strip_better.png}
+    \caption{Lepší zapojení LED stran [vlastní]}
+\end{figure}
+
+Celé schéma lepšího zapojení je v Příloze 2.
 %\subsection{Problémy}
 %\subsection{Budoucí řešení}
 %\subsubsection{Hlavní program}
@@ -313,4 +326,8 @@ Během pracování s deskou jsem narazil na problém. Kvůli časovému multiple
 \section{Zdroje}
 Draw.io - free flowchart maker and diagrams online. Flowchart Maker \&amp; Online Diagram Software [online]. [Accessed\&nbsp;12\&nbsp;April\&nbsp;2023]. Available from: https://app.diagrams.net/ 
 \section{Přílohy}
+\begin{enumerate}
+	\item \textbf{Příloha I: }
+	\item \textbf{Příloha II: }
+  \end{enumerate}
 \end{document}
