@@ -98,7 +98,70 @@ Improvizace je ve světe DnD jedna z nejdůležitějších schopností. Bohužel
 Aby šel příběh psát jednoduše a aby mohly příběhy být rozmanité, tak jsem se rozhodl pro hru, která bude možná rozšířit pomocí skriptů. Aby vypravěč nemusel umět programovat, tak jsem také chtěl udělat zjednodušený zápis pro program, víceméně DSL. Další část byla nějak vytvořit určitou nutnost socializace mezi hráči. Jinak řečeno, chtěl jsem aby se hráči scházeli, aby nemohli hru hrát online. Proto jsem musel vytvořit nějakou fyzickou část, která by toto vyvolala. Napadl mě fyzický klíč, ke kterému se blíž vyjádřím v jeho odpovídající sekci.
 
 \newpage
-\section{Struktura adresářů a souborů}
+\section{Fyzický klíč}
+Při prvotním plánu práce jsem chtěl přidat určitou interaktivitu k hlavnímu programu z nějakého zařízení. Napadly mě dvě myšlenky, které jsem spojil dohromady. První byla že pokud bude hlavní program hra, kde mohou hráči prozkoumávat různé podzemní komnaty, tak by mohlo zařízení být nějaký klíč. Druhá myšlenka byla, aby hráči mohli jednoduše přenášet postavy a neměli strach že se jim smažou v rukou vypravěče, tak bych mohl utvořit něco co by fungovalo jako úložné zařízení.
+
+Nakonec jsem se rozhodl pro desku založenou na čipu RP2040, protože existuje docela dobrá dokumentace k tvorbě vlastních desek. Samotná dokumentace k čipu je velmi hustá a technická a pro moje účely zbytečně složitá. Druhý důvod proč zvolit čip RP2040 bylo, že je na desce Raspberry Pi Pico a Pico W. Tyto dvě desky jsem používal pro programování čipu v jazyce Micropython a vytváření velké čísti programu dřív než jsem dokončil vlastní PCB. Třetí důvod, který není tak důležitý, je že tento čip je relativně silný v rámci výpočetní schopnosti a tudíž jsem nemusel řešit hlubokou optimalizaci. Když jsem zjistil jak velká porce mé práce byl hlavní program, tak jsem za tyto vlastnosti byl velmi vděčný.
+
+Nakonec zvolenou interaktivitou bylo, že klíč bude schopen zobrazit nějaké informace ohledně hráče. Zobrazovací metodu jsem vybral řady osmi LED. Nechtěl jsem ale aby zabrali 16 pinů na čipu a tudíž mě napadlo řešení přes registry. Tím bych byl schopen snížit počet pinů na 8. Avšak učitel mě navedl na ještě úspornější cestu. Nakonec jsem použil jenom jeden registr připojený k oběma řadám. Každá řada má tranzistor s otevřeným kolektorem, tudíž uzemňuje. Aby obě řady svítily stejně, tak je následně přepíná s intervalem 100 milisekund. Tímto se vytvořil časový multiplex.
+
+Diody jsou napájeny přímo z registru, který je napájen z usb neboli 5 volty. Elektronické zapojení je vidět na Obrázku 1. Hodnoty rezistorů závisí na napětí zvolených LED a ty které jsem zvolil vyžadovali tyto rezistory. Celé schéma zapojení je následně v Příloze 1.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth-3 cm]{pictures/register_LED.png}
+    \caption{Registr a LED řady [vlastní]}
+\end{figure}
+
+Ve hlavním schéma je kromě zapojení paměti a filtrování také jedna RGB LED. Takto led je určená převážně pro debug. Tento nápad jsem měl kvůli existenci vestavěné zelené LED na Raspberry Pi Pico, která se často pro tyto účely používá. Nicméně je to pouze jednobarevná LED a chtěl jsem vědět trochu víc o tom co se v programu děje, skrz tuto LED. Proto jsem se rozhodl pro RGB. Diody mají společnou anodu. Toto řešení jsem zvolil, protože, při propočítávání odporů mě učitel upozornil, že GPIO piny  mají interní odpory, které jsou nejspíš zanedbatelné, ale existují.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth-3 cm]{pictures/RGB LED.png}
+    \caption{RGB LED [vlastní]}
+\end{figure}
+
+Takto je proud a napětí počítány exaktně ze zdroje a piny jsou využívány jako zem. Kvůli konstrukci GPIO pinů, při uzemnění již nejsou problémy se skrytými rezistory. Přemýšlel jsem i jiných řešeních RGB diod, ale toto řešení mi přišlo nejjednodušší. 
+
+\subsection{Komunikace}
+Máme dvě komunikační zařízení a potřebujeme vytvořit komunikaci mezi nimi. Komunikace je řešena přes comporty. Hostitel, v tomto případě počítač, na kterém běží hlavní program, si nechá pomocí nástrojů knihovny serial vypsat všechny rozpoznané comporty. Následně se pokusí otevřít comport a poslat mu příkaz. Pokud se mu nepovede otevřít comport, víme že je to nechtěné zařízení. Když se otevření povede, pošle mu příkaz "type". Pokud je na druhé straně správné zařízení neboli klíč se správným nahraným programem, tak zpátky odešle zprávu "player". Jenom tehdy je zařízení dáno do listů zařízení, se kterým potom program pracuje dál.
+
+Hostitelský program je o dost složitější než ten na klíči. Hostitel musí zprávu nejdřív převést do kódování utf-8 neboli bytes. To je posláno na sériovou linku comportu, který je zrovna otevřený. Pico má práci velmi jednoduší, neboť micropython je schopný číst sériovou linku pomocí příkazu input(). Následně pico kontroluje jakou zprávu dostal vůči svému slovníku. Pokud zpráva odpovídá nějakému příkazu, tak pico navrátí odpovídající hodnoty, jinak jenom pošle zpět že zprávu zaregistroval. Hostitel nyní musí projít zpětným procesem převádění zpět z bytes na string. Pokud pico pošle víceřádkovou správu, tak samozřejmě musí komunikační program převést celé pole, které přečte z comportu. 
+
+\subsection{Datová struktura}
+Díky způsobu práce s daty na klíči (nepracuje s nimi přímo uživatel, vše je ovládáno pomocí programu) tak zde může existovat velmi neflexibilní struktura souborů. V rootu musí existovat main.py, který se sám spustí, když se pico zapojí. Zároveň musí být v rootu samotný soubor hráče a jakékoli knihovny, které \textit{main.py} potřebuje. Následně všechny skripty, které jsou specifické vůči hráči, musí být v adresáři player\_scripts. Také zde existuje \textit{config.json} na kterém jsou momentálně uloženy informace o datech, které by se měli ukazovat na klíči. Tyto informace musí mít svůj název a maximální hodnoty, kde syntax maximální hodnoty musí být \textbf{max}\textit{VlastníNázev}.
+
+\begin{figure}[H]
+	\subsection{Problém}
+	Pro vytvoření desky jsem využil program KiCAD. Během tvorby jsem používal pro součástky kombinaci obecných pouzder a specifických (Ty jsem nalezl většinou na stránkách mouser). Bohužel program KiCAD nemá všechny obecné pouzder udělané podle výrobních konvencí. Pro tranzistor jsem použil pouzdro SOT-23 a program přiřadil na piny popořadě kolektor, báze, emitor. Výrobní konvence ale přiřazují, ve stejném pořadí, bázi, emitor, kolektor. Tudíž jsem byl nucen odletovat smd tranzistory a otočil jsem je o přibližně 135 stupňů.
+
+
+	\centering
+	\begin{subfigure}[b]{0.49\textwidth}
+	  \includegraphics[width=\textwidth]{pictures/wrong_npn.png}
+	\end{subfigure}
+	\centering
+	\hfill
+	\begin{subfigure}[b]{0.49\textwidth}
+	  \includegraphics[width=\textwidth]{pictures/right_npn.png}
+	\end{subfigure}
+	\caption{Špatný a správný tranzistor [vlastní]}
+\end{figure}
+
+\section{Hlavní program}
+Jakožto vývojové prostředí jsem zvolil Visual Studio Code (Zkráceně VSC), kvůli jeho rozšiřitelnosti. Díky tomu jsem nemusel pracovat ve více různých nástrojů a vývoj proběhl kompletně ve VSC. Druhý důvod byl systém Workspace, který mi umožnil jednoduchý přehled nad všemi adresáři a soubory. Třetí důvod byl jednoduchá integrace s celým systémem git. Tudíž jsem projekty mohl mít uložené na githubu, společně s nastavením VSC, a mohl jsem na práci pracovat kdekoli a kdykoli. Git měl ještě jednu výhodu, a tou je trasování historie souborů. Takto jsem se nemusel bát o žádné mylné smazání nebo přepsání souborů.
+
+Vše je psáno pomocí programovacího jazyka Python, přičemž velmi využívám datového souboru typu json pro ukládání rozmanitých dat. Python je interpretovaný jazyk a tudíž je lehce schopný pracovat se skripty. Zároveň má velmi silné schopnosti zpracování dat. Toto vede k jednoduchosti při psaní a navrhování kódu. Díky jeho minimálnímu syntaxu bylo velmi jednoduché opravovat části dříve psané a prototypovat nové změny. 
+
+Většina her má více části než jednu. V mém případě se program dělí na chytře hloupý hlavní program a nespočet skriptů. Chytrý je protože je schopný, skripty hledat, volat, předávat jim informace co potřebují atd. Hloupý je, protože dělá přesně to co mu uživatel řekne. Tudíž je jeho operace velmi náchylná na chyby způsobené uživatelem.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth-3 cm]{pictures/.png}
+    \caption{RGB LED [vlastní]}
+\end{figure}
+
+\subsection{Struktura souborů a složek}
 Během tvorby programu byl kladen důraz na co nejméně vynucené struktury ze strany vypravěče. Hodně problémů jsem tudíž vyřešil pomocí tvorby souborů se specifickými názvy, pro které se program dívá a vytvoří si strukturu cest, se kterou pracuje a podává do dalších funkcí. Je zde ale určitá kultura, kterou bych doporučil při tvoření souborů.
 
 Hlavní adresář příběhu
@@ -117,53 +180,6 @@ Všechny adresáře, které obsahují skripty, musí obsahovat soubor \textit{\_
 Jednotlivé části příběhu, se kterými chceme aby program pracoval, jsou určeny soubory \textit{storypart.json}. Tento soubor obsahuje jednu informaci pro program, "include" určující obsáhnutí při prvotním načtení, a dále jakékoli další informace, se kterými chce následně vypravěč pracovat ve svých skriptech.
 
 Jedno místo kde program nehledá pro \textit{storypart.json} jsou soubory, které začínají tečkou. Jedno fixní pravidlo s mou verzí programu je, že u každého souboru \textit{storypart.json} musí být .orig adresář. V tomto adresáři musí být původní verze mateřského adresáře. Logické skripty přepisují soubory destruktivně (bez možnosti vrácení změn), proto zde adresáře .orig musí být. I kdyby uživatel vytvořil příběh bez logických skriptů, tak po splnění všech eventů v rámci jedné příběhové části přepíše hodnotu na klíči "include" v \textit{storypart.json} na "false". Toto je moje metoda jak vytvořit pseudo uložení hry. Má to ale stejný problém jako logické skripty, jedná se o destruktivní změny.
-\section{Fyzický klíč}
-Při prvotním plánu práce jsem chtěl přidat určitou interaktivitu k hlavnímu programu z nějakého zařízení. Napadly mě dvě myšlenky, které jsem spojil dohromady. První byla že pokud bude hlavní program hra, kde mohou hráči prozkoumávat různé podzemní komnaty, tak by mohlo zařízení být nějaký klíč. Druhá myšlenka byla, aby hráči mohli jednoduše přenášet postavy a neměli strach že se jim smažou v rukou vypravěče, tak bych mohl utvořit něco co by fungovalo jako úložné zařízení.
-
-Nakonec jsem se rozhodl pro desku založenou na čipu RP2040, protože existuje docela dobrá dokumentace k tvorbě vlastních desek. Samotná dokumentace k čipu je velmi hustá a technická a pro moje účely zbytečně složitá. Druhý důvod proč zvolit čip RP2040 bylo, že je na desce Raspberry Pi Pico a Pico W. Tyto dvě desky jsem používal pro programování čipu v jazyce Micropython a vytváření velké čísti programu dřív než jsem dokončil vlastní PCB. Třetí důvod, který není tak důležitý, je že tento čip je relativně silný v rámci výpočetní schopnosti a tudíž jsem nemusel řešit hlubokou optimalizaci. Když jsem zjistil jak velká porce mé práce byl hlavní program, tak jsem za tyto vlastnosti byl velmi vděčný.
-
-Nakonec zvolenou interaktivitou bylo, že klíč bude schopen zobrazit nějaké informace ohledně hráče. Zobrazovací metodu jsem vybral řady osmi LED. Nechtěl jsem ale aby zabrali 16 pinů na čipu a tudíž mě napadlo řešení přes registry. Tím bych byl schopen snížit počet pinů na 8. Avšak učitel mě navedl na ještě úspornější cestu. Nakonec jsem použil jenom jeden registr připojený k oběma řadám. Každá řada má tranzistor s otevřeným kolektorem, tudíž uzemňuje. Aby obě řady svítily stejně, tak je následně přepíná s intervalem 100 milisekund. Tímto se vytvořil časový multiplex.
-
-Diody jsou napájeny přímo z registru, který je napájen z usb neboli 5 volty. Elektronické zapojení je vidět na Obrázku 1. Hodnoty rezistorů závisí na napětí zvolených LED a ty které jsem zvolil vyžadovali tyto rezistory. Celé schéma zapojení je následně v Příloze 1.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth-3 cm]{pictures/register_LED.png}
-    \caption{Registr a LED řady [vlastní]}
-\end{figure}
-
-\subsection{Problém}
-Pro vytvoření desky jsem využil program KiCAD. Během tvorby jsem používal pro součástky kombinaci obecných pouzder a specifických (Ty jsem nalezl většinou na stránkách mouser). Bohužel program KiCAD nemá všechny obecné pouzder udělané podle výrobních konvencí. Pro tranzistor jsem použil pouzdro SOT-23 a program přiřadil na piny popořadě kolektor, báze, emitor. Výrobní konvence ale přiřazují, ve stejném pořadí, bázi, emitor, kolektor. Tudíž jsem byl nucen odletovat smd tranzistory a otočil jsem je o přibližně 135 stupňů.
-
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[b]{0.49\textwidth}
-	  \includegraphics[width=\textwidth]{pictures/wrong_npn.png}
-	\end{subfigure}
-	\centering
-	\hfill
-	\begin{subfigure}[b]{0.49\textwidth}
-	  \includegraphics[width=\textwidth]{pictures/right_npn.png}
-	\end{subfigure}
-	\caption{Špatný a správný tranzistor [vlastní]}
-  \end{figure}
-
-\subsection{Komunikace}
-Máme dvě komunikační zařízení a potřebujeme vytvořit komunikaci mezi nimi. Komunikace je řešena přes comporty. Hostitel, v tomto případě počítač, na kterém běží hlavní program, si nechá pomocí nástrojů knihovny serial vypsat všechny rozpoznané comporty. Následně se pokusí otevřít comport a poslat mu příkaz. Pokud se mu nepovede otevřít comport, víme že je to nechtěné zařízení. Když se otevření povede, pošle mu příkaz "type". Pokud je na druhé straně správné zařízení neboli klíč se správným nahraným programem, tak zpátky odešle zprávu "player". Jenom tehdy je zařízení dáno do listů zařízení, se kterým potom program pracuje dál.
-
-Hostitelský program je o dost složitější než ten na klíči. Hostitel musí zprávu nejdřív převést do kódování utf-8 neboli bytes. To je posláno na sériovou linku comportu, který je zrovna otevřený. Pico má práci velmi jednoduší, neboť micropython je schopný číst sériovou linku pomocí příkazu input(). Následně pico kontroluje jakou zprávu dostal vůči svému slovníku. Pokud zpráva odpovídá nějakému příkazu, tak pico navrátí odpovídající hodnoty, jinak jenom pošle zpět že zprávu zaregistroval. Hostitel nyní musí projít zpětným procesem převádění zpět z bytes na string. Pokud pico pošle víceřádkovou správu, tak samozřejmě musí komunikační program převést celé pole, které přečte z comportu. 
-
-\subsection{Datová struktura}
-Díky způsobu práce s daty na klíči (nepracuje s nimi přímo uživatel, vše je ovládáno pomocí programu) tak zde může existovat velmi neflexibilní struktura souborů. V rootu musí existovat main.py, který se sám spustí, když se pico zapojí. Zároveň musí být v rootu samotný soubor hráče a jakékoli knihovny, které \textit{main.py} potřebuje. Následně všechny skripty, které jsou specifické vůči hráči, musí být v adresáři player\_scripts. Také zde existuje \textit{config.json} na kterém jsou momentálně uloženy informace o datech, které by se měli ukazovat na klíči. Tyto informace musí mít svůj název a maximální hodnoty, kde syntax maximální hodnoty musí být \textbf{max}\textit{VlastníNázev}.
-
-
-\section{Hlavní program}
-Vše je psáno pomocí programovacího jazyka Python, přičemž velmi využívám datového souboru typu json pro ukládání rozmanitých dat.
-
-Hlavní program nastaví všechny iniciální hodnoty, provede inicializační sekvenci, najde místo příběhu a najde všechny eventy, které se budou muset stát. Všechny eventy mají své odpovídající skripty a hlavní program samozřejmě provede jejich import. Zároveň vytvoří list importovaných funkcí aby s nimi metody a funkce mohli pracovat.
-
-Jako poslední, hlavní program samozřejmě obsahuje smyčky pro průběh programu.
-
 \subsection{Handler}
 Nejdůležitější součást programu je handler. Tato funkce je schopná vzít script a odpovídající parametry, dosadit hodnoty z paměti, funkci zavolat a uložit její návratovou hodnotu. 
 
