@@ -7,11 +7,13 @@
 			"no":"None"
 		}
 	],
-	
+	"getPAlive_1":[
+		"&2"
+	],
 	"ask_2":[
 		"&9",
 		"Which one shall attack?",
-		"&111"
+		"&115"
 	],
 	"getEnemy_1":[
 		"&0"
@@ -36,7 +38,7 @@
 		"&24"
 	],
 
-	"getPAlive_1":[
+	"getPAlive_2":[
 		"&2"
 	],
 	"getVarFromList_3":["&115", 1],

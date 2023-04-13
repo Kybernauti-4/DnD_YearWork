@@ -20,6 +20,7 @@
 \usepackage{setspace}
 \usepackage{titlesec}
 \usepackage{float}
+\usepackage{ragged2e}
 
 \usepackage{tocloft}
 
@@ -60,7 +61,7 @@
 ]{LibertinusSerif}
 \setmathfont{LibertinusMath-Regular.otf}
 
-\graphicspath{{images/}}
+\graphicspath{{pictures/}}
 
 
 \begin{document}
@@ -119,14 +120,19 @@ Ve hlavním schéma je kromě zapojení paměti a filtrování také jedna RGB L
     \centering
     \includegraphics[width=\textwidth-3 cm]{pictures/RGB LED.png}
     \caption{RGB LED [vlastní]}
-\end{figure}
 
-Takto je proud a napětí počítány exaktně ze zdroje a piny jsou využívány jako zem. Kvůli konstrukci GPIO pinů, při uzemnění již nejsou problémy se skrytými rezistory. Přemýšlel jsem i jiných řešeních RGB diod, ale toto řešení mi přišlo nejjednodušší. 
+	\justifying
+	Takto je proud a napětí počítány exaktně ze zdroje a piny jsou využívány jako zem. Kvůli konstrukci GPIO pinů, při uzemnění již nejsou problémy se skrytými rezistory. Přemýšlel jsem i jiných řešeních RGB diod, ale toto řešení mi přišlo nejjednodušší.
+	
+	\centering
+    \includegraphics[width=\textwidth-3 cm]{pictures/picoShineBoard.png}
+    \caption{Konečný vzhled desky [vlastní]}
+\end{figure}
 
 \subsection{Komunikace}
 Máme dvě komunikační zařízení a potřebujeme vytvořit komunikaci mezi nimi. Komunikace je řešena přes comporty. Hostitel, v tomto případě počítač, na kterém běží hlavní program, si nechá pomocí nástrojů knihovny serial vypsat všechny rozpoznané comporty. Následně se pokusí otevřít comport a poslat mu příkaz. Pokud se mu nepovede otevřít comport, víme že je to nechtěné zařízení. Když se otevření povede, pošle mu příkaz "type". Pokud je na druhé straně správné zařízení neboli klíč se správným nahraným programem, tak zpátky odešle zprávu "player". Jenom tehdy je zařízení dáno do listů zařízení, se kterým potom program pracuje dál.
 
-Hostitelský program je o dost složitější než ten na klíči. Hostitel musí zprávu nejdřív převést do kódování utf-8 neboli bytes. To je posláno na sériovou linku comportu, který je zrovna otevřený. Pico má práci velmi jednoduší, neboť micropython je schopný číst sériovou linku pomocí příkazu input(). Následně pico kontroluje jakou zprávu dostal vůči svému slovníku. Pokud zpráva odpovídá nějakému příkazu, tak pico navrátí odpovídající hodnoty, jinak jenom pošle zpět že zprávu zaregistroval. Hostitel nyní musí projít zpětným procesem převádění zpět z bytes na string. Pokud pico pošle víceřádkovou správu, tak samozřejmě musí komunikační program převést celé pole, které přečte z comportu. 
+Hostitelský program je o dost složitější než ten na klíči. Hostitel musí zprávu nejdřív převést do kódování utf-8 neboli bytes. To je posláno na sériovou linku comportu, který je zrovna otevřený. Pico má práci velmi jednoduší, neboť micropython je schopný číst sériovou linku pomocí příkazu input(). Následně pico kontroluje jakou zprávu dostal vůči svému slovníku. Pokud zpráva odpovídá nějakému příkazu, tak pico navrátí odpovídající hodnoty, jinak jenom pošle zpět že zprávu zaregistroval. Hostitel nyní musí projít zpětným procesem převádění zpět z bytes na string. Pokud pico pošle víceřádkovou správu, tak samozřejmě musí komunikační program převést celé pole, které přečte z comportu.
 
 \subsection{Datová struktura}
 Díky způsobu práce s daty na klíči (nepracuje s nimi přímo uživatel, vše je ovládáno pomocí programu) tak zde může existovat velmi neflexibilní struktura souborů. V rootu musí existovat main.py, který se sám spustí, když se pico zapojí. Zároveň musí být v rootu samotný soubor hráče a jakékoli knihovny, které \textit{main.py} potřebuje. Následně všechny skripty, které jsou specifické vůči hráči, musí být v adresáři player\_scripts. Také zde existuje \textit{config.json} na kterém jsou momentálně uloženy informace o datech, které by se měli ukazovat na klíči. Tyto informace musí mít svůj název a maximální hodnoty, kde syntax maximální hodnoty musí být \textbf{max}\textit{VlastníNázev}.
@@ -192,6 +198,12 @@ Zpracování návratových hodnot vyžaduje správné zapsaní informací v \tex
 Mezi další, již nepovinné, informace patří například listy pod klíči "lock" a "logic". První pole říká handlerovi aby hodnotu, kterou načetl z paměti nezahazoval a ponechal ji v paměti. Jsou to tudíž "zamčené" hodnoty. Tato možnost by měla být použita pouze pro skripty u kterých víme že nebudou volány více než jednou. Nebo pokud víme že následně v eventech budou hodnoty násilně požrány. 
 
 Druhý list určuje takzvané logické skripty. Pokud je jejich návratová hodnota typu slovník, mají schopnost přidávat eventy a tudíž jsou logické skripty schopné vytvářet smyčky. Kromě návratových hodnot typu slovník handler také u rozpoznává stringy s koncovkou .json. Pokud je takový string nalezen, tak Handler z odpovídajícího souboru vezme eventy a přidá je. Handler je ještě schopný nalézt jeden identifikátor, "self". Pokud je "self" nalezen a jeho hodnota je true, tak handler přidá, celý původní script, který byl volán. Toto umožňuje snadno vytvořit nekonečnou smyčku.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth-3 cm]{pictures/handler.drawio.png}
+    \caption{Diagram Handlera [vlastní]}
+\end{figure}
 \subsubsection{Paměť programu}
 Struktura paměti je takzvaný stack. Pro tento účel jsem vytvořil třídu, abych si mohl dodat manipulační metody, které bych mohl potřebovat. Samotný stack má strukturu listu (toto jsem zvolil abych mohl použít indexované hledání, mazání, či přidávání hodnot), kdy hodnotou listu je vždy list o dvou hodnotách. Na první pozici stojí vlastní hodnota a na druhé stojí id, neboli adresa, funkce či objektu, co tuhle hodnotu vytvořila. Pokud funkce chce pracovat s hodnotami jiných funkcí, tak je použita první nalezená hodnota "shora" (Pokud bychom se dívali na hodnoty od indexu 0 až do X, tak by to byla první hodnota nalezená od nuly).
 
@@ -210,6 +222,12 @@ Zobrazování hry jsem se rozhodl použít příkazový řádek. Avšak oproti n
 Další funkčnost, kterou toto provedení okna obsahuje je pomalý a rychlý výpis. Celé okno je po každém kliknutí enter překresleno. Informace, které již na obrazovce byly, jsou vykresleny rychle (po slovech) a informace, které jsou nové, jsou vykresleny pomalu(znak po znaku). Konečný efekt, pokud je počítač dostatečně rychlý, vypadá jako kdyby se pouze poslední řádka překreslovala. 
 
 Zde bych rád zmínil, pokud bych další pokračování mé práce zaměřil čistě na grafickou složku, tak bych byl schopný odstranit momentální problém s cenou na výkonu. V této práci jsem toho nebyl schopný, protože s mými znalostmi, v rámci této práce, bych při vytvoření takového okna byl nucen použít velký počet proměnných, které by mi dávali informace o momentálním stavu okna. Řádná optimalizace by vyžadovala mnohem složitější funkci a nebo bych přešel na systém vytvoření okna, které by simulovalo chování příkazového řádku. V případě nového okna by optimalizace byla zajištěna grafickým enginem, který bych používal pouze k vykreslování textu.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth-3 cm]{pictures/window_1.png}
+    \caption{Ukázka okna [vlastní]}
+\end{figure}
 \subsubsection{Logické provedení}
 První co se musí provést, z kterékoli části programu, je metoda add\_text. Ta je schopná přijmout dva možné vstupy. Buď přes list, pole, nebo jiné iterovatelné objekty, nebo přes string. Pokud je přijat iterovatelný objekt, tak je každá hodnota braná jako string a přidaná do paměti okna, pokud je přijat string tak je přidán do paměti rovnou. Než ale se cokoliv přidá, tak projde kontrolou, jestli je možno takovou větu vykreslit. Pokud řádka projde skrz kontroly, tak je přičtena jednička k proměnné, která řídí postupné vykreslování.
 
@@ -262,12 +280,24 @@ Když si shrneme co by vše uživatel musel umět aby si příběh napsal, tak b
 
 Nástroj je opět v příkazovém řádku ale oproti Hlavnímu programu je jeho výpisová schopnost vyšší. Má sice jeden zásadní problém ale k němu se vyjádřím později.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth-3 cm]{pictures/script_tool_1.png}
+    \caption{Ukázka skriptovacího nástroje [vlastní]}
+\end{figure}
+
 \subsection{Forma}
 Tento nástroj jsem chtěl zpracovat jako můj vlastní příkazový řádek, s možností do něj přidávat nástroje. Samozřejmě byl zamýšlený k práci se hrou, ale teoreticky nic nebrání tomu, aby kdokoli použil tento řádek na cokoliv jiného. 
 
 Když jsem začal nástroj dělat, tak jsem uměl víc pracovat s řádkem než když jsem začal dělat původní hru. Tudíž jsem byl při tvoření vytváření vykreslování odvážnější a umožnil jsem jiné další věci, které hra vůbec neumí. Jednou z nich je nabídka možností uživateli co doplnit za název skriptu. Aktivuje se zmáčknutím klávesy šipka nahoru. Handler zařídí aby program věděl jaké věci navrhnout. Následně může uživatel šipkami vlevo a vpravo navolit, kterou možnost chce použít. Klávesou TAB se možnost vepíše do řádku. Pokud by uživatel chtěl volbu zrušit, tak může pomocí šipky dolů. Nabídka slov se ještě navíc ukazuje v modrém. Všechny tyto implementace jsou díky dvěma znalostem. První je znalost knihovny keyboard, která mi nesmírně pomohla, a druhá je znalost ASCII escape sekvencí.
 
-Řádka má dva příkazy vestavěné do programu. První je \textit{cd} a druhý je \textit{cls}. Tyto příkazy kopírují funkce klasického příkazového řádku windows, tudíž \textit{cd} umožňuje uživateli přepínat mezi adresáři a \textit{cls} vrátí příkazový řádek do původního stavu. Další příkazy, které jsou všestranné, jsou příkazy ze skriptu \textit{list\_all}. Tento soubor obsahuje příkazy \textit{ls, ld, lf, list\_all, list\_dir, list\_files}. \textit{List\_all} a jeho krátká verze by měla napovědět její funkci. Vypíše vše co obsahuje adresář. Další dvě možnosti příkazů vypíšou pouze adresáře nebo pouze soubory. Adresáře jsou zabarveny modře a soubory červeně. U souborů je ještě za svislou čárou napsaná jejich velikost.
+Řádka má dva příkazy vestavěné do programu. První je \textit{cd} a druhý je \textit{cls}. Tyto příkazy kopírují funkce klasického příkazového řádku windows, tudíž \textit{cd} umožňuje uživateli přepínat mezi adresáři a \textit{cls} vrátí příkazový řádek do původního stavu. Další příkazy, které jsou všestranné, jsou příkazy ze skriptu \textit{list\_all}. Tento soubor obsahuje příkazy \textit{ls, ld, lf, list\_all, list\_dir, list\_files}. \textit{List\_all} a jeho krátká verze by měla napovědět její funkci. Vypíše vše co obsahuje adresář. Další dvě možnosti příkazů vypíšou pouze adresáře nebo pouze soubory. Adresáře jsou zabarveny modře a soubory žlutě. U souborů je ještě za svislou čárou napsaná jejich velikost.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth-3 cm]{pictures/ls.png}
+    \caption{Ukázka vypsání adresářů a souborů [vlastní]}
+\end{figure}
 \subsection{Handler}
 Podobně jako Handler v hlavním programu, je tento Handler schopný volat skripty a podávat jim argumenty. Má ale mnohé změny. Prví nastanme rovnou přímo při importování programu. Skriptovací nástroj má fixní strukturu souborů. Což v tomto případě znamená, že všechny skripty musí existovat na úrovni \textit{main.py}. 
 
@@ -285,6 +315,20 @@ Ze základu jsou v nabídce některé časté znaky co jsou často potřeba při
 Když je uživatel s řádkem hotový tak klávesou enter řádku vloží do nabídky. Klávesa \textbf{r} potvrdí jestli je momentální verze souboru validní json soubor, pokud ne tak označí řádku, kde byla nalezena chyba. Klávesou \textbf{s} se soubor uloží, a tvůrce je navrácen do hlavního příkazového řádku.
 
 Největší problém, který zůstává nevyřešený je, že tvůrce pořád potřebuje velké množství znalostí o skriptech, které se nedají zjistit bez znalosti jazyka Python. Další problém je že aby byla implementace kompletní, tak je potřeba přidat možnost tvorby souborů hráče a souborů s informacemi o skriptech.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth-3 cm]{pictures/edit-choosing.png}
+    \caption{Volení řádku [vlastní]}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth-3 cm]{pictures/edit-editing.png}
+    \caption{Zvolený řádek [vlastní]}
+\end{figure}
+
+
 \subsection{Nástroj auto\_script}
 Tento nástroj, podobně jako nástroj edit, je ve velmi raných verzích. Tento skript by měl pomoct při přiřazování adres do skriptů  a přiřazování skriptů k dodatečným vlastnostem. Momentálně je všeho schopen ale jde o velmi barbarskou ukázku.
 
@@ -324,10 +368,23 @@ Celé schéma lepšího zapojení je v Příloze 2.
 %\subsubsection{Hlavní program}
 %\subsubsection{Skriptovací nástroj}
 \section{Zdroje}
-Draw.io - free flowchart maker and diagrams online. Flowchart Maker \&amp; Online Diagram Software [online]. [Accessed\&nbsp;12\&nbsp;April\&nbsp;2023]. Available from: https://app.diagrams.net/ 
+\raggedright
+Draw.io - free flowchart maker and diagrams online. \textit{Flowchart Maker Online Diagram Software} [online]. [Citováno~12~Dubna~2023]. Dostupné z: https://app.diagrams.net/
+
+MicroPython documentation. \textit{Overview - MicroPython latest documentation} [online]. [Citováno~13~Dubna~2023]. Dostupné z: https://docs.micropython.org/en/latest/index.html 
+
+Python tutorial [online]. [Citováno~12~Dubna~2023]. Dostupné z: https://www.w3schools.com/python/ 
+
+Python tutorial - learn python programming. \textit{GeeksforGeeks} [online]. 3 Dubna 2023. [Citováno~13~Dubna~2023]. Dostupné z: https://www.geeksforgeeks.org/python-programming-language/
+
+Python 3.11.3 documentation. \textit{3.11.3 Documentation} [online]. [Citováno~13~Dubna~2023]. Dostupné z: https://docs.python.org/3/ 
+
+MICROSOFT. Visual studio code - code editing. redefined. \textit{RSS} [online]. 3 Listopadu 2021. [Citováno~13~Dubna~2023]. Dostupné z: https://code.visualstudio.com/ 
+
+
 \section{Přílohy}
 \begin{enumerate}
-	\item \textbf{Příloha I: }
-	\item \textbf{Příloha II: }
+	\item \textbf{Příloha I: Zapojení klíče}
+	\item \textbf{Příloha II: Lepší zapojení klíče}
   \end{enumerate}
 \end{document}
