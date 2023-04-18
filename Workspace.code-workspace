@@ -11,6 +11,10 @@
 		{
 			"name": "KeyWare",
 			"path": "KeyWare"
+		},
+		{
+			"name": "serial:/COM24",
+			"uri": "serial://com24/"
 		}
 	],
 	"settings": {
