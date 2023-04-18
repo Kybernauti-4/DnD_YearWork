@@ -23,6 +23,9 @@
 		"editor.insertSpaces": false,
 		"editor.tabCompletion": "on",
 		"diffEditor.codeLens": true,
-		"editor.fontSize": 14
+		"editor.fontSize": 14,
+		"editor.cursorStyle": "line-thin",
+		"editor.fontFamily": "FIra Code",
+		"files.autoSave": "afterDelay"
 	}
 }
