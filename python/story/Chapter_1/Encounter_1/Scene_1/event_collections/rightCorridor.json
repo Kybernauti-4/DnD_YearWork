@@ -1,0 +1,24 @@
+{
+	"add_text_1":[
+		"&0",
+		"&9",
+		"&11",
+		"right_corridor_1.txt"
+	],
+	"ask_1":[
+		"&9",
+		"Do you wish to fight or run?",
+		{
+			"fight":"combat.json",
+			"run":"None"
+		}
+	],
+	"ask":[
+		"&9",
+		"Do you want to check out the other side?",
+		{
+			"yes":{"leftFromRightCorridor.json":"Event"},
+			"no":"None"
+		}
+	]
+}

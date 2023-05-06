@@ -15,8 +15,69 @@
         "&9",
         "Do you want to go left or right?",
         {
-            "left": "left_corridor.json",
-            "right": "right_corridor.json"
+            "left": {
+                "leftCorridor.json": "Event"
+            },
+            "right": {
+                "rightCorridor.json": "Event"
+            }
+        }
+    ],
+    "add_text_3": [
+        "&0",
+        "&9",
+        "&11",
+        "left_corridor_1.txt"
+    ],
+    "getPDict_1": [
+        "&2"
+    ],
+    "ask_1": [
+        "&9",
+        "Which one shall pick it up?",
+        "&111"
+    ],
+    "ask_2": [
+        "&9",
+        "Do you want to pick it up?",
+        {
+            "yes": {
+                "addItem_1": [
+                    "&0",
+                    "&20",
+                    "holy_sword"
+                ]
+            },
+            "no": "None"
+        }
+    ],
+    "ask_3": [
+        "&9",
+        "Do you want to check out the other side?",
+        {
+            "yes": {
+                "rightFromLeftCorridor.json": "Event"
+            },
+            "no": "None"
+        }
+    ],
+    "addItem_1": [
+        "&0",
+        "&20",
+        "holy_sword"
+    ],
+    "add_text_4": [
+        "&0",
+        "&9",
+        "&11",
+        "right_corridor_1.txt"
+    ],
+    "ask_4": [
+        "&9",
+        "Do you wish to fight or run?",
+        {
+            "fight": "combat.json",
+            "run": "None"
         }
     ]
 }

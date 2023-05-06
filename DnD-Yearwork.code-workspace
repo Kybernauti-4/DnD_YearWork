@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"name": "python",
+			"path": "python"
+		},
+		{
+			"name": "latex",
+			"path": "latex"
+		},
+		{
+			"path": "KeyWare"
+		}
+	],
+	"settings": {
+		"editor.fontFamily": "Fira Code",
+		"editor.wordWrap": "bounded",
+		"editor.wordWrapColumn": 120
+	}
+}

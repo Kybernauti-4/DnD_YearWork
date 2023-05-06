@@ -15,8 +15,8 @@
         "&9",
         "Do you want to go left or right?",
         {
-            "left": "left_corridor.json",
-            "right": "right_corridor.json"
+            "left": {"leftCorridor.json":"Event"},
+            "right": {"rightCorridor.json":"Event"}
         }
     ]
 }
