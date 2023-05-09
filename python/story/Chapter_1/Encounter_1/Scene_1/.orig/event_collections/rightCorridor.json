@@ -9,7 +9,7 @@
 		"&9",
 		"Do you wish to fight or run?",
 		{
-			"fight":"combat.json",
+			"fight":{"combat.json":"Event"},
 			"run":"None"
 		}
 	],

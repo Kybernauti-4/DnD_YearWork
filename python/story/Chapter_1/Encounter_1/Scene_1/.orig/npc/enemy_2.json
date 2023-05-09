@@ -2,6 +2,7 @@
     "ID": "1",
     "type": "enemy",
     "info": {
+		"status":"alive",
         "MP": 25,
         "carry": 100,
         "name": "Jeff",

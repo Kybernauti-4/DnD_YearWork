@@ -27,57 +27,86 @@
         "&0",
         "&9",
         "&11",
-        "left_corridor_1.txt"
-    ],
-    "getPDict_1": [
-        "&2"
+        "right_corridor_1.txt"
     ],
     "ask_1": [
         "&9",
-        "Which one shall pick it up?",
-        "&111"
+        "Do you wish to fight or run?",
+        {
+            "fight": {
+                "combat.json": "Event"
+            },
+            "run": "None"
+        }
     ],
     "ask_2": [
         "&9",
-        "Do you want to pick it up?",
+        "Do you want to check out the other side?",
         {
             "yes": {
-                "addItem_1": [
-                    "&0",
-                    "&20",
-                    "holy_sword"
-                ]
+                "leftFromRightCorridor.json": "Event"
             },
             "no": "None"
         }
     ],
     "ask_3": [
         "&9",
-        "Do you want to check out the other side?",
+        "Do you want to enter the menu?",
         {
-            "yes": {
-                "rightFromLeftCorridor.json": "Event"
-            },
+            "yes": "combat_menu.json",
             "no": "None"
         }
     ],
-    "addItem_1": [
-        "&0",
-        "&20",
-        "holy_sword"
-    ],
-    "add_text_4": [
-        "&0",
-        "&9",
-        "&11",
-        "right_corridor_1.txt"
+    "getPAlive_1": [
+        "&2"
     ],
     "ask_4": [
         "&9",
-        "Do you wish to fight or run?",
-        {
-            "fight": "combat.json",
-            "run": "None"
-        }
+        "Which one shall attack?",
+        "&115"
+    ],
+    "getEnemy_1": [
+        "&0"
+    ],
+    "ask_5": [
+        "&9",
+        "Who do you want to attack?",
+        "&113"
+    ],
+    "attack_1": [
+        "&20",
+        "&20"
+    ],
+    "getEnemy_2": [
+        "&0"
+    ],
+    "getVarFromList_1": [
+        "&113",
+        1
+    ],
+    "getVarFromList_2": [
+        "&2",
+        1
+    ],
+    "attack_2": [
+        "&24",
+        "&24"
+    ],
+    "getPAlive_2": [
+        "&2"
+    ],
+    "getVarFromList_3": [
+        "&115",
+        1
+    ],
+    "getEnemy_3": [
+        "&0"
+    ],
+    "getEnemyAlive_1": [
+        "&113"
+    ],
+    "getVarFromList_4": [
+        "&115",
+        1
     ]
 }
