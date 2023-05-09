@@ -50,3 +50,13 @@ def readMessageBlock(comport,decoding = False, encoding = 'UTF-8'):
 			counter += 1
 	
 	return better_data
+
+if __name__ == "__main__":
+	comport = serial.Serial('COM29', 115200, timeout=1)
+	#sendMessage(comport, 'ID')
+	#print(readMessage(comport,1))
+	with open("init//player_00ca29e469c434dc.json", "r") as f:
+		data = f.read().replace("\n","")
+		sendMessage(comport,'recvFile')
+		sendMessage(comport, 'player_00ca29e469c434dc.json')
+		sendMessage(comport,data)
