@@ -76,6 +76,8 @@ except:
 	repair_count = 0
 	pass
 
+read_data()
+
 while True:
 
 	recv_msg = input()

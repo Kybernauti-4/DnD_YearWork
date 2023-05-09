@@ -29,8 +29,8 @@ curr_side = 'left'
 left_num_led = 6
 right_num_led = 3
 
-data_left = [i if i < left_num_led else 0 for i in range(8)]
-data_right = [i if i < right_num_led else 0 for i in range(8)]
+data_left = [i if i <= left_num_led else 0 for i in range(8)]
+data_right = [i if i <= right_num_led else 0 for i in range(8)]
 
 
 def turn_ttl_off():
