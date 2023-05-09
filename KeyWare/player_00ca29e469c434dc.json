@@ -6,7 +6,9 @@
         "age": 149,
         "gender": "Male",
         "HP": 300,
+        "max_HP":300,
         "MP": 25,
+        "max_MP":25,
         "defense": 10,
         "carry": 100
     },

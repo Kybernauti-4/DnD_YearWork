@@ -26,8 +26,6 @@ def read_data():
 	global data_left_key
 	global data_right_key
 	global player_file
-	global left_duty
-	global right_duty
 	global left_num_led
 	global right_num_led
 	
@@ -38,19 +36,16 @@ def read_data():
 		pass #will fail when the file is being written to
 
 	#data handling
-	curr_left = data[data_left_key]
-	curr_right = data[data_right_key]
-	max_left = data['max_'+data_left_key]
-	max_right = data['max_'+data_right_key]
+	curr_left = data['info'][data_left_key]
+	curr_right = data['info'][data_right_key]
+	max_left = data['info']['max_'+data_left_key]
+	max_right = data['info']['max_'+data_right_key]
 
 	left_num_led = int(curr_left/max_left*8)
 	right_num_led = int(curr_right/max_right*8)
 
-	data_left = [1 if i < left_num_led else 0 for i in range(8)]
-	data_right = [1 if i < right_num_led else 0 for i in range(8)]
-
-	left_duty = round(curr_left/max_left*8 - left_num_led, 1)
-	right_duty = round(curr_right/max_right*8 - right_num_led, 1)
+	data_left = [1 if i <= left_num_led else 0 for i in range(8)]
+	data_right = [1 if i <= right_num_led else 0 for i in range(8)]
 
 
 
@@ -79,12 +74,11 @@ except:
 read_data()
 
 while True:
-
 	recv_msg = input()
 	#blink LED code
 	#Everything else
 	if compareCaseIns(recv_msg, 'ID'):
-		print(player_file)
+		#print(player_file)
 		with open(player_file, 'r') as f:
 			data = json.load(f)
 		ID = data["ID"]
@@ -155,23 +149,16 @@ while True:
 			except:
 				pass
 
-		data = ''
-		while True:
-			line = input()
-			if line == '}':
-				data += line
-				break
-			data += line + '\n'
-
+		data = input()
 		file.write(data)
 		try:
 			json.loads(data)
 		except:
 			pass #not a json file
 		file.close()
+		sleep(0.1)
 		read_data()
 
 	else:
 		print (recv_msg + " -ack")
-
 	

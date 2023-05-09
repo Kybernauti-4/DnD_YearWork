@@ -29,8 +29,8 @@ curr_side = 'left'
 left_num_led = 6
 right_num_led = 3
 
-data_left = [i if i <= left_num_led else 0 for i in range(8)]
-data_right = [i if i <= right_num_led else 0 for i in range(8)]
+data_left = [1 if i <= left_num_led else 0 for i in range(8)]
+data_right = [1 if i <= right_num_led else 0 for i in range(8)]
 
 
 def turn_ttl_off():
@@ -41,7 +41,7 @@ def shift_out(data):
 	dsb.value(1) #enable data
 
 	for i in range(8): #get then data into the register
-		dsa.value(data[i-7])
+		dsa.value(data[i-8])
 		r_clk.value(1) #rising edge
 		r_clk.value(0)
 
