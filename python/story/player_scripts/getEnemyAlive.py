@@ -12,8 +12,11 @@ def getEnemyAlive(enemy_dict, type = 'dict'):
 		return alive_list
 	if type == 'dict':
 		alive_dict = {}
-		for enemy, id in enemy_dict.items():
-			if enemy_dict[enemy]['info']['status']=='alive':
-				alive_dict[enemy]['info']['name'] = enemy_dict[enemy]
+		for name, enemy in enemy_dict.items():
+			if enemy.info['status']=='alive':
+				alive_dict[name] = enemy
+
+		if True:
+			pass
 		return alive_dict
 	
