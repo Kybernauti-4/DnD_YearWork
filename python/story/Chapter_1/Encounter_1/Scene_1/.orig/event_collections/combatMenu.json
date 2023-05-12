@@ -77,6 +77,26 @@
 				],
 				"self":"true"
 			},
+			"Change equipment":{
+				"getPDict_1":["&2"],
+				"ask_1":[
+					"&9",
+					"Whose equipment do you want to change?",
+					"&111"
+				],
+				"putVal_1":["&20"],
+				"getInv_1":["&20","dict"],
+				"ask_2":[
+					"&9",
+					"What equipment do you want to equip?",
+					"&105"
+				],
+				"equip":[
+					"&12",
+					"&20"
+				],
+				"self":"true"
+			},
 			"Return":{
 				"self":"false"
 			}

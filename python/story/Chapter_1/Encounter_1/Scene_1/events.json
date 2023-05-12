@@ -52,13 +52,341 @@
             "no": "None"
         }
     ],
+    "ask_4": [
+        "&9",
+        "What do you want to do?",
+        {
+            "Check HP": {
+                "getPDict_1": [
+                    "&2"
+                ],
+                "ask_1": [
+                    "&9",
+                    "Whose HP do you want to check.",
+                    "&111"
+                ],
+                "getInfo_1": [
+                    "&20",
+                    "HP"
+                ],
+                "add_text_1": [
+                    "&0",
+                    "&9",
+                    "&11,",
+                    "&104"
+                ],
+                "self": "true"
+            },
+            "Check MP": {
+                "getPDict_1": [
+                    "&2"
+                ],
+                "ask_1": [
+                    "&9",
+                    "Whose MP do you want to check.",
+                    "&111"
+                ],
+                "getInfo_1": [
+                    "&20",
+                    "MP"
+                ],
+                "add_text_1": [
+                    "&0",
+                    "&9",
+                    "&11,",
+                    "&104"
+                ],
+                "self": "true"
+            },
+            "Use Pot": {
+                "getPDict_1": [
+                    "&2"
+                ],
+                "ask_1": [
+                    "&9",
+                    "Who wants top use a pot.",
+                    "&111"
+                ],
+                "getInv_1": [
+                    "&20",
+                    "dict"
+                ],
+                "ask_2": [
+                    "&9",
+                    "Which pot do you want to use.",
+                    "&105"
+                ],
+                "getPDict_2": [
+                    "&2"
+                ],
+                "ask_3": [
+                    "&9",
+                    "On who do you want use the pot?",
+                    "&111"
+                ],
+                "usePot_1": [
+                    "&20",
+                    "&20"
+                ],
+                "self": "true"
+            },
+            "Check Inventory": {
+                "getPDict_1": [
+                    "&2"
+                ],
+                "ask_1": [
+                    "&9",
+                    "Whose invetory do you want to see?",
+                    "&111"
+                ],
+                "getInv_1": [
+                    "&20",
+                    "dict"
+                ],
+                "add_text_1": [
+                    "&0",
+                    "&9",
+                    "&11,",
+                    "&105"
+                ],
+                "self": "true"
+            },
+            "Check Equipment": {
+                "getPDict_1": [
+                    "&2"
+                ],
+                "ask_1": [
+                    "&9",
+                    "Whose equipment do you want to see?",
+                    "&111"
+                ],
+                "getEquip_1": [
+                    "&20",
+                    "dict"
+                ],
+                "add_text_1": [
+                    "&0",
+                    "&9",
+                    "&11,",
+                    "&103"
+                ],
+                "self": "true"
+            },
+            "Change equipment": {
+                "getPDict_1": [
+                    "&2"
+                ],
+                "ask_1": [
+                    "&9",
+                    "Whose equipment do you want to change?",
+                    "&111"
+                ],
+                "putVal_1": [
+                    "&20"
+                ],
+                "getInv_1": [
+                    "&20",
+                    "dict"
+                ],
+                "ask_2": [
+                    "&9",
+                    "What equipment do you want to equip?",
+                    "&105"
+                ],
+                "equip": [
+                    "&12",
+                    "&20"
+                ],
+                "self": "true"
+            },
+            "Return": {
+                "self": "false"
+            }
+        }
+    ],
+    "getPDict_1": [
+        "&2"
+    ],
+    "ask_5": [
+        "&9",
+        "Whose equipment do you want to change?",
+        "&111"
+    ],
+    "putVal_1": [
+        "&20"
+    ],
+    "getInv_1": [
+        "&20",
+        "dict"
+    ],
+    "ask_6": [
+        "&9",
+        "What equipment do you want to equip?",
+        "&105"
+    ],
+    "equip_1": [
+        "&12",
+        "&20"
+    ],
+    "ask_7": [
+        "&9",
+        "What do you want to do?",
+        {
+            "Check HP": {
+                "getPDict_1": [
+                    "&2"
+                ],
+                "ask_1": [
+                    "&9",
+                    "Whose HP do you want to check.",
+                    "&111"
+                ],
+                "getInfo_1": [
+                    "&20",
+                    "HP"
+                ],
+                "add_text_1": [
+                    "&0",
+                    "&9",
+                    "&11,",
+                    "&104"
+                ],
+                "self": "true"
+            },
+            "Check MP": {
+                "getPDict_1": [
+                    "&2"
+                ],
+                "ask_1": [
+                    "&9",
+                    "Whose MP do you want to check.",
+                    "&111"
+                ],
+                "getInfo_1": [
+                    "&20",
+                    "MP"
+                ],
+                "add_text_1": [
+                    "&0",
+                    "&9",
+                    "&11,",
+                    "&104"
+                ],
+                "self": "true"
+            },
+            "Use Pot": {
+                "getPDict_1": [
+                    "&2"
+                ],
+                "ask_1": [
+                    "&9",
+                    "Who wants top use a pot.",
+                    "&111"
+                ],
+                "getInv_1": [
+                    "&20",
+                    "dict"
+                ],
+                "ask_2": [
+                    "&9",
+                    "Which pot do you want to use.",
+                    "&105"
+                ],
+                "getPDict_2": [
+                    "&2"
+                ],
+                "ask_3": [
+                    "&9",
+                    "On who do you want use the pot?",
+                    "&111"
+                ],
+                "usePot_1": [
+                    "&20",
+                    "&20"
+                ],
+                "self": "true"
+            },
+            "Check Inventory": {
+                "getPDict_1": [
+                    "&2"
+                ],
+                "ask_1": [
+                    "&9",
+                    "Whose invetory do you want to see?",
+                    "&111"
+                ],
+                "getInv_1": [
+                    "&20",
+                    "dict"
+                ],
+                "add_text_1": [
+                    "&0",
+                    "&9",
+                    "&11,",
+                    "&105"
+                ],
+                "self": "true"
+            },
+            "Check Equipment": {
+                "getPDict_1": [
+                    "&2"
+                ],
+                "ask_1": [
+                    "&9",
+                    "Whose equipment do you want to see?",
+                    "&111"
+                ],
+                "getEquip_1": [
+                    "&20",
+                    "dict"
+                ],
+                "add_text_1": [
+                    "&0",
+                    "&9",
+                    "&11,",
+                    "&103"
+                ],
+                "self": "true"
+            },
+            "Change equipment": {
+                "getPDict_1": [
+                    "&2"
+                ],
+                "ask_1": [
+                    "&9",
+                    "Whose equipment do you want to change?",
+                    "&111"
+                ],
+                "putVal_1": [
+                    "&20"
+                ],
+                "getInv_1": [
+                    "&20",
+                    "dict"
+                ],
+                "ask_2": [
+                    "&9",
+                    "What equipment do you want to equip?",
+                    "&105"
+                ],
+                "equip": [
+                    "&12",
+                    "&20"
+                ],
+                "self": "true"
+            },
+            "Return": {
+                "self": "false"
+            }
+        }
+    ],
     "eatVal_1": [
         "&20"
     ],
     "getPAlive_1": [
         "&2"
     ],
-    "ask_4": [
+    "ask_8": [
         "&9",
         "Which one shall attack?",
         "&115"
@@ -66,7 +394,7 @@
     "getEnemyAlive_1": [
         "&113"
     ],
-    "ask_5": [
+    "ask_9": [
         "&9",
         "Who do you want to attack?",
         "&114"
@@ -115,232 +443,7 @@
             }
         }
     ],
-    "ask_6": [
-        "&9",
-        "Do you want to enter the menu?",
-        {
-            "yes": {
-                "combatMenu.json": "Event"
-            },
-            "no": "None"
-        }
-    ],
-    "eatVal_2": [
-        "&20"
-    ],
-    "getPAlive_3": [
-        "&2"
-    ],
-    "ask_7": [
-        "&9",
-        "Which one shall attack?",
-        "&115"
-    ],
-    "getEnemyAlive_2": [
-        "&113"
-    ],
-    "ask_8": [
-        "&9",
-        "Who do you want to attack?",
-        "&114"
-    ],
-    "attack_3": [
-        "&20",
-        "&20"
-    ],
-    "dictToListVals_3": [
-        "&113"
-    ],
-    "getVarFromList_3": [
-        "&33",
-        1
-    ],
-    "getPAlive_4": [
-        "&2"
-    ],
-    "dictToListVals_4": [
-        "&115"
-    ],
-    "getVarFromList_4": [
-        "&33",
-        1
-    ],
-    "attack_4": [
-        "&24",
-        "&24"
-    ],
-    "combatState_2": [
-        "&113"
-    ],
-    "logic_2": [
-        "&34",
-        {
-            "combat": {
-                "combat.json": "Event"
-            },
-            "victory": {
-                "add_text_1": [
-                    "&0",
-                    "&9",
-                    "&11",
-                    "You won!"
-                ]
-            }
-        }
-    ],
-    "ask_9": [
-        "&9",
-        "Do you want to enter the menu?",
-        {
-            "yes": {
-                "combatMenu.json": "Event"
-            },
-            "no": "None"
-        }
-    ],
-    "eatVal_3": [
-        "&20"
-    ],
-    "getPAlive_5": [
-        "&2"
-    ],
     "ask_10": [
-        "&9",
-        "Which one shall attack?",
-        "&115"
-    ],
-    "getEnemyAlive_3": [
-        "&113"
-    ],
-    "ask_11": [
-        "&9",
-        "Who do you want to attack?",
-        "&114"
-    ],
-    "attack_5": [
-        "&20",
-        "&20"
-    ],
-    "dictToListVals_5": [
-        "&113"
-    ],
-    "getVarFromList_5": [
-        "&33",
-        1
-    ],
-    "getPAlive_6": [
-        "&2"
-    ],
-    "dictToListVals_6": [
-        "&115"
-    ],
-    "getVarFromList_6": [
-        "&33",
-        1
-    ],
-    "attack_6": [
-        "&24",
-        "&24"
-    ],
-    "combatState_3": [
-        "&113"
-    ],
-    "logic_3": [
-        "&34",
-        {
-            "combat": {
-                "combat.json": "Event"
-            },
-            "victory": {
-                "add_text_1": [
-                    "&0",
-                    "&9",
-                    "&11",
-                    "You won!"
-                ]
-            }
-        }
-    ],
-    "ask_12": [
-        "&9",
-        "Do you want to enter the menu?",
-        {
-            "yes": {
-                "combatMenu.json": "Event"
-            },
-            "no": "None"
-        }
-    ],
-    "eatVal_4": [
-        "&20"
-    ],
-    "getPAlive_7": [
-        "&2"
-    ],
-    "ask_13": [
-        "&9",
-        "Which one shall attack?",
-        "&115"
-    ],
-    "getEnemyAlive_4": [
-        "&113"
-    ],
-    "ask_14": [
-        "&9",
-        "Who do you want to attack?",
-        "&114"
-    ],
-    "attack_7": [
-        "&20",
-        "&20"
-    ],
-    "dictToListVals_7": [
-        "&113"
-    ],
-    "getVarFromList_7": [
-        "&33",
-        1
-    ],
-    "getPAlive_8": [
-        "&2"
-    ],
-    "dictToListVals_8": [
-        "&115"
-    ],
-    "getVarFromList_8": [
-        "&33",
-        1
-    ],
-    "attack_8": [
-        "&24",
-        "&24"
-    ],
-    "combatState_4": [
-        "&113"
-    ],
-    "logic_4": [
-        "&34",
-        {
-            "combat": {
-                "combat.json": "Event"
-            },
-            "victory": {
-                "add_text_1": [
-                    "&0",
-                    "&9",
-                    "&11",
-                    "You won!"
-                ]
-            }
-        }
-    ],
-    "add_text_4": [
-        "&0",
-        "&9",
-        "&11",
-        "You won!"
-    ],
-    "ask_15": [
         "&9",
         "Do you want to check out the other side?",
         {

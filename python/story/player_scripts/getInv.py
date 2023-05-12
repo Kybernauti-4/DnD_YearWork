@@ -13,6 +13,7 @@ def getInv(p, return_type='list'):
 		inv_dict = {}
 		i = 0
 		for item in p.inventory:
-			inv_dict[f'{i+1}: {item["name"]}'] = item
+			inv_dict[item["name"]] = item
+			i+=1
 
 		return inv_dict

@@ -105,7 +105,7 @@ imports = dict(zip(event_scripts_list, import_list))
 #* end of import section
 
 #* Handler section
-def addressReplace(arguments_in):
+def addressReplace(arguments_in, putval=False):
 	"""A subsection of handle that replaces &id with the value of that id from memory
 
 	Args:
@@ -122,8 +122,8 @@ def addressReplace(arguments_in):
 				id = arg.replace('&','') # get the numeric address
 				for value in stack: # search stack for that address which is always at [1] in element
 					if value[1] == int(id): # if found
-						arguments[arguments.index(arg)] = value[0] # assign that value to replace the adress
-						if int(id) not in info['info']['lock']: # if the value is not locked
+						arguments[arguments.index(arg)] = value[0] # assign that value to replace the address
+						if int(id) not in info['info']['lock'] and not putval: # if the value is not locked
 							valueStack.pop(stack.index(value)) # remove it from the stack
 		except:
 			pass
@@ -142,7 +142,11 @@ def handle(event_string, arguments_in):
 
 	#print("Handling: {} => {}".format(event_string, arguments))
 	#input('Press enter to continue')
-	arguments = addressReplace(arguments_in)
+	if event_string == 'putVal':
+		putval = True
+	else:
+		putval = False
+	arguments = addressReplace(arguments_in, putval)
 
 	event_string_id = info['id'][event_string] # get the id of the event
 	

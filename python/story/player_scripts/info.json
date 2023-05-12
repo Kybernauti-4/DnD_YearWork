@@ -14,7 +14,8 @@
         "attack": 112,
         "getEnemy": 113,
 		"getEnemyAlive": 114,
-		"getPAlive": 115
+		"getPAlive": 115,
+		"equip": 116
     },
     "info": {
         "lock": [113],
@@ -33,7 +34,8 @@
             112,
             113,
 			114,
-			115
+			115,
+			116
         ],
         "obj": []
     }
