@@ -96,7 +96,187 @@
         "&24",
         "&24"
     ],
+    "getEnemy_3": [
+        "&0"
+    ],
+    "combatState_1": [
+        "&113"
+    ],
+    "logic_1": [
+        "&34",
+        {
+            "combat": {
+                "combat.json": "Event"
+            },
+            "victory": {
+                "add_text_1": [
+                    "&0",
+                    "&9",
+                    "&11",
+                    "You won!"
+                ]
+            }
+        }
+    ],
     "ask_6": [
+        "&9",
+        "Do you want to enter the menu?",
+        {
+            "yes": {
+                "combatMenu.json": "Event"
+            },
+            "no": "None"
+        }
+    ],
+    "eatVal_2": [
+        "&20"
+    ],
+    "getPAlive_3": [
+        "&2"
+    ],
+    "ask_7": [
+        "&9",
+        "Which one shall attack?",
+        "&115"
+    ],
+    "getEnemy_4": [
+        "&0"
+    ],
+    "ask_8": [
+        "&9",
+        "Who do you want to attack?",
+        "&113"
+    ],
+    "attack_3": [
+        "&20",
+        "&20"
+    ],
+    "getEnemy_5": [
+        "&0"
+    ],
+    "dictToListVals_3": [
+        "&113"
+    ],
+    "getVarFromList_3": [
+        "&33",
+        1
+    ],
+    "getPAlive_4": [
+        "&2"
+    ],
+    "dictToListVals_4": [
+        "&115"
+    ],
+    "getVarFromList_4": [
+        "&33",
+        1
+    ],
+    "attack_4": [
+        "&24",
+        "&24"
+    ],
+    "getEnemy_6": [
+        "&0"
+    ],
+    "combatState_2": [
+        "&113"
+    ],
+    "logic_2": [
+        "&34",
+        {
+            "combat": {
+                "combat.json": "Event"
+            },
+            "victory": {
+                "add_text_1": [
+                    "&0",
+                    "&9",
+                    "&11",
+                    "You won!"
+                ]
+            }
+        }
+    ],
+    "ask_9": [
+        "&9",
+        "Do you want to enter the menu?",
+        {
+            "yes": {
+                "combatMenu.json": "Event"
+            },
+            "no": "None"
+        }
+    ],
+    "eatVal_3": [
+        "&20"
+    ],
+    "getPAlive_5": [
+        "&2"
+    ],
+    "ask_10": [
+        "&9",
+        "Which one shall attack?",
+        "&115"
+    ],
+    "getEnemy_7": [
+        "&0"
+    ],
+    "ask_11": [
+        "&9",
+        "Who do you want to attack?",
+        "&113"
+    ],
+    "attack_5": [
+        "&20",
+        "&20"
+    ],
+    "getEnemy_8": [
+        "&0"
+    ],
+    "dictToListVals_5": [
+        "&113"
+    ],
+    "getVarFromList_5": [
+        "&33",
+        1
+    ],
+    "getPAlive_6": [
+        "&2"
+    ],
+    "dictToListVals_6": [
+        "&115"
+    ],
+    "getVarFromList_6": [
+        "&33",
+        1
+    ],
+    "attack_6": [
+        "&24",
+        "&24"
+    ],
+    "getEnemy_9": [
+        "&0"
+    ],
+    "combatState_3": [
+        "&113"
+    ],
+    "logic_3": [
+        "&34",
+        {
+            "combat": {
+                "combat.json": "Event"
+            },
+            "victory": {
+                "add_text_1": [
+                    "&0",
+                    "&9",
+                    "&11",
+                    "You won!"
+                ]
+            }
+        }
+    ],
+    "ask_12": [
         "&9",
         "Do you want to check out the other side?",
         {

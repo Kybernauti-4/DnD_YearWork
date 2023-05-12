@@ -1,5 +1,4 @@
-def logic(statement, true, false):
-	if statement:
-		return true
-	else:
-		return false
+def logic(compare, dict):
+	for key,val in dict.items():
+		if key == compare:
+			return val

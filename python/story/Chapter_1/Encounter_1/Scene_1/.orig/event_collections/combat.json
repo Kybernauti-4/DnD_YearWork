@@ -42,5 +42,27 @@
 	"attack_2":[
 		"&24",
 		"&24"
+	],
+	"getEnemy_3":[
+		"&0"
+	],
+	"combatState_1":[
+		"&113"
+	],
+	"logic_1":[
+		"&34",
+		{
+			"combat":{
+				"combat.json":"Event"
+			},
+			"victory":{
+				"add_text_1":[
+					"&0",
+					"&9",
+					"&11",
+					"You won!"
+				]
+			}
+		}
 	]
 }

@@ -13,10 +13,11 @@
         "compare":30,
         "logic":31,
 		"Enemy":32,
-		"dictToListVals":33
+		"dictToListVals":33,
+		"combatState":34
     },
     "info":{
-        "func":[20,21, 22, 23, 24, 25, 26, 27, 28, 29,30,31,33],
+        "func":[20,21, 22, 23, 24, 25, 26, 27, 28, 29,30,31,33,34],
         "obj":[32],
         "logic":[20,31]
     }
