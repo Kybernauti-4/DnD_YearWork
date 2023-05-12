@@ -155,8 +155,10 @@ def handle(event_string, arguments_in):
 				i = 0
 				for raw_key,val in return_value.items():
 					event_index = getValue(4)
+
 					if '_' in raw_key: 
 						key = '_'.join(raw_key.split('_')[:-1])
+
 					else:
 						key = raw_key
 

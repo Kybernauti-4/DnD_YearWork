@@ -12,6 +12,6 @@ def getEquip(p, return_type='dict'):
 	elif return_type == 'dict':
 		equip_dict = {}
 		for item in p.equipped:
-			equip_dict.append({item['name']: item})
+			equip_dict.update({item['name']: item})
 
 		return equip_dict

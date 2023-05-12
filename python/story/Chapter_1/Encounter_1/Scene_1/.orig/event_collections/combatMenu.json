@@ -56,9 +56,9 @@
 				"ask_1":[
 					"&9",
 					"Whose invetory do you want to see?",
-					"111"
+					"&111"
 				],
-				"getInv_1":["&20","list"],
+				"getInv_1":["&20","dict"],
 				"add_text_1":[
 					"&0","&9","&11,","&105"
 				],
@@ -68,16 +68,16 @@
 				"getPDict_1":["&2"],
 				"ask_1":[
 					"&9",
-					"Whose eqippment do you want to see?",
-					"111"
+					"Whose equipment do you want to see?",
+					"&111"
 				],
-				"getEquip_1":["&20","list"],
+				"getEquip_1":["&20","dict"],
 				"add_text_1":[
 					"&0","&9","&11,","&103"
 				],
 				"self":"true"
 			},
-			"Exit":{
+			"Return":{
 				"self":"false"
 			}
 		}

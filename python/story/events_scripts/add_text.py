@@ -1,4 +1,5 @@
 import os
+import json
 
 def add_text(path,*args):
 	window = args[0]
@@ -12,8 +13,20 @@ def add_text(path,*args):
 			else:
 				texts.append(arg)
 		except:
-			texts.append(str(path))
-			texts.append(str(arg))
+			#texts.append(str(path))
+			if type(arg) == dict:
+				for val in list(arg.values()):
+					name = val['name']
+					texts.append(f'{name}')
+					keys = ["durability","damage","weight"]
+					for key in keys:
+						try:
+							texts.append(f' - {key}: {val[key]}')
+						except:
+							pass
+
+			else:
+				texts.append(str(arg))
 
 	for text in texts:
 		if type(text) == str:

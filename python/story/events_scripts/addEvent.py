@@ -22,6 +22,14 @@ def addEvent(path,event_index, event_name, args):
 		event_name += f"_{event_num}"
 		#events_args[f'{event_name}_{event_num}'] = args
 		events.insert(event_index+1,event_name)
+
+		for i in range(len(events)):
+			if events[i] in events[i+1:]:
+				index_of_copy = events[i+1:].index(events[i])
+				event_wo_num = '_'.join(events[i].split('_')[:-1])
+				num = int(events[i].split('_')[-1])+1
+				events[i+1+index_of_copy] = f'{event_wo_num}_{num}'
+
 		args_split.insert(event_index+1,args)
 
 		events_args = {events[i]:args_split[i] for i in range(len(events))}
@@ -39,5 +47,3 @@ def addEvent(path,event_index, event_name, args):
 		raise TypeError('event_name must be either a string or a list of strings')
 	
 
-if __name__ == '__main__':
-	addEvent('story\\Chapter_1\\Encounter_1\\Scene_2', ['test', 'apply'], [['test'], ['apply']])

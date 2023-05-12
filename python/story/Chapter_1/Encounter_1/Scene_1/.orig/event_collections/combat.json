@@ -3,7 +3,7 @@
 		"&9",
 		"Do you want to enter the menu?",
 		{
-			"yes":"combat_menu.json",
+			"yes":{"combatMenu.json":"Event"},
 			"no":"None"
 		}
 	],
