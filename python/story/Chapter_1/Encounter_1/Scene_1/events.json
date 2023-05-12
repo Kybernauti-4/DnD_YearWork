@@ -11,7 +11,7 @@
         "&11",
         "first_corridor.txt"
     ],
-    "ask": [
+    "ask_1": [
         "&9",
         "Do you want to go left or right?",
         {
@@ -27,9 +27,52 @@
         "&0",
         "&9",
         "&11",
+        "left_corridor_1.txt"
+    ],
+    "getPDict_1": [
+        "&2"
+    ],
+    "ask_2": [
+        "&9",
+        "Which one shall pick it up?",
+        "&111"
+    ],
+    "ask_3": [
+        "&9",
+        "Do you want to pick it up?",
+        {
+            "yes": {
+                "addItem_1": [
+                    "&0",
+                    "&20",
+                    "holy_sword"
+                ]
+            },
+            "no": "None"
+        }
+    ],
+    "addItem_1": [
+        "&0",
+        "&20",
+        "holy_sword"
+    ],
+    "ask_4": [
+        "&9",
+        "Do you want to check out the other side?",
+        {
+            "yes": {
+                "rightFromLeftCorridor.json": "Event"
+            },
+            "no": "None"
+        }
+    ],
+    "add_text_4": [
+        "&0",
+        "&9",
+        "&11",
         "right_corridor_1.txt"
     ],
-    "ask_1": [
+    "ask_5": [
         "&9",
         "Do you wish to fight or run?",
         {
@@ -38,75 +81,5 @@
             },
             "run": "None"
         }
-    ],
-    "ask_2": [
-        "&9",
-        "Do you want to check out the other side?",
-        {
-            "yes": {
-                "leftFromRightCorridor.json": "Event"
-            },
-            "no": "None"
-        }
-    ],
-    "ask_3": [
-        "&9",
-        "Do you want to enter the menu?",
-        {
-            "yes": "combat_menu.json",
-            "no": "None"
-        }
-    ],
-    "getPAlive_1": [
-        "&2"
-    ],
-    "ask_4": [
-        "&9",
-        "Which one shall attack?",
-        "&115"
-    ],
-    "getEnemy_1": [
-        "&0"
-    ],
-    "ask_5": [
-        "&9",
-        "Who do you want to attack?",
-        "&113"
-    ],
-    "attack_1": [
-        "&20",
-        "&20"
-    ],
-    "getEnemy_2": [
-        "&0"
-    ],
-    "getVarFromList_1": [
-        "&113",
-        1
-    ],
-    "getVarFromList_2": [
-        "&2",
-        1
-    ],
-    "attack_2": [
-        "&24",
-        "&24"
-    ],
-    "getPAlive_2": [
-        "&2"
-    ],
-    "getVarFromList_3": [
-        "&115",
-        1
-    ],
-    "getEnemy_3": [
-        "&0"
-    ],
-    "getEnemyAlive_1": [
-        "&113"
-    ],
-    "getVarFromList_4": [
-        "&115",
-        1
     ]
 }

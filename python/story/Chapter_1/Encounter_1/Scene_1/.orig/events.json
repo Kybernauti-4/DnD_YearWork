@@ -11,7 +11,7 @@
         "&11",
         "first_corridor.txt"
     ],
-    "ask": [
+    "ask_1": [
         "&9",
         "Do you want to go left or right?",
         {

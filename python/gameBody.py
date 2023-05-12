@@ -152,18 +152,24 @@ def handle(event_string, arguments_in):
 		return_value = function(*arguments) # run the function and unpack the argument list into the arguments
 		if return_value != None:
 			if type(return_value) == dict:
+				i = 0
 				for raw_key,val in return_value.items():
+					event_index = getValue(4)
 					if '_' in raw_key: 
 						key = '_'.join(raw_key.split('_')[:-1])
 					else:
 						key = raw_key
+
 					if key in list(imports.keys()):
 						function = getattr(imports['addEvent'], 'addEvent')
-						function(getValue(0), key, val)
+						function(getValue(0),event_index+i, key, val)
+
 					elif key == 'self' and val == 'true':
 						function = getattr(imports['addEvent'], 'addEvent')
-						function(getValue(0), event_string, arguments_in)
+						function(getValue(0),event_index+i, event_string, arguments_in)
+
 					elif key.endswith('.json'):
+						j = 0
 						events_to_add = fileHandler.read(os.path.join(getValue(0), 'event_collections',  key))
 						for raw_event, args in events_to_add.items():
 							function = getattr(imports['addEvent'], 'addEvent')
@@ -171,9 +177,12 @@ def handle(event_string, arguments_in):
 								event = '_'.join(raw_event.split('_')[:-1])
 							else:
 								event = raw_event
-							function(getValue(0), event, args)
+							function(getValue(0),event_index+j, event, args)
+							j+=1
+
 					else:
 						valueStack.append([return_value,event_string_id]) # if the function returns a value, add it to the stack
+					i+=1
 			else:
 				valueStack.append([return_value,event_string_id])
 
