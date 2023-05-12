@@ -28,8 +28,3 @@ def getEnemy(path, return_type='dict'):
 					enemy_dict[npc_data['info']['name']] = enemy
 		
 		return enemy_dict
-	
-
-if __name__ == '__main__':
-	print(getEnemy('story//Chapter_1//Encounter_1//Scene_1', 'list'))
-	print(getEnemy('story//Chapter_1//Encounter_1//Scene_1', 'dict'))

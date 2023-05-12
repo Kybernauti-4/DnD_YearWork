@@ -349,38 +349,5 @@
             },
             "no": "None"
         }
-    ],
-    "add_text_5": [
-        "&0",
-        "&9",
-        "&11",
-        "left_corridor_1.txt"
-    ],
-    "getPDict_1": [
-        "&2"
-    ],
-    "ask_16": [
-        "&9",
-        "Which one shall pick it up?",
-        "&111"
-    ],
-    "ask_17": [
-        "&9",
-        "Do you want to pick it up?",
-        {
-            "yes": {
-                "addItem_1": [
-                    "&0",
-                    "&20",
-                    "holy_sword"
-                ]
-            },
-            "no": "None"
-        }
-    ],
-    "addItem_1": [
-        "&0",
-        "&20",
-        "holy_sword"
     ]
 }

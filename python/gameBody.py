@@ -151,7 +151,7 @@ def handle(event_string, arguments_in):
 		#print(arguments)
 		return_value = function(*arguments) # run the function and unpack the argument list into the arguments
 		if return_value != None:
-			if type(return_value) == dict:
+			if type(return_value) == dict and event_string_id in info['info']['logic']:
 				i = 0
 				for raw_key,val in return_value.items():
 					event_index = getValue(4)
