@@ -1,4 +1,7 @@
 {
+    "getEnemy_1": [
+        "&0"
+    ],
     "add_text_1": [
         "&0",
         "&9",
@@ -60,20 +63,17 @@
         "Which one shall attack?",
         "&115"
     ],
-    "getEnemy_1": [
-        "&0"
+    "getEnemyAlive_1": [
+        "&113"
     ],
     "ask_5": [
         "&9",
         "Who do you want to attack?",
-        "&113"
+        "&114"
     ],
     "attack_1": [
         "&20",
         "&20"
-    ],
-    "getEnemy_2": [
-        "&0"
     ],
     "dictToListVals_1": [
         "&113"
@@ -95,9 +95,6 @@
     "attack_2": [
         "&24",
         "&24"
-    ],
-    "getEnemy_3": [
-        "&0"
     ],
     "combatState_1": [
         "&113"
@@ -139,20 +136,17 @@
         "Which one shall attack?",
         "&115"
     ],
-    "getEnemy_4": [
-        "&0"
+    "getEnemyAlive_2": [
+        "&113"
     ],
     "ask_8": [
         "&9",
         "Who do you want to attack?",
-        "&113"
+        "&114"
     ],
     "attack_3": [
         "&20",
         "&20"
-    ],
-    "getEnemy_5": [
-        "&0"
     ],
     "dictToListVals_3": [
         "&113"
@@ -174,9 +168,6 @@
     "attack_4": [
         "&24",
         "&24"
-    ],
-    "getEnemy_6": [
-        "&0"
     ],
     "combatState_2": [
         "&113"
@@ -218,20 +209,17 @@
         "Which one shall attack?",
         "&115"
     ],
-    "getEnemy_7": [
-        "&0"
+    "getEnemyAlive_3": [
+        "&113"
     ],
     "ask_11": [
         "&9",
         "Who do you want to attack?",
-        "&113"
+        "&114"
     ],
     "attack_5": [
         "&20",
         "&20"
-    ],
-    "getEnemy_8": [
-        "&0"
     ],
     "dictToListVals_5": [
         "&113"
@@ -254,9 +242,6 @@
         "&24",
         "&24"
     ],
-    "getEnemy_9": [
-        "&0"
-    ],
     "combatState_3": [
         "&113"
     ],
@@ -278,6 +263,85 @@
     ],
     "ask_12": [
         "&9",
+        "Do you want to enter the menu?",
+        {
+            "yes": {
+                "combatMenu.json": "Event"
+            },
+            "no": "None"
+        }
+    ],
+    "eatVal_4": [
+        "&20"
+    ],
+    "getPAlive_7": [
+        "&2"
+    ],
+    "ask_13": [
+        "&9",
+        "Which one shall attack?",
+        "&115"
+    ],
+    "getEnemyAlive_4": [
+        "&113"
+    ],
+    "ask_14": [
+        "&9",
+        "Who do you want to attack?",
+        "&114"
+    ],
+    "attack_7": [
+        "&20",
+        "&20"
+    ],
+    "dictToListVals_7": [
+        "&113"
+    ],
+    "getVarFromList_7": [
+        "&33",
+        1
+    ],
+    "getPAlive_8": [
+        "&2"
+    ],
+    "dictToListVals_8": [
+        "&115"
+    ],
+    "getVarFromList_8": [
+        "&33",
+        1
+    ],
+    "attack_8": [
+        "&24",
+        "&24"
+    ],
+    "combatState_4": [
+        "&113"
+    ],
+    "logic_4": [
+        "&34",
+        {
+            "combat": {
+                "combat.json": "Event"
+            },
+            "victory": {
+                "add_text_1": [
+                    "&0",
+                    "&9",
+                    "&11",
+                    "You won!"
+                ]
+            }
+        }
+    ],
+    "add_text_4": [
+        "&0",
+        "&9",
+        "&11",
+        "You won!"
+    ],
+    "ask_15": [
+        "&9",
         "Do you want to check out the other side?",
         {
             "yes": {
@@ -285,5 +349,38 @@
             },
             "no": "None"
         }
+    ],
+    "add_text_5": [
+        "&0",
+        "&9",
+        "&11",
+        "left_corridor_1.txt"
+    ],
+    "getPDict_1": [
+        "&2"
+    ],
+    "ask_16": [
+        "&9",
+        "Which one shall pick it up?",
+        "&111"
+    ],
+    "ask_17": [
+        "&9",
+        "Do you want to pick it up?",
+        {
+            "yes": {
+                "addItem_1": [
+                    "&0",
+                    "&20",
+                    "holy_sword"
+                ]
+            },
+            "no": "None"
+        }
+    ],
+    "addItem_1": [
+        "&0",
+        "&20",
+        "holy_sword"
     ]
 }

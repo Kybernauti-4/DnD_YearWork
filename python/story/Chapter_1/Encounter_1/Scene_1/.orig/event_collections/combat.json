@@ -16,21 +16,17 @@
 		"Which one shall attack?",
 		"&115"
 	],
-	"getEnemy_1":[
-		"&0"
+	"getEnemyAlive_1":[
+		"&113"
 	],
 	"ask_3":[
 		"&9",
 		"Who do you want to attack?",
-		"&113"
+		"&114"
 	],
 	"attack_1":[
 		"&20",
 		"&20"
-	],
-
-	"getEnemy_2":[
-		"&0"
 	],
 	"dictToListVals_1":["&113"],
 	"getVarFromList_1":["&33", 1],
@@ -42,9 +38,6 @@
 	"attack_2":[
 		"&24",
 		"&24"
-	],
-	"getEnemy_3":[
-		"&0"
 	],
 	"combatState_1":[
 		"&113"

@@ -17,7 +17,7 @@
 		"getPAlive": 115
     },
     "info": {
-        "lock": [],
+        "lock": [113],
         "func": [
             101,
             102,
