@@ -4,11 +4,12 @@
     "info": {
         "status": "alive",
         "MP": 25,
+		"max_MP":25,
         "carry": 100,
         "name": "Giganto",
         "gender": "Male",
         "HP": 300,
-        "MAXHP": 300,
+        "max_HP": 300,
         "age": 149,
         "defense": 10
     },

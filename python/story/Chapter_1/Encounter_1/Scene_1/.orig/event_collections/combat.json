@@ -7,6 +7,7 @@
 			"no":"None"
 		}
 	],
+	"eatVal_1":["&20"],
 	"getPAlive_1":[
 		"&2"
 	],
@@ -31,23 +32,15 @@
 	"getEnemy_2":[
 		"&0"
 	],
-	"getVarFromList_1":["&113", 1],
-	"getVarFromList_2":["&2", 1],
-	"attack_2":[
-		"&24",
-		"&24"
-	],
-
+	"dictToListVals_1":["&113"],
+	"getVarFromList_1":["&33", 1],
 	"getPAlive_2":[
 		"&2"
 	],
-	"getVarFromList_3":["&115", 1],
-	"getEnemy_3":[
-		"&0"
-	],
-
-	"getEnemyAlive_1":[
-		"&113"
-	],
-	"getVarFromList_4":["&115", 1]
+	"dictToListVals_2":["&115"],
+	"getVarFromList_2":["&33", 1],
+	"attack_2":[
+		"&24",
+		"&24"
+	]
 }

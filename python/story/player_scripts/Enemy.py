@@ -3,24 +3,25 @@ import os
 import random
 
 
-class Player:
+class Enemy:
 	
-	def __init__(self, PlayerFile):
-		PlayerData = {}
-
-		with open(PlayerFile) as f:
-			PlayerData	= json.load(f)
+	def __init__(self, path, EnemyID):
+		EnemyData = {}
+		for file in os.listdir(os.path.join(path,'npc')):
+			if file.endswith('.json'):
+				with open(os.path.join(path,'npc',file)) as f:
+					EnemyData = json.load(f)
+					if EnemyData['ID'] == EnemyID and EnemyData['type'] == 'enemy':
+						break
 		
-		if PlayerData['type'] != 'player':
-			raise Exception('This is not a player file')
-		
-		self.pid = PlayerData["ID"]
+		self.path = path
+		self.pid = EnemyID
 		if self.pid == '':
 			self.pid = ''.join([random.choice('0123456789abcdef') for i in range(16)]) # u64
 		
-		self.info = PlayerData["info"]
-		self.inventory = PlayerData["inventory"]
-		self.equipped = PlayerData["equipped"]
+		self.info = EnemyData["info"]
+		self.inventory = EnemyData["inventory"]
+		self.equipped = EnemyData["equipped"]
 
 		
 	def getVar(self, var):
@@ -125,5 +126,5 @@ class Player:
 		PlayerData["equipped"] = self.equipped
 		PlayerData["inventory"] = self.inventory
 		
-		with open(os.path.join('story', 'players', f'player_{self.pid}.json'), 'w') as f:
+		with open(os.path.join(self.path, "npc", f'enemy_{self.pid}.json'), 'w') as f:
 			json.dump(PlayerData, f, indent=4)

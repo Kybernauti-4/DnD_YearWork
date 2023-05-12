@@ -3,12 +3,13 @@
     "type": "enemy",
     "info": {
 		"status":"alive",
-        "MP": 25,
+    	"MP": 25,
+		"max_MP": 25,
         "carry": 100,
         "name": "Jeff",
         "gender": "No",
         "HP": 140,
-        "MAXHP": 140,
+        "max_HP": 140,
         "age": 42069,
         "defense": 2
     },

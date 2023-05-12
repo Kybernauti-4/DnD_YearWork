@@ -7,8 +7,9 @@
         "age": 137,
         "gender": "Female",
         "HP": 230,
-        "MAXHP": 230,
+        "max_HP": 230,
         "MP": 75,
+		"max_MP": 75,
         "defense": 5,
         "carry": 75
     },

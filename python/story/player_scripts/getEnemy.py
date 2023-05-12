@@ -1,5 +1,6 @@
 import os
 import json
+from Enemy import Enemy
 
 id='global'
 name=''
@@ -22,8 +23,9 @@ def getEnemy(path, return_type='dict'):
 		for npc in npc_list:
 			with open(os.path.join(path, 'npc', npc), 'r') as f:
 				npc_data = json.load(f)
+				enemy = Enemy(path, npc_data['ID'])
 				if npc_data['type'] == 'enemy':
-					enemy_dict[npc_data['info']['name']] = npc_data['ID']
+					enemy_dict[npc_data['info']['name']] = enemy
 		
 		return enemy_dict
 	

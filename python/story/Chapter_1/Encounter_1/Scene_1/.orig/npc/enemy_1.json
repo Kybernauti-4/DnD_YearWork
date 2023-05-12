@@ -4,11 +4,12 @@
     "info": {
 		"status":"alive",
         "MP": 25,
+		"max_MP":25,
         "carry": 100,
         "name": "Skeleton",
         "gender": "Why?",
         "HP": 50,
-        "MAXHP": 70,
+        "max_HP": 70,
         "age": 42069,
         "defense": 2
     },

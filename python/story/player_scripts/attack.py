@@ -11,7 +11,7 @@ def attack(p1, p2):
 	global fist
 	# p1 is the attacker
 	weapon = fist
-	for item in p1.equiped:
+	for item in p1.equipped:
 		if item['type'].split('-')[0] == 'weapon':
 			weapon = item
 			break
@@ -21,7 +21,7 @@ def attack(p1, p2):
 	#got damage from weapon now decrease it by armor unless its magic
 	
 	if weapon['type'].split('-')[1] != 'magic':
-		for item in p2.equiped:
+		for item in p2.equipped:
 			if item['type'].split('-')[0] == 'shield':
 				damage -= item['defense']
 			elif item['type'].split('-')[0] == 'armor':

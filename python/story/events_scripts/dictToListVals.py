@@ -1,2 +1,2 @@
-def dictToListKeys(dict):
-    return list(dict.keys())
+def dictToListVals(dict):
+    return list(dict.values())
